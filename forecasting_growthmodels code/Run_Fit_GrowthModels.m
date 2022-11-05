@@ -14,7 +14,7 @@ global method1 % Parameter estimation method
 % <=================== Load parameter values supplied by user =================>
 % <============================================================================>
 
-[cadfilename1_INP,DT_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP,getperformance_INP,forecastingperiod_INP, printscreen1_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options;
+[cadfilename1_INP,DT_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP, printscreen1_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_fit;
 
 % <============================================================================>
 % <================================ Datasets properties ==============================>
@@ -103,9 +103,9 @@ data=load(strcat('./input/',cadfilename1,'.txt'));
 % <========================== Forecasting parameters ===================================>
 % <==============================================================================>
 
-getperformance=getperformance_INP; % flag or indicator variable (1/0) to calculate forecasting performance or not
+getperformance=0; % flag or indicator variable (1/0) to calculate forecasting performance or not
 
-forecastingperiod=forecastingperiod_INP; %forecast horizon (number of data points ahead)
+forecastingperiod=0; %forecast horizon (number of data points ahead)
 
 printscreen1=printscreen1_INP;  % print plots with the results
 
@@ -453,7 +453,7 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
         line1=plot(timevect2,UB1,'r--')
         set(line1,'LineWidth',2)
 
-        % plot mean model fit
+        % plot model fit
 
         color1=gray(8);
         line1=plot(timevect1,fit_model1,'color',color1(6,:))
@@ -611,61 +611,4 @@ if 1
 
     title(model_name1)
 end
-
-
-
-
-%% Plots forecasting performance over horizons for the las model run
-
-
-figure
-
-subplot(2,2,1)
-
-line1=plot(MAEFS_model1(:,1),MAEFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
-
-xlabel('Forecasting horizon (days)')
-ylabel('MAE')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
-
-subplot(2,2,2)
-
-line1=plot(MSEFS_model1(:,1),MSEFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
-
-xlabel('Forecasting horizon (days)')
-ylabel('MSE')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
-
-subplot(2,2,3)
-
-line1=plot(PIFS_model1(:,1),PIFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
-
-xlabel('Forecasting horizon (days)')
-ylabel('Coverage rate of the 95% PI')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
-
-
-subplot(2,2,4)
-
-line1=plot(WISFS_model1(:,1),WISFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
-
-xlabel('Forecasting horizon (days)')
-ylabel('WIS')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
 

@@ -1,4 +1,4 @@
-% Fitting model to epidemic data with quantified uncertainty
+% plot model fit to epidemic data with quantified uncertainty
 
 clear
 clear global
@@ -15,7 +15,7 @@ global method1 % Parameter estimation method
 % <=================== Load parameter values supplied by user =================>
 % <============================================================================>
 
-[cadfilename1_INP,DT_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP,getperformance_INP,forecastingperiod_INP, printscreen1_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_forecast;
+[cadfilename1_INP,DT_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP,printscreen1_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_fit;
 
 
 % <============================================================================>
@@ -45,25 +45,25 @@ dist1=dist1_INP; %Define dist1 which is the type of error structure:
 
 % % Define dist1 which is the type of error structure:
 % switch method1
-% 
+%
 %     case 0
-% 
+%
 %         dist1=0; % Normnal distribution to model error structure
-% 
+%
 %         %dist1=2; % error structure type (Poisson=1; NB=2)
-% 
+%
 %         %factor1=1; % scaling factor for VAR=factor1*mean
-% 
-% 
+%
+%
 %     case 3
 %         dist1=3; % VAR=mean+alpha*mean;
-% 
+%
 %     case 4
 %         dist1=4; % VAR=mean+alpha*mean^2;
-% 
+%
 %     case 5
 %         dist1=5; % VAR=mean+alpha*mean^d;
-% 
+%
 % end
 
 numstartpoints=numstartpoints_INP; % Number of initial guesses for optimization procedure using MultiStart
@@ -97,15 +97,6 @@ fixI0=fixI0_INP; % 0=Estimate the initial number of cases; 1 = Fix the initial n
 
 data=load(strcat('./input/',cadfilename1,'.txt'));
 
-
-% <==============================================================================>
-% <========================== Forecasting parameters ===================================>
-% <==============================================================================>
-
-getperformance=getperformance_INP; % flag or indicator variable (1/0) to calculate forecasting performance or not
-
-forecastingperiod=forecastingperiod_INP; %forecast horizon (number of data points ahead)
-
 printscreen1=printscreen1_INP;  % print plots with the results
 
 % <==================================================================================>
@@ -122,7 +113,7 @@ tend1=tend1_INP;  %time end of the rolling window analysis
 % <================================ Save short-term forecast results ==================================>
 % <=========================================================================================>
 
-load(strcat('./output/Forecast-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-',num2str(forecastingperiod),'.mat'))
+load(strcat('./output/Forecast-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-0.mat'))
 
 
 close all
@@ -201,9 +192,9 @@ if 1
 
     UB1=quantile(forecast_model12',0.025)';
     LB1=quantile(forecast_model12',0.975)';
-    mean1=mean(forecast_model12,2);
+    median1=median(forecast_model12,2);
 
-    line1=plot(timevect2,mean1,'r-')
+    line1=plot(timevect2,median1,'r-')
     set(line1,'LineWidth',2)
 
     hold on
@@ -213,7 +204,7 @@ if 1
     line1=plot(timevect2,UB1,'r--')
     set(line1,'LineWidth',2)
 
-    % plot mean model fit
+    % plot model fit
 
     color1=gray(8);
     line1=plot(timevect1,fit_model1,'color',color1(6,:))
@@ -241,60 +232,4 @@ if 1
 
     title(model_name1)
 end
-
-
-% <======================================================================================>
-% Plots forecasting performance over horizons for the las model run
-% <======================================================================================>
-
-figure
-
-subplot(2,2,1)
-
-line1=plot(MAEFS_model1(:,1),MAEFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
-
-xlabel('Forecasting horizon (days)')
-ylabel('MAE')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
-
-subplot(2,2,2)
-
-line1=plot(MSEFS_model1(:,1),MSEFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
-
-xlabel('Forecasting horizon (days)')
-ylabel('MSE')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
-
-subplot(2,2,3)
-
-line1=plot(PIFS_model1(:,1),PIFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
-
-xlabel('Forecasting horizon (days)')
-ylabel('Coverage rate of the 95% PI')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
-
-
-subplot(2,2,4)
-
-line1=plot(WISFS_model1(:,1),WISFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
-
-xlabel('Forecasting horizon (days)')
-ylabel('WIS')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
 
