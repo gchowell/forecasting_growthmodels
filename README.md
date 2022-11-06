@@ -9,7 +9,7 @@
     <li>plotting the best fit of the model and parameter estimates,</li>
     <li>plotting forecasts from the best fit model,</li>
     <li>generates and plots performance metrics of the forecasts,</li>
-    <li>generates quantiles associated with the model fit and the forecast,</li>
+    <li>generates quantiles associated with the model fit and the forecast</li>
 
 </ul>
 
@@ -25,7 +25,7 @@
     
 # Installation requirements
 
-The forecasting_growthmodels framework toolbox requires a MATLAB installation.
+The forecasting_growthmodels toolbox requires a MATLAB installation.
 
 # Fitting the model to your data
 
