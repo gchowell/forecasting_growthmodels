@@ -11,12 +11,15 @@ function [cadfilename1,DT, dist1, numstartpoints,M,flag1,model_name1,fixI0,print
 global method1 % Parameter estimation method
 
 % <============================================================================>
-% <================================ Datasets properties ==============================>
+% <================================ Datasets properties =======================>
 % <============================================================================>
+% The time series data file contains the incidence curve of the epidemic of interest. 
+% The first column corresponds to time index: 0,1,2, ... and the second
+% column corresponds to the temporal incicence data.
 
-cadfilename1='sim-GLM-poiss';  %name of the time series data file
+cadfilename1='sim-GLM-poiss';  % Name of the data file containing the incidence curve
 
-DT=1;  %temporal resolution of the data (DT=1 for daily data).
+DT=1;  %temporal resolution of the data (DT=1 for daily data; DT=7 for weekly data).
 
 % <=============================================================================>
 % <=========================== Parameter estimation ============================>
