@@ -33,8 +33,8 @@ To use the toolbox to fit a model to your data, you just need to:
 
 <ul>
     <li>download the code </li>
-    <li>create input folder where your time series data is located </li>
-    <li>create output folder where the output files will be stored</li>   
+    <li>create 'input' folder in your working directory where your data is located </li>
+    <li>create 'output' folder in your working directory where the output files will be stored</li>   
     <li>open a MATLAB session </li>
     <li>define the model parameter values and time series parameters by editing <code>options_fit.m</code> </li>
     <li>run the function <code>Run_Fit_GrowthModels.m</code> </li>
