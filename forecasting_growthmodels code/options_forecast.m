@@ -1,5 +1,5 @@
 
-function [cadfilename1,DT, dist1, numstartpoints,M,flag1,model_name1,fixI0,getperformance,forecastingperiod, printscreen1,windowsize1,tstart1,tend1]=options_forecast
+function [cadfilename1,caddisease,datatype,DT, dist1, numstartpoints,M,flag1,model_name1,fixI0,getperformance,forecastingperiod, printscreen1,windowsize1,tstart1,tend1]=options_forecast
 
 % Parameters for FittingModelToData.m function that fits growth models to
 % time series data with quantified uncertainty
@@ -22,6 +22,11 @@ global method1 % Parameter estimation method
 cadfilename1='sim-GLM-poiss';  % Name of the data file containing the incidence curve
 
 DT=1;  %temporal resolution of the data (DT=1 for daily data).
+
+caddisease='coronavirus'; % string indicating the name of the disease related to the time series data
+
+datatype='cases'; % string indicating the nature of the data (cases, deaths, hospitalizations, etc)
+
 
 % <=============================================================================>
 % <=========================== Parameter estimation ============================>

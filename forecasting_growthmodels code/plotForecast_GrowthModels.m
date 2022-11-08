@@ -15,7 +15,7 @@ global method1 % Parameter estimation method
 % <=================== Load parameter values supplied by user =================>
 % <============================================================================>
 
-[cadfilename1_INP,DT_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP,getperformance_INP,forecastingperiod_INP, printscreen1_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_forecast;
+[cadfilename1_INP,caddisease_INP,datatype_INP, DT_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP,getperformance_INP,forecastingperiod_INP, printscreen1_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_forecast;
 
 
 % <============================================================================>
@@ -25,6 +25,9 @@ global method1 % Parameter estimation method
 cadfilename1=cadfilename1_INP;
 
 DT=DT_INP;
+
+caddisease=caddisease_INP;
+datatype=datatype_INP;
 
 % <=============================================================================>
 % <=========================== Parameter estimation ============================>
@@ -234,7 +237,7 @@ if 1
     axis([timevect1(1) timevect2(end) 0 max(quantile(forecast_model12',0.975))*1.5])
 
     xlabel('Time (days)')
-    ylabel('Cases')
+    ylabel(strcat(caddisease,{' '},datatype))
 
     set(gca,'FontSize',24)
     set(gcf,'color','white')
