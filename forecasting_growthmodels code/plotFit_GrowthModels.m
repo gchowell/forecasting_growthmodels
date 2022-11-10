@@ -126,114 +126,118 @@ close all
 % <======================= Plot parameter distributions and model fit and forecast ========================>
 % <======================================================================================>
 
+figure(101)
+subplot(2,3,1)
+hist(Phatss_model1(:,1))
+hold on
 
-if 1
+line2=[param_r(1,2) 10;param_r(1,3) 10];
+line1=plot(line2(:,1),line2(:,2),'r--')
+set(line1,'LineWidth',2)
 
-    % <========================================================================================>
-    % <======================= Plot empirical distributions of the parameters ========================>
-    % <========================================================================================>
+xlabel('r')
+ylabel('Frequency')
 
-    figure(101)
-    subplot(2,3,1)
-    hist(Phatss_model1(:,1))
-    hold on
+title(cad1)
 
-    line2=[param_r(1,2) 10;param_r(1,3) 10];
-    line1=plot(line2(:,1),line2(:,2),'r--')
+set(gca,'FontSize', 24);
+set(gcf,'color','white')
+
+subplot(2,3,2)
+hist(Phatss_model1(:,2))
+hold on
+
+line2=[param_p(1,2) 10;param_p(1,3) 10];
+line1=plot(line2(:,1),line2(:,2),'r--')
+set(line1,'LineWidth',2)
+
+xlabel('p')
+ylabel('Frequency')
+
+title(cad2)
+
+set(gca,'FontSize', 24);
+set(gcf,'color','white')
+
+subplot(2,3,3)
+hist(Phatss_model1(:,4))
+hold on
+
+line2=[param_K(1,2) 10;param_K(1,3) 10];
+line1=plot(line2(:,1),line2(:,2),'r--')
+set(line1,'LineWidth',2)
+
+xlabel('K')
+ylabel('Frequency')
+
+title(cad4)
+
+set(gca,'FontSize', 24);
+set(gcf,'color','white')
+
+
+% <========================================================================================>
+% <================================ Plot model fit and forecast ======================================>
+% <========================================================================================>
+
+subplot(2,3,[4 5 6])
+
+plot(timevect2,forecast_model12,'c')
+hold on
+
+% plot 95% PI
+
+LB1=quantile(forecast_model12',0.025)';
+LB1=(LB1>=0).*LB1;
+
+UB1=quantile(forecast_model12',0.975)';
+UB1=(UB1>=0).*UB1;
+
+median1=median(forecast_model12,2);
+
+line1=plot(timevect2,median1,'r-')
+set(line1,'LineWidth',2)
+
+hold on
+line1=plot(timevect2,LB1,'r--')
+set(line1,'LineWidth',2)
+
+line1=plot(timevect2,UB1,'r--')
+set(line1,'LineWidth',2)
+
+% plot model fit
+
+color1=gray(8);
+line1=plot(timevect1,fit_model1,'color',color1(6,:))
+set(line1,'LineWidth',1)
+
+% plot the data
+
+line1=plot(timevect_all,data_all,'bo')
+set(line1,'LineWidth',2)
+
+line2=[timevect1(end) 0;timevect1(end) max(quantile(forecast_model12',0.975))*1.5];
+
+if forecastingperiod>0
+    line1=plot(line2(:,1),line2(:,2),'k--')
     set(line1,'LineWidth',2)
-
-    xlabel('r')
-    ylabel('Frequency')
-
-    title(cad1)
-
-    set(gca,'FontSize', 24);
-    set(gcf,'color','white')
-
-    subplot(2,3,2)
-    hist(Phatss_model1(:,2))
-    hold on
-
-    line2=[param_p(1,2) 10;param_p(1,3) 10];
-    line1=plot(line2(:,1),line2(:,2),'r--')
-    set(line1,'LineWidth',2)
-
-    xlabel('p')
-    ylabel('Frequency')
-
-    title(cad2)
-
-    set(gca,'FontSize', 24);
-    set(gcf,'color','white')
-
-    subplot(2,3,3)
-    hist(Phatss_model1(:,4))
-    hold on
-
-    line2=[param_K(1,2) 10;param_K(1,3) 10];
-    line1=plot(line2(:,1),line2(:,2),'r--')
-    set(line1,'LineWidth',2)
-
-    xlabel('K')
-    ylabel('Frequency')
-
-    title(cad4)
-
-    set(gca,'FontSize', 24);
-    set(gcf,'color','white')
-
-
-    % <========================================================================================>
-    % <================================ Plot model fit and forecast ======================================>
-    % <========================================================================================>
-
-    subplot(2,3,[4 5 6])
-
-    plot(timevect2,forecast_model12,'c')
-    hold on
-
-    % plot 95% PI
-
-    UB1=quantile(forecast_model12',0.025)';
-    LB1=quantile(forecast_model12',0.975)';
-    median1=median(forecast_model12,2);
-
-    line1=plot(timevect2,median1,'r-')
-    set(line1,'LineWidth',2)
-
-    hold on
-    line1=plot(timevect2,LB1,'r--')
-    set(line1,'LineWidth',2)
-
-    line1=plot(timevect2,UB1,'r--')
-    set(line1,'LineWidth',2)
-
-    % plot model fit
-
-    color1=gray(8);
-    line1=plot(timevect1,fit_model1,'color',color1(6,:))
-    set(line1,'LineWidth',1)
-
-    % plot the data
-
-    line1=plot(timevect_all,data_all,'bo')
-    set(line1,'LineWidth',2)
-
-    line2=[timevect1(end) 0;timevect1(end) max(quantile(forecast_model12',0.975))*1.5];
-
-    if forecastingperiod>0
-        line1=plot(line2(:,1),line2(:,2),'k--')
-        set(line1,'LineWidth',2)
-    end
-
-    axis([timevect1(1) timevect2(end) 0 max(quantile(forecast_model12',0.975))*1.5])
-
-    xlabel('Time (days)')
-    ylabel(strcat(caddisease,{' '},datatype))
-
-    set(gca,'FontSize',24)
-    set(gcf,'color','white')
-
-    title(model_name1)
 end
+
+axis([timevect1(1) timevect2(end) 0 max(quantile(forecast_model12',0.975))*1.5])
+
+xlabel('Time (days)')
+ylabel(strcat(caddisease,{' '},datatype))
+
+set(gca,'FontSize',24)
+set(gcf,'color','white')
+
+title(model_name1)
+
+
+fitdata=[timevect1 data_all(1:length(timevect1)) median1 LB1 UB1];
+
+T = array2table(fitdata);
+T.Properties.VariableNames(1:5) = {'time','data','median','LB','UB'};
+writetable(T,strcat('./output/Fit-',caddisease,'-',datatype,'.csv'))
+
 
