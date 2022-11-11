@@ -122,7 +122,7 @@ tend1=tend1_INP;  %time end of the rolling window analysis
 
 
 % <=========================================================================================>
-% <================================ Save short-term forecast results ==================================>
+% <================================ Load short-term forecast results ==================================>
 % <=========================================================================================>
 
 load(strcat('./output/Forecast-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-',num2str(forecastingperiod),'.mat'))
@@ -242,69 +242,92 @@ set(gcf,'color','white')
 
 title(model_name1)
 
+if getperformance & length(data_all)<windowsize1+forecastingperiod
 
-forecastdata=[timevect_all(1:length(timevect1)+forecastingperiod) data_all(1:length(timevect1)+forecastingperiod) median1 LB1 UB1];
+    [length(data_all) windowsize1+forecastingperiod]
+    'entro'
+    warning('Length of time series data is too short to evaluate the forecasting period indicated in <forecastingperiod>. Consider setting <getperformance> to 0 in options_forecast.m or extending the length of the time series.')
 
-T = array2table(forecastdata);
-T.Properties.VariableNames(1:5) = {'time','data','median','LB','UB'};
-writetable(T,strcat('./output/Forecast-',caddisease,'-',datatype,'.csv'))
+    forecastdata=[[timevect_all(1:end);zeros(windowsize1+forecastingperiod-length(data_all),1)+NaN] [data_all(1:end);zeros(windowsize1+forecastingperiod-length(data_all),1)+NaN] median1 LB1 UB1];
 
+    T = array2table(forecastdata);
+    T.Properties.VariableNames(1:5) = {'time','data','median','LB','UB'};
+    writetable(T,strcat('./output/Forecast-',caddisease,'-',datatype,'.csv'))
 
+else
 
+    if length(data_all)>=windowsize1+forecastingperiod
+        forecastdata=[timevect_all(1:length(timevect1)+forecastingperiod) data_all(1:length(timevect1)+forecastingperiod) median1 LB1 UB1];
+    else
+        forecastdata=[[timevect_all(1:end);zeros(windowsize1+forecastingperiod-length(data_all),1)+NaN] [data_all(1:end);zeros(windowsize1+forecastingperiod-length(data_all),1)+NaN] median1 LB1 UB1];
+    end
 
+    T = array2table(forecastdata);
+    T.Properties.VariableNames(1:5) = {'time','data','median','LB','UB'};
+    writetable(T,strcat('./output/Forecast-',caddisease,'-',datatype,'.csv'))
 
-% <======================================================================================>
-% Plots forecasting performance over horizons for the las model run
-% <======================================================================================>
-
-figure
-
-subplot(2,2,1)
-
-line1=plot(MAEFS_model1(:,1),MAEFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
-
-xlabel('Forecasting horizon (days)')
-ylabel('MAE')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
-
-subplot(2,2,2)
-
-line1=plot(MSEFS_model1(:,1),MSEFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
-
-xlabel('Forecasting horizon (days)')
-ylabel('MSE')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
-
-subplot(2,2,3)
-
-line1=plot(PIFS_model1(:,1),PIFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
-
-xlabel('Forecasting horizon (days)')
-ylabel('Coverage rate of the 95% PI')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
+end
 
 
-subplot(2,2,4)
 
-line1=plot(WISFS_model1(:,1),WISFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
+% <========================================================================================>
+% <========================================================================================>
+%                                  Plots forecasting performance metrics over predicted horizon
+% <========================================================================================>
+% <========================================================================================>
 
-xlabel('Forecasting horizon (days)')
-ylabel('WIS')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
+if getperformance
+
+    figure
+
+    subplot(2,2,1)
+
+    line1=plot(MAEFS_model1(:,1),MAEFS_model1(:,2),'k')
+    set(line1,'LineWidth',4)
+    hold on
+
+    xlabel('Forecasting horizon (days)')
+    ylabel('MAE')
+    hold on
+    set(gca,'FontSize', 24);
+    set(gcf,'color','white')
+
+    subplot(2,2,2)
+
+    line1=plot(MSEFS_model1(:,1),MSEFS_model1(:,2),'k')
+    set(line1,'LineWidth',4)
+    hold on
+
+    xlabel('Forecasting horizon (days)')
+    ylabel('MSE')
+    hold on
+    set(gca,'FontSize', 24);
+    set(gcf,'color','white')
+
+    subplot(2,2,3)
+
+    line1=plot(PIFS_model1(:,1),PIFS_model1(:,2),'k')
+    set(line1,'LineWidth',4)
+    hold on
+
+    xlabel('Forecasting horizon (days)')
+    ylabel('Coverage rate of the 95% PI')
+    hold on
+    set(gca,'FontSize', 24);
+    set(gcf,'color','white')
+
+
+    subplot(2,2,4)
+
+    line1=plot(WISFS_model1(:,1),WISFS_model1(:,2),'k')
+    set(line1,'LineWidth',4)
+    hold on
+
+    xlabel('Forecasting horizon (days)')
+    ylabel('WIS')
+    hold on
+    set(gca,'FontSize', 24);
+    set(gcf,'color','white')
+
+end
 

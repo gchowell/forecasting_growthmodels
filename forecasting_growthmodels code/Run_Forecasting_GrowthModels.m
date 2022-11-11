@@ -1,4 +1,4 @@
-%% Fitting and forecasting model to epidemic data with quantified uncertainty
+% Fitting and forecasting model to epidemic data with quantified uncertainty
 
 clear
 clear global
@@ -85,7 +85,7 @@ GRM=2;  % 2 = GRM
 LM=3;   % 3 = LM
 RICH=4; % 4 = Richards
 
-flag1=flag1_INP; % Sequence of subepidemic growth models considered in epidemic trajectory
+flag1=flag1_INP; % Select the growth model
 
 model_name1=model_name1_INP;
 
@@ -168,6 +168,14 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
     % first data point cannot be zero
     if datac(1)==0
         continue
+    end
+
+    if getperformance & length(data_all)<windowsize1+forecastingperiod
+
+        [length(data_all) windowsize1+forecastingperiod]
+        
+        error('Length of time series data is too short to evaluate the forecasting period indicated in <forecastingperiod>. Consider setting <getperformance> to 0 in options_forecast.m or extending the length of the time series.')
+    
     end
 
 

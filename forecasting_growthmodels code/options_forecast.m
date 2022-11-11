@@ -63,7 +63,7 @@ GRM=2;  % 2 = GRM
 LM=3;   % 3 = LM
 RICH=4; % 4 = Richards
 
-flag1=GLM; % Sequence of subepidemic growth models considered in epidemic trajectory
+flag1=GLM;  % Select the growth model
 
 model_name1='GLM';  % name of the model
 
@@ -78,9 +78,9 @@ fixI0=1; % 0=Estimate the initial number of cases; 1 = Fix the initial number of
 % <========================== Forecasting parameters ===================================>
 % <==============================================================================>
 
-getperformance=1; % flag or indicator variable (1/0) to calculate forecasting performance or not
+getperformance=0; % flag or indicator variable (1/0) to calculate forecasting performance or not
 
-forecastingperiod=30; %forecast horizon (number of data points ahead)
+forecastingperiod=80; %forecast horizon (number of data points ahead)
 
 printscreen1=1;  % print plots with the results
 
