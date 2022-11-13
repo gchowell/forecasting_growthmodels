@@ -78,6 +78,6 @@ printscreen1=1;  % print plots with the results
 
 windowsize1=20;  %moving window size
 tstart1=10; % time of start of rolling window analysis
-tend1=tstart1+windowsize1-1;  %time end of the rolling window analysis
+tend1=tstart1+windowsize1;  %time end of the rolling window analysis
 %tend1=length(data(:,1));
 

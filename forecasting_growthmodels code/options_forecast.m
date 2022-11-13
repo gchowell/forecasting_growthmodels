@@ -78,9 +78,9 @@ fixI0=1; % 0=Estimate the initial number of cases; 1 = Fix the initial number of
 % <========================== Forecasting parameters ===================================>
 % <==============================================================================>
 
-getperformance=0; % flag or indicator variable (1/0) to calculate forecasting performance or not
+getperformance=1; % flag or indicator variable (1/0) to calculate forecasting performance or not
 
-forecastingperiod=80; %forecast horizon (number of data points ahead)
+forecastingperiod=30; %forecast horizon (number of data points ahead)
 
 printscreen1=1;  % print plots with the results
 
@@ -90,6 +90,6 @@ printscreen1=1;  % print plots with the results
 
 windowsize1=20;  %moving window size
 tstart1=10; % time of start of rolling window analysis
-tend1=tstart1+windowsize1-1;  %time end of the rolling window analysis
+tend1=tstart1+windowsize1;  %time end of the rolling window analysis
 %tend1=length(data(:,1));
 
