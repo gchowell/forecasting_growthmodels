@@ -42,19 +42,30 @@ To use the toolbox to fit a model to your data, you just need to:
   
 # Plotting the best model fit and parameter estimates
 
-After fitting the model to your data, you can use the toolbox to plot the best model fit and parameter estimates as follows:
+After fitting the model to your data using the function <code>Run_Fit_GrowthModels.m</code>, you can use the toolbox to plot the best model fit and parameter estimates as follows:
 
 <ul>
-    <li>define the model parameter values and time series parameters by editing <code>options_fit.m</code></li>
     <li>run the function <code>plotFit_GrowthModels.m</code> </li>
 </ul>
-    
-# Plotting forecasts of the best fit model
 
-After fitting the model to your data, you can use the toolbox to plot forecasts derived from the best fit model as follows:
+# Generating forecasts
+
+To use the toolbox to fit a model to your data and generate a forecast, you just need to:
 
 <ul>
-    <li>define the model parameter values and time series parameters by editing <code>options_forecast.m</code></li>
+    <li>download the code </li>
+    <li>create 'input' folder in your working directory where your data is located </li>
+    <li>create 'output' folder in your working directory where the output files will be stored</li>   
+    <li>open a MATLAB session </li>
+    <li>define the model parameter values and time series parameters by editing <code>options_forecast.m</code> </li>
+    <li>run the function <code>Run_Forecasting_GrowthModels.m</code> </li>
+</ul>
+  
+# Plotting forecasts and performance metrics based on the best-fit model
+
+After running <code>Run_Forecasting_GrowthModels.m</code>, you can use the toolbox to plot forecasts and performance metrics derived from the best fit model as follows:
+
+<ul>
     <li>run the function <code>plotForecast_GrowthModels.m</code></li>
 </ul>
     
