@@ -46,28 +46,6 @@ dist1=dist1_INP; %Define dist1 which is the type of error structure:
 % MLE (Neg Binomial)=4, with VAR=mean+alpha*mean^2;
 % MLE (Neg Binomial)=5, with VAR=mean+alpha*mean^d;
 
-% % Define dist1 which is the type of error structure:
-% switch method1
-% 
-%     case 0
-% 
-%         dist1=0; % Normnal distribution to model error structure
-% 
-%         %dist1=2; % error structure type (Poisson=1; NB=2)
-% 
-%         %factor1=1; % scaling factor for VAR=factor1*mean
-% 
-% 
-%     case 3
-%         dist1=3; % VAR=mean+alpha*mean;
-% 
-%     case 4
-%         dist1=4; % VAR=mean+alpha*mean^2;
-% 
-%     case 5
-%         dist1=5; % VAR=mean+alpha*mean^d;
-% 
-% end
 
 numstartpoints=numstartpoints_INP; % Number of initial guesses for optimization procedure using MultiStart
 
@@ -199,7 +177,11 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
     [AICc,part1,part2,numparams]=getAICc(method1,flag1,fixI0,fval,length(data1(:,1)))
 
 
-    if (method1==0 & dist1==2)  % estimate <factor1> which is the variance to mean ratio to scale the NB error structure
+    if (method1==0 & dist1==1) 
+
+        factor1=1;
+
+    elseif (method1==0 & dist1==2)  % estimate <factor1> which is the variance to mean ratio to scale the NB error structure
 
         binsize1=7;
 

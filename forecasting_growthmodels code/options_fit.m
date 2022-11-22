@@ -38,7 +38,7 @@ method1=0; % Type of estimation method: 0 = LSQ
 % MLE (Neg Binomial)=4, with VAR=mean+alpha*mean^2;
 % MLE (Neg Binomial)=5, with VAR=mean+alpha*mean^d;
 
-dist1=0; % Define dist1 which is the type of error structure:
+dist1=2; % Define dist1 which is the type of error structure:
 
 %dist1=0; % Normnal distribution to model error structure
 %dist1=1; % error structure type (Poisson=1; NB=2)

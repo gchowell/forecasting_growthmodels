@@ -252,11 +252,21 @@ plot(param_rs,'ko-')
 ylabel('r')
 
 subplot(1,3,2)
-plot(param_rs,'ko-')
+plot(param_ps,'ko-')
 ylabel('p')
 
 subplot(1,3,3)
 plot(param_Ks,'ko-')
 ylabel('K')
+
+% <=============================================================================================>
+% <================= Save file with parameters from rolling window analysis ====================================>
+% <=============================================================================================>
+
+performance=[(tstart1:1:tend1-windowsize1+1)' param_rs(:,1:end) param_ps(:,1:end) param_Ks(:,1:end)];
+
+T = array2table(performance);
+T.Properties.VariableNames(1:10) = {'time','r mean','r LB','r UB','p mean','p LB','p UB','K0 mean','K0 LB','K0 UB'};
+writetable(T,strcat('./output/parameters-rollingwindow-',caddisease,'-',datatype,'.csv'))
 
 
