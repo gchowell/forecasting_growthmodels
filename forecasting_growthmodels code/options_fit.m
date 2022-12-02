@@ -29,7 +29,7 @@ datatype='cases'; % string indicating the nature of the data (cases, deaths, hos
 % <=========================== Parameter estimation ============================>
 % <=============================================================================>
 
-method1=0; % Type of estimation method: 0 = LSQ
+method1=0; % Type of estimation method
 
 % LSQ=0,
 % MLE Poisson=1,
@@ -60,9 +60,9 @@ GRM=2;  % 2 = GRM
 LM=3;   % 3 = LM
 RICH=4; % 4 = Richards
 
-flag1=GLM; % Sequence of subepidemic growth models considered in epidemic trajectory
+flag1=GLM; % Growth model considered in the epidemic trajectory
 
-model_name1='GLM';  % name of the model
+model_name1='GLM';  % A string for the name of the model
 
 % <==================================================================================>
 % <=============================== other parameters=======================================>
@@ -70,14 +70,16 @@ model_name1='GLM';  % name of the model
 
 fixI0=1; % 0=Estimate the initial number of cases; 1 = Fix the initial number of cases according to the first data point in the time series
 
-printscreen1=1;  % print plots with the results
+printscreen1=1;  % flag (1/0) to indicate whether we want to print plots with the results
 
 % <==================================================================================>
 % <========================== Parameters of the rolling window analysis =========================>
 % <==================================================================================>
 
 windowsize1=20;  %moving window size
-tstart1=10; % time of start of rolling window analysis
-tend1=tstart1+windowsize1;  %time end of the rolling window analysis
-%tend1=length(data(:,1));
 
+tstart1=10; % time point for the start of rolling window analysis
+
+tend1=tstart1+windowsize1;  %time point for the end of the rolling window analysis
+
+%tend1=length(data(:,1));
