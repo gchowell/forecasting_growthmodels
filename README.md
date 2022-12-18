@@ -10,7 +10,8 @@
     <li>plotting forecasts from the best fit model,</li>
     <li>generates and plots performance metrics of the forecasts,</li>
     <li>generates quantiles associated with the model fit and the forecast</li>
-
+    <li> Conducts rolling window analyses of parameter estimates during specific time periods and window sizes</li>
+    
 </ul>
 
 <p> Additional features include:</p>
@@ -18,7 +19,7 @@
 <ul>
     <li>fitting models using different parameter estimation approaches (least-squares, maximum likelihood estimation),</li>
     <li>fitting models using assuming different error structures (normal, Poisson, negagive binomial),</li>
-    <li>user can select the underlying function for the sub-epidemic building block (generalized-growth model (GGM), generalized-logistic model (GLM), Richards model, generalized Richards model (GRM), Gompertz model),</li>
+    <li>user can select among different growth models including the generalized-growth model (GGM), generalized-logistic model (GLM), Richards model, generalized Richards model (GRM), and the Gompertz model),</li>
     <li> User can conduct multiple fits of the model to the data through a rolling-window analysis </li>
     
 </ul>
