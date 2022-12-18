@@ -38,7 +38,7 @@ method1=0; % Type of estimation method
 % MLE (Neg Binomial)=4, with VAR=mean+alpha*mean^2;
 % MLE (Neg Binomial)=5, with VAR=mean+alpha*mean^d;
 
-dist1=2; % Define dist1 which is the type of error structure:
+dist1=0; % Define dist1 which is the type of error structure:
 
 %dist1=0; % Normnal distribution to model error structure
 %dist1=1; % error structure type (Poisson=1; NB=2)
@@ -62,7 +62,7 @@ RICH=4; % 4 = Richards
 
 flag1=GLM; % Growth model considered in the epidemic trajectory
 
-model_name1='GLM';  % A string for the name of the model
+model_name1='GLM';  % A string provided by the user for the name of the model
 
 % <==================================================================================>
 % <=============================== other parameters=======================================>
@@ -81,5 +81,3 @@ windowsize1=20;  %moving window size
 tstart1=10; % time point for the start of rolling window analysis
 
 tend1=tstart1+windowsize1;  %time point for the end of the rolling window analysis
-
-%tend1=length(data(:,1));

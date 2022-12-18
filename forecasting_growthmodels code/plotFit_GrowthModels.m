@@ -248,16 +248,26 @@ end
 figure
 
 subplot(1,3,1)
-plot(param_rs,'ko-')
+plot(tstart1:1:tend1-windowsize1+1,param_rs,'ko-')
+
 ylabel('r')
+set(gca,'FontSize',24)
+set(gcf,'color','white')
+xlabel('Time')
 
 subplot(1,3,2)
-plot(param_ps,'ko-')
+plot(tstart1:1:tend1-windowsize1+1,param_ps,'ko-')
 ylabel('p')
+set(gca,'FontSize',24)
+set(gcf,'color','white')
+xlabel('Time')
 
 subplot(1,3,3)
-plot(param_Ks,'ko-')
+plot(tstart1:1:tend1-windowsize1+1,param_Ks,'ko-')
 ylabel('K')
+set(gca,'FontSize',24)
+set(gcf,'color','white')
+xlabel('Time')
 
 % <=============================================================================================>
 % <================= Save file with parameters from rolling window analysis ====================================>

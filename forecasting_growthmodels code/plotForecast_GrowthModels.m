@@ -421,13 +421,24 @@ end  % Rolling window analysis
 
 figure
 subplot(1,3,1)
-plot(param_rs2,'ko-')
+plot(tstart1:1:tend1-windowsize1+1,param_rs2,'ko-')
 ylabel('r')
+set(gca,'FontSize',24)
+set(gcf,'color','white')
+xlabel('Time')
 
 subplot(1,3,2)
-plot(param_rs2,'ko-')
+plot(tstart1:1:tend1-windowsize1+1,param_rs2,'ko-')
 ylabel('p')
+set(gca,'FontSize',24)
+set(gcf,'color','white')
+xlabel('Time')
 
 subplot(1,3,3)
-plot(param_Ks2,'ko-')
+plot(tstart1:1:tend1-windowsize1+1,param_Ks2,'ko-')
 ylabel('K')
+set(gca,'FontSize',24)
+set(gcf,'color','white')
+xlabel('Time')
+
+
