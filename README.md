@@ -10,7 +10,7 @@
     <li>plotting forecasts from the best fit model,</li>
     <li>generates and plots performance metrics of the forecasts,</li>
     <li>generates quantiles associated with the model fit and the forecast</li>
-    <li> Conducts rolling window analyses of parameter estimates during specific time periods and window sizes</li>
+    <li>conducts rolling window analyses of parameter estimates during specific time periods and window sizes</li>
     
 </ul>
 
