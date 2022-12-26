@@ -420,22 +420,35 @@ end  % Rolling window analysis
 % <==================================================================================================>
 
 figure
+
 subplot(1,3,1)
-plot(tstart1:1:tend1-windowsize1+1,param_rs2,'ko-')
+plot(tstart1:1:tend1-windowsize1+1,param_rs(:,1),'ro-')
+hold on
+plot(tstart1:1:tend1-windowsize1+1,param_rs(:,2),'b--')
+plot(tstart1:1:tend1-windowsize1+1,param_rs(:,3),'b--')
+
 ylabel('r')
 set(gca,'FontSize',24)
 set(gcf,'color','white')
 xlabel('Time')
 
 subplot(1,3,2)
-plot(tstart1:1:tend1-windowsize1+1,param_rs2,'ko-')
+plot(tstart1:1:tend1-windowsize1+1,param_ps(:,1),'ro-')
+hold on
+plot(tstart1:1:tend1-windowsize1+1,param_ps(:,2),'b--')
+plot(tstart1:1:tend1-windowsize1+1,param_ps(:,3),'b--')
+
 ylabel('p')
 set(gca,'FontSize',24)
 set(gcf,'color','white')
 xlabel('Time')
 
 subplot(1,3,3)
-plot(tstart1:1:tend1-windowsize1+1,param_Ks2,'ko-')
+plot(tstart1:1:tend1-windowsize1+1,param_Ks(:,1),'ro-')
+hold on
+plot(tstart1:1:tend1-windowsize1+1,param_Ks(:,2),'b--')
+plot(tstart1:1:tend1-windowsize1+1,param_Ks(:,3),'b--')
+
 ylabel('K')
 set(gca,'FontSize',24)
 set(gcf,'color','white')

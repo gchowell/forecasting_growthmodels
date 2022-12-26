@@ -17,11 +17,11 @@ global method1 % Parameter estimation method
 % The first column corresponds to time index: 0,1,2, ... and the second
 % column corresponds to the temporal incicence data.
 
-cadfilename1='sim-GLM-poiss';  % Name of the data file containing the incidence curve
+cadfilename1='Most_Recent_Timeseries_US-CDC'; % Name of the data file containing the incidence curve
 
 DT=1;  %temporal resolution of the data (DT=1 for daily data; DT=7 for weekly data).
 
-caddisease='coronavirus'; % string indicating the name of the disease related to the time series data
+caddisease='monkeypox'; % string indicating the name of the disease related to the time series data
 
 datatype='cases'; % string indicating the nature of the data (cases, deaths, hospitalizations, etc)
 
@@ -76,8 +76,8 @@ printscreen1=1;  % flag (1/0) to indicate whether we want to print plots with th
 % <========================== Parameters of the rolling window analysis =========================>
 % <==================================================================================>
 
-windowsize1=20;  %moving window size
+windowsize1=8;  %moving window size
 
-tstart1=10; % time point for the start of rolling window analysis
+tstart1=1; % time point for the start of rolling window analysis
 
-tend1=tstart1+windowsize1;  %time point for the end of the rolling window analysis
+tend1=32;  %time point for the end of the rolling window analysis

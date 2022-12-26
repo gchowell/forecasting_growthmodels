@@ -239,6 +239,7 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
     T.Properties.VariableNames(1:5) = {'time','data','median','LB','UB'};
     writetable(T,strcat('./output/Fit-i-',num2str(i),'-',caddisease,'-',datatype,'.csv'))
 
+    
 end
 
 % <==================================================================================================>
@@ -248,7 +249,10 @@ end
 figure
 
 subplot(1,3,1)
-plot(tstart1:1:tend1-windowsize1+1,param_rs,'ko-')
+plot(tstart1:1:tend1-windowsize1+1,param_rs(:,1),'ro-')
+hold on
+plot(tstart1:1:tend1-windowsize1+1,param_rs(:,2),'b--')
+plot(tstart1:1:tend1-windowsize1+1,param_rs(:,3),'b--')
 
 ylabel('r')
 set(gca,'FontSize',24)
@@ -256,14 +260,22 @@ set(gcf,'color','white')
 xlabel('Time')
 
 subplot(1,3,2)
-plot(tstart1:1:tend1-windowsize1+1,param_ps,'ko-')
+plot(tstart1:1:tend1-windowsize1+1,param_ps(:,1),'ro-')
+hold on
+plot(tstart1:1:tend1-windowsize1+1,param_ps(:,2),'b--')
+plot(tstart1:1:tend1-windowsize1+1,param_ps(:,3),'b--')
+
 ylabel('p')
 set(gca,'FontSize',24)
 set(gcf,'color','white')
 xlabel('Time')
 
 subplot(1,3,3)
-plot(tstart1:1:tend1-windowsize1+1,param_Ks,'ko-')
+plot(tstart1:1:tend1-windowsize1+1,param_Ks(:,1),'ro-')
+hold on
+plot(tstart1:1:tend1-windowsize1+1,param_Ks(:,2),'b--')
+plot(tstart1:1:tend1-windowsize1+1,param_Ks(:,3),'b--')
+
 ylabel('K')
 set(gca,'FontSize',24)
 set(gcf,'color','white')
@@ -278,5 +290,4 @@ performance=[(tstart1:1:tend1-windowsize1+1)' param_rs(:,1:end) param_ps(:,1:end
 T = array2table(performance);
 T.Properties.VariableNames(1:10) = {'time','r mean','r LB','r UB','p mean','p LB','p UB','K0 mean','K0 LB','K0 UB'};
 writetable(T,strcat('./output/parameters-rollingwindow-',caddisease,'-',datatype,'.csv'))
-
 
