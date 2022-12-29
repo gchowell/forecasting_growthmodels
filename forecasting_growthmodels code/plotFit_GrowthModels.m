@@ -119,7 +119,7 @@ tend1=tend1_INP;  %time end of the rolling window analysis
 
 for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
 
-    load(strcat('./output/Forecast-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(i),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-0.mat'))
+    load(strcat('./output/Forecast-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(i),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-0.mat'))
 
     % <======================================================================================>
     % <======================= Plot parameter distributions and model fit and forecast ========================>
@@ -248,33 +248,55 @@ end
 
 figure
 
-subplot(1,3,1)
+subplot(2,3,[1 2 3])
+
+plot(data(:,1),data(:,2),'ro-')
+xlabel('Time')
+ylabel('Cases')
+set(gca,'FontSize',24)
+set(gcf,'color','white')
+
+
+subplot(2,3,4)
+
 plot(tstart1:1:tend1-windowsize1+1,param_rs(:,1),'ro-')
 hold on
 plot(tstart1:1:tend1-windowsize1+1,param_rs(:,2),'b--')
 plot(tstart1:1:tend1-windowsize1+1,param_rs(:,3),'b--')
+
+line1=plot(tstart1:1:tend1-windowsize1+1,smooth(param_rs(:,1),5),'k--')
+set(line1,'LineWidth',3)
+
 
 ylabel('r')
 set(gca,'FontSize',24)
 set(gcf,'color','white')
 xlabel('Time')
 
-subplot(1,3,2)
+subplot(2,3,5)
 plot(tstart1:1:tend1-windowsize1+1,param_ps(:,1),'ro-')
 hold on
 plot(tstart1:1:tend1-windowsize1+1,param_ps(:,2),'b--')
 plot(tstart1:1:tend1-windowsize1+1,param_ps(:,3),'b--')
+
+line1=plot(tstart1:1:tend1-windowsize1+1,smooth(param_ps(:,1),5),'k--')
+set(line1,'LineWidth',3)
+
 
 ylabel('p')
 set(gca,'FontSize',24)
 set(gcf,'color','white')
 xlabel('Time')
 
-subplot(1,3,3)
+subplot(2,3,6)
 plot(tstart1:1:tend1-windowsize1+1,param_Ks(:,1),'ro-')
 hold on
 plot(tstart1:1:tend1-windowsize1+1,param_Ks(:,2),'b--')
 plot(tstart1:1:tend1-windowsize1+1,param_Ks(:,3),'b--')
+
+line1=plot(tstart1:1:tend1-windowsize1+1,smooth(param_Ks(:,1),5),'k--')
+set(line1,'LineWidth',3)
+
 
 ylabel('K')
 set(gca,'FontSize',24)
