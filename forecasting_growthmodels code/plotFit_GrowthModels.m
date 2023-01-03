@@ -117,6 +117,23 @@ tend1=tend1_INP;  %time end of the rolling window analysis
 % <================================ Load short-term forecast results ==================================>
 % <=========================================================================================>
 
+factors=factor(length(tstart1:1:tend1-windowsize1+1));
+
+if length(factors)==1
+    rows=factors;
+    cols=1;
+
+elseif length(factors)==3
+    rows=factors(1)*factors(2);
+    cols=factors(3);
+else
+    rows=factors(1);
+    cols=factors(2);
+end
+
+
+cc1=1;
+
 for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
 
     load(strcat('./output/Forecast-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(i),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-0.mat'))
@@ -124,6 +141,8 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
     % <======================================================================================>
     % <======================= Plot parameter distributions and model fit and forecast ========================>
     % <======================================================================================>
+
+    if printscreen1
 
     figure(101+i)
     subplot(2,3,1)
@@ -231,6 +250,8 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
     set(gcf,'color','white')
 
     title(model_name1)
+    
+    end
 
 
     fitdata=[timevect1 data_all(1:length(timevect1)) median1 LB1 UB1];
@@ -239,8 +260,81 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
     T.Properties.VariableNames(1:5) = {'time','data','median','LB','UB'};
     writetable(T,strcat('./output/Fit-i-',num2str(i),'-',caddisease,'-',datatype,'.csv'))
 
-    
+
+    if printscreen1
+
+    figure(400)
+
+    subplot(rows,cols,cc1)
+
+    plot(timevect2,forecast_model12,'c')
+    hold on
+
+    % plot 95% PI
+
+    LB1=quantile(forecast_model12',0.025)';
+    LB1=(LB1>=0).*LB1;
+
+    UB1=quantile(forecast_model12',0.975)';
+    UB1=(UB1>=0).*UB1;
+
+    median1=median(forecast_model12,2);
+
+    line1=plot(timevect2,median1,'r-')
+    set(line1,'LineWidth',2)
+
+    hold on
+    line1=plot(timevect2,LB1,'r--')
+    set(line1,'LineWidth',2)
+
+    line1=plot(timevect2,UB1,'r--')
+    set(line1,'LineWidth',2)
+
+    % plot model fit
+
+    color1=gray(8);
+    line1=plot(timevect1,fit_model1,'color',color1(6,:))
+    set(line1,'LineWidth',1)
+
+    % plot the data
+
+    line1=plot(timevect_all,data_all,'bo')
+    set(line1,'LineWidth',2)
+
+    line2=[timevect1(end) 0;timevect1(end) max(quantile(forecast_model12',0.975))*1.5];
+
+    if forecastingperiod>0
+        line1=plot(line2(:,1),line2(:,2),'k--')
+        set(line1,'LineWidth',2)
+    end
+
+    axis([timevect1(1) timevect2(end) 0 max(quantile(forecast_model12',0.975))*1.5])
+
+    %xlabel('Time (days)')
+    %ylabel(strcat(caddisease,{' '},datatype))
+
+    set(gca,'FontSize',16)
+    set(gcf,'color','white')
+    end
+
+
+    cc1=cc1+1;
+
 end
+
+if printscreen1
+
+figure(400)
+for c=1:cols
+    subplot(rows,cols,(rows-1)*cols+c)
+    xlabel('Time (days)')
+end
+
+
+ subplot(rows,cols,1)
+ ylabel(strcat(caddisease,{' '},datatype))
+end
+
 
 % <==================================================================================================>
 % <====================== Plot temporal variation of parameters from rolling window analysis ============================>

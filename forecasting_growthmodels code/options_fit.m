@@ -68,9 +68,9 @@ model_name1='GLM';  % A string provided by the user for the name of the model
 % <=============================== other parameters=======================================>
 % <==================================================================================>
 
-fixI0=0; % 0=Estimate the initial number of cases; 1 = Fix the initial number of cases according to the first data point in the time series
+fixI0=1; % 0=Estimate the initial number of cases; 1 = Fix the initial number of cases according to the first data point in the time series
 
-printscreen1=1;  % flag (1/0) to indicate whether we want to print plots with the results
+printscreen1=0;  % flag (1/0) to indicate whether we want to print plots with the results
 
 % <==================================================================================>
 % <========================== Parameters of the rolling window analysis =========================>
