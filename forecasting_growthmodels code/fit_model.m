@@ -1,3 +1,7 @@
+% <============================================================================>
+% < Author: Gerardo Chowell  ==================================================>
+% <============================================================================>
+
 function [P residual fitcurve forecastcurve timevect2,initialguess,fval]=fit_model(data1,params0,fixI0,numstartpoints,DT,flagX,forecastingperiod)
 
 global flag1 method1 timevect ydata

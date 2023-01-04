@@ -1,3 +1,7 @@
+% <============================================================================>
+% < Author: Gerardo Chowell  ==================================================>
+% <============================================================================>
+
 % Fitting model to epidemic data with quantified uncertainty
 
 clear
@@ -365,7 +369,7 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
 
         T = array2table(forecastdata);
         T.Properties.VariableNames(1:5) = {'time','data','median','LB','UB'};
-        writetable(T,strcat('./output/Forecast-tstart-',num2str(tstart1),'-',caddisease,'-',datatype,'.csv'))
+        writetable(T,strcat('./output/Forecast-tstart-',num2str(i),'-',caddisease,'-',datatype,'.csv'))
 
     else
 
@@ -377,7 +381,7 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
 
         T = array2table(forecastdata);
         T.Properties.VariableNames(1:5) = {'time','data','median','LB','UB'};
-        writetable(T,strcat('./output/Forecast-tstart-',num2str(tstart1),'-',caddisease,'-',datatype,'.csv'))
+        writetable(T,strcat('./output/Forecast-tstart-',num2str(i),'-',caddisease,'-',datatype,'.csv'))
 
     end
 
@@ -452,7 +456,7 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
 
         T = array2table(performance);
         T.Properties.VariableNames(1:5) = {'Horizon','MAE','MSE','Coverage 95%PI','WIS'};
-        writetable(T,strcat('./output/performance-forecasting-horizon-',caddisease,'-',datatype,'.csv'))
+        writetable(T,strcat('./output/performance-forecasting-tstart-',num2str(i),'-horizon-',caddisease,'-',datatype,'.csv'))
 
         % <==================================================================================================>
         % <================================ Store performance metrics ==============================================>

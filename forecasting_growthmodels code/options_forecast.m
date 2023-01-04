@@ -1,3 +1,6 @@
+% <============================================================================>
+% < Author: Gerardo Chowell  ==================================================>
+% <============================================================================>
 
 function [cadfilename1,caddisease,datatype,DT, dist1, numstartpoints,M,flag1,model_name1,fixI0,getperformance,forecastingperiod, printscreen1,windowsize1,tstart1,tend1]=options_forecast
 

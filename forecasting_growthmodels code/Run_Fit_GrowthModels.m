@@ -1,4 +1,8 @@
-%% Fitting and forecasting model to epidemic data with quantified uncertainty
+% <============================================================================>
+% < Author: Gerardo Chowell  ==================================================>
+% <============================================================================>
+
+% Fitting and forecasting model to epidemic data with quantified uncertainty
 
 clear
 clear global
