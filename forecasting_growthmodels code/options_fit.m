@@ -4,9 +4,6 @@
 
 function [cadfilename1,caddisease,datatype, DT, dist1, numstartpoints,M,flag1,model_name1,fixI0,printscreen1,windowsize1,tstart1,tend1]=options_fit
 
-% Parameters for FittingModelToData.m function that fits growth models to
-% time series data with quantified uncertainty
-
 % <============================================================================>
 % <=================== Declare global variables =======================================>
 % <============================================================================>
@@ -79,7 +76,7 @@ printscreen1=0;  % flag (1/0) to indicate whether we want to print plots with th
 % <========================== Parameters of the rolling window analysis =========================>
 % <==================================================================================>
 
-windowsize1=8;  %moving window size
+windowsize1=8;  % moving window size
 
 tstart1=1; % time point for the start of rolling window analysis
 
