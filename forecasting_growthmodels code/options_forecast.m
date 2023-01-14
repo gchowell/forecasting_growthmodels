@@ -88,5 +88,5 @@ printscreen1=1;  % flag (1/0) variable to indicate whether we want to print plot
 
 windowsize1=8;  % moving window size
 tstart1=1; % time point for the start of rolling window analysis
-tend1=32-forecastingperiod;  %time point for the end of the rolling window analysis
+tend1=10;  %time point for the end of the rolling window analysis
 

@@ -157,7 +157,7 @@ quantilesfs2=[];
 % <=========================================================================================>
 
 
-factors=factor(length(tstart1:1:tend1-windowsize1+1));
+factors=factor(length(tstart1:1:tend1));
 
 if length(factors)==1
     rows=factors;
@@ -174,7 +174,7 @@ end
 
 cc1=1;
 
-for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
+for i=tstart1:1:tend1  %rolling window analysis
 
     load(strcat('./output/Forecast-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(i),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-',num2str(forecastingperiod),'.mat'))
 
@@ -524,12 +524,12 @@ set(gcf,'color','white')
 
 subplot(2,3,4)
 
-plot(tstart1:1:tend1-windowsize1+1,param_rs(:,1),'ro-')
+plot(tstart1:1:tend1,param_rs(:,1),'ro-')
 hold on
-plot(tstart1:1:tend1-windowsize1+1,param_rs(:,2),'b--')
-plot(tstart1:1:tend1-windowsize1+1,param_rs(:,3),'b--')
+plot(tstart1:1:tend1,param_rs(:,2),'b--')
+plot(tstart1:1:tend1,param_rs(:,3),'b--')
 
-line1=plot(tstart1:1:tend1-windowsize1+1,smooth(param_rs(:,1),5),'k--')
+line1=plot(tstart1:1:tend1,smooth(param_rs(:,1),5),'k--')
 set(line1,'LineWidth',3)
 
 
@@ -539,12 +539,12 @@ set(gcf,'color','white')
 xlabel('Time')
 
 subplot(2,3,5)
-plot(tstart1:1:tend1-windowsize1+1,param_ps(:,1),'ro-')
+plot(tstart1:1:tend1,param_ps(:,1),'ro-')
 hold on
-plot(tstart1:1:tend1-windowsize1+1,param_ps(:,2),'b--')
-plot(tstart1:1:tend1-windowsize1+1,param_ps(:,3),'b--')
+plot(tstart1:1:tend1,param_ps(:,2),'b--')
+plot(tstart1:1:tend1,param_ps(:,3),'b--')
 
-line1=plot(tstart1:1:tend1-windowsize1+1,smooth(param_ps(:,1),5),'k--')
+line1=plot(tstart1:1:tend1,smooth(param_ps(:,1),5),'k--')
 set(line1,'LineWidth',3)
 
 
@@ -554,12 +554,12 @@ set(gcf,'color','white')
 xlabel('Time')
 
 subplot(2,3,6)
-plot(tstart1:1:tend1-windowsize1+1,param_Ks(:,1),'ro-')
+plot(tstart1:1:tend1,param_Ks(:,1),'ro-')
 hold on
-plot(tstart1:1:tend1-windowsize1+1,param_Ks(:,2),'b--')
-plot(tstart1:1:tend1-windowsize1+1,param_Ks(:,3),'b--')
+plot(tstart1:1:tend1,param_Ks(:,2),'b--')
+plot(tstart1:1:tend1,param_Ks(:,3),'b--')
 
-line1=plot(tstart1:1:tend1-windowsize1+1,smooth(param_Ks(:,1),5),'k--')
+line1=plot(tstart1:1:tend1,smooth(param_Ks(:,1),5),'k--')
 set(line1,'LineWidth',3)
 
 

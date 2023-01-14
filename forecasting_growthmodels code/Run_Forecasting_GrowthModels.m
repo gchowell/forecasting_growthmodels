@@ -132,8 +132,14 @@ WISFSS=[];
 quantilescs=[];
 quantilesfs=[];
 
+if length(data(:,1)) < tend1+windowsize1
 
-for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
+    tend1= length(data(:,1))-windowsize1;
+    'adjusting tend1'
+
+end
+
+for i=tstart1:1:tend1  %rolling window analysis
 
     close all
 
@@ -369,6 +375,10 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
 
     % Plot results
 
+    UB1=quantile(forecast_model12',0.025)';
+    LB1=quantile(forecast_model12',0.975)';
+    median1=median(forecast_model12,2);
+
     if printscreen1
 
 
@@ -437,9 +447,6 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
 
         % plot 95% PI
 
-        UB1=quantile(forecast_model12',0.025)';
-        LB1=quantile(forecast_model12',0.975)';
-        median1=median(forecast_model12,2);
 
         line1=plot(timevect2,median1,'r-')
         set(line1,'LineWidth',2)
