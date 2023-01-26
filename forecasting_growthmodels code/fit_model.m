@@ -60,11 +60,11 @@ if fixI0==1
 
         case 0   %GGM
             LB=[0  0 1 20 I0 LBe];
-            UB=[2000  1 1 20 I0 UBe];
+            UB=[1000  1 1 20 I0 UBe];
 
         case 1 % GLM
             LB=[0  0 1 20 I0 LBe];
-            UB=[2000  1 1 Kmax I0 UBe];
+            UB=[1000  1 1 Kmax I0 UBe];
 
         case 2 %GRM
             LB=[0  0 0 20 I0 LBe];
@@ -170,7 +170,6 @@ problem = createOptimProblem('fmincon','objective',f,'x0',z,'lb',LB,'ub',UB,'opt
 %ms = MultiStart('Display','final');
 ms = MultiStart('Display','off');
 
-
 %pts = z;
 tpoints = CustomStartPointSet(z);
 
@@ -198,7 +197,6 @@ while flagg<0
 
     %ms = MultiStart(ms,'StartPointsToRun','bounds')
     %[xmin,fmin,flag,outpt,allmins] = run(ms,problem,allpts);
-
 
     [P,fval,flagg,outpt,allmins] = run(ms,problem,allpts);
 

@@ -4,7 +4,6 @@
 
 function dx=modifiedLogisticGrowth(t,x,r,p,a,K,flag1)
 
-
 dx=zeros(1,1);
 
 if flag1==0 % GGM
@@ -16,11 +15,9 @@ elseif flag1==1 % GLM
     dx(1,1)=r*(x(1,1).^p).*(1-(x(1,1)/K));
     %dx(2,1)=(x(1,1)>K*(1-0.99)).*(r*(x(2,1).^p).*(1-(x(2,1)/K)));
     
-    
 elseif flag1==2 %GRM
     
     dx(1,1)=r*(x(1,1).^p)*(1-(x(1,1)/K).^a);
-    
     
 elseif flag1==3 % Logistic
     

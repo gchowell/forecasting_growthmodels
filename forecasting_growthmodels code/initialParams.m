@@ -6,7 +6,7 @@ function params0=initialParams(f_ensembledata,flag1,fixI0)
 switch flag1
 
     case 0
-        params0=[0.1 0.9 1 sum(f_ensembledata) 1 1 1];
+        params0=[1 0.9 1 sum(f_ensembledata) 1 1 1];
 
     case 1
         params0=[0.1 0.9 1 sum(f_ensembledata) 1 1 1];

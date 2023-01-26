@@ -1,11 +1,11 @@
+function Run_Fit_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass,forecastingperiod_pass)
+
 % <============================================================================>
 % < Author: Gerardo Chowell  ==================================================>
 % <============================================================================>
 
 % Fitting and forecasting model to epidemic data with quantified uncertainty
 
-clear
-clear global
 close all
 
 % <============================================================================>
@@ -19,7 +19,7 @@ global method1 % Parameter estimation method
 % <============================================================================>
 
 [cadfilename1_INP,caddisease_INP,datatype_INP, DT_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP,getperformance_INP,forecastingperiod_INP, printscreen1_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_forecast;
-
+   
 % <============================================================================>
 % <================================ Datasets properties ==============================>
 % <============================================================================>
@@ -60,7 +60,6 @@ M=M_INP; % number of bootstrap realizations to characterize parameter uncertaint
 % <============================== Growth model =====================================>
 % <==============================================================================>
 
-
 GGM=0;  % 0 = GGM
 GLM=1;  % 1 = GLM
 GRM=2;  % 2 = GRM
@@ -91,7 +90,14 @@ data=load(strcat('./input/',cadfilename1,'.txt'));
 
 getperformance=getperformance_INP; % flag or indicator variable (1/0) to calculate forecasting performance or not
 
-forecastingperiod=forecastingperiod_INP; %forecast horizon (number of data points ahead)
+if exist('forecastingperiod_pass','var')==1 & isempty(forecastingperiod_pass)==0
+
+  forecastingperiod=forecastingperiod_pass; %forecast horizon (number of data points ahead)
+
+else
+    forecastingperiod=forecastingperiod_INP;
+
+end
 
 printscreen1=printscreen1_INP;  % print plots with the results
 
@@ -99,16 +105,37 @@ printscreen1=printscreen1_INP;  % print plots with the results
 % <========================== Parameters of the rolling window analysis =========================>
 % <==================================================================================>
 
-windowsize1=windowsize1_INP;  %moving window size
-tstart1=tstart1_INP; % time of start of rolling window analysis
-tend1=tend1_INP;  %time end of the rolling window analysis
-%tend1=length(data(:,1));
+if exist('tstart1_pass','var')==1 & isempty(tstart1_pass)==0
+
+   tstart1=tstart1_pass;
+
+else
+    tstart1=tstart1_INP;
+
+end
+
+if exist('tend1_pass','var')==1 & isempty(tend1_pass)==0
+
+    tend1=tend1_pass;
+else
+    tend1=tend1_INP;
+
+end
+
+if exist('windowsize1_pass','var')==1 & isempty(windowsize1_pass)==0
+
+    windowsize1=windowsize1_pass;
+else
+    windowsize1=windowsize1_INP;
+end
+
 
 % <==================================================================================>
 % ============================ Rolling window analysis=====================================>
 % <==================================================================================>
 
 param_rs=[];
+param_as=[];
 param_ps=[];
 param_Ks=[];
 param_I0s=[];
@@ -141,7 +168,7 @@ end
 
 for i=tstart1:1:tend1  %rolling window analysis
 
-    close all
+    figure(100+i)
 
     t_window=i:1:i+windowsize1-1;
 
@@ -355,6 +382,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
 
     param_rs=[param_rs; param_r];
+    param_as=[param_as; param_a];
     param_ps=[param_ps; param_p];
     param_Ks=[param_Ks; param_K];
     param_I0s=[param_I0s; param_I0];
@@ -386,8 +414,8 @@ for i=tstart1:1:tend1  %rolling window analysis
     % <======================= Plot empirical distributions of the parameters ========================>
     % <========================================================================================>
     
-        figure(101)
-        subplot(2,3,1)
+        figure(100+i)
+        subplot(2,4,1)
         hist(Phatss_model1(:,1))
         hold on
 
@@ -403,7 +431,7 @@ for i=tstart1:1:tend1  %rolling window analysis
         set(gca,'FontSize', 24);
         set(gcf,'color','white')
 
-        subplot(2,3,2)
+        subplot(2,4,2)
         hist(Phatss_model1(:,2))
         hold on
 
@@ -419,7 +447,23 @@ for i=tstart1:1:tend1  %rolling window analysis
         set(gca,'FontSize', 24);
         set(gcf,'color','white')
 
-        subplot(2,3,3)
+        subplot(2,4,3)
+
+        hist(Phatss_model1(:,3))
+        hold on
+
+        line2=[param_a(1,2) 10;param_a(1,3) 10];
+        line1=plot(line2(:,1),line2(:,2),'r--')
+        set(line1,'LineWidth',2)
+
+        xlabel('a')
+        ylabel('Frequency')
+        title(cad3)
+
+        set(gca,'FontSize', 24);
+        set(gcf,'color','white')
+
+        subplot(2,4,4)
         hist(Phatss_model1(:,4))
         hold on
 
@@ -440,7 +484,7 @@ for i=tstart1:1:tend1  %rolling window analysis
         % <================================ Plot model fit and forecast ======================================>
         % <========================================================================================>
 
-        subplot(2,3,[4 5 6])
+        subplot(2,4,[5 6 7 8])
 
         plot(timevect2,forecast_model12,'c')
         hold on
@@ -492,185 +536,7 @@ for i=tstart1:1:tend1  %rolling window analysis
     % <================================ Save short-term forecast results ==================================>
     % <=========================================================================================>
 
-    save(strcat('./output/Forecast-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(i),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-',num2str(forecastingperiod),'.mat'),'-mat')
+    save(strcat('./output/Forecast-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(i),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-',num2str(forecastingperiod),'.mat'),'-mat')
 
 
 end % rolling window analysis
-
-
-%%
-
-close all
-
-% <======================================================================================>
-% <======================= Plot parameter distributions and model fit and forecast ========================>
-% <======================================================================================>
-
-
-if 1
-
-    % <========================================================================================>
-    % <======================= Plot empirical distributions of the parameters ========================>
-    % <========================================================================================>
-
-    figure(101)
-    subplot(2,3,1)
-    hist(Phatss_model1(:,1))
-    hold on
-
-    line2=[param_r(1,2) 10;param_r(1,3) 10];
-    line1=plot(line2(:,1),line2(:,2),'r--')
-    set(line1,'LineWidth',2)
-
-    xlabel('r')
-    ylabel('Frequency')
-
-    title(cad1)
-
-    set(gca,'FontSize', 24);
-    set(gcf,'color','white')
-
-    subplot(2,3,2)
-    hist(Phatss_model1(:,2))
-    hold on
-
-    line2=[param_p(1,2) 10;param_p(1,3) 10];
-    line1=plot(line2(:,1),line2(:,2),'r--')
-    set(line1,'LineWidth',2)
-
-    xlabel('p')
-    ylabel('Frequency')
-
-    title(cad2)
-
-    set(gca,'FontSize', 24);
-    set(gcf,'color','white')
-
-    subplot(2,3,3)
-    hist(Phatss_model1(:,4))
-    hold on
-
-    line2=[param_K(1,2) 10;param_K(1,3) 10];
-    line1=plot(line2(:,1),line2(:,2),'r--')
-    set(line1,'LineWidth',2)
-
-    xlabel('K')
-    ylabel('Frequency')
-
-    title(cad4)
-
-    set(gca,'FontSize', 24);
-    set(gcf,'color','white')
-
-
-    % <========================================================================================>
-    % <================================ Plot model fit and forecast ======================================>
-    % <========================================================================================>
-
-    subplot(2,3,[4 5 6])
-
-    plot(timevect2,forecast_model12,'c')
-    hold on
-
-    % plot 95% PI
-
-    UB1=quantile(forecast_model12',0.025)';
-    LB1=quantile(forecast_model12',0.975)';
-    median1=median(forecast_model12,2);
-
-    line1=plot(timevect2,median1,'r-')
-    set(line1,'LineWidth',2)
-
-    hold on
-    line1=plot(timevect2,LB1,'r--')
-    set(line1,'LineWidth',2)
-
-    line1=plot(timevect2,UB1,'r--')
-    set(line1,'LineWidth',2)
-
-    % plot mean model fit
-
-    color1=gray(8);
-    line1=plot(timevect1,fit_model1,'color',color1(6,:))
-    set(line1,'LineWidth',1)
-
-    % plot the data
-
-    line1=plot(timevect_all,data_all,'bo')
-    set(line1,'LineWidth',2)
-
-    line2=[timevect1(end) 0;timevect1(end) max(quantile(forecast_model12',0.975))*1.5];
-
-    if forecastingperiod>0
-        line1=plot(line2(:,1),line2(:,2),'k--')
-        set(line1,'LineWidth',2)
-    end
-
-    axis([timevect1(1) timevect2(end) 0 max(quantile(forecast_model12',0.975))*1.5])
-
-    xlabel('Time (days)')
-    ylabel(strcat(caddisease,{' '},datatype))
-
-    set(gca,'FontSize',24)
-    set(gcf,'color','white')
-
-    title(model_name1)
-end
-
-
-
-
-%% Plots forecasting performance over horizons for the las model run
-
-
-figure
-
-subplot(2,2,1)
-
-line1=plot(MAEFS_model1(:,1),MAEFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
-
-xlabel('Forecasting horizon (days)')
-ylabel('MAE')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
-
-subplot(2,2,2)
-
-line1=plot(MSEFS_model1(:,1),MSEFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
-
-xlabel('Forecasting horizon (days)')
-ylabel('MSE')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
-
-subplot(2,2,3)
-
-line1=plot(PIFS_model1(:,1),PIFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
-
-xlabel('Forecasting horizon (days)')
-ylabel('Coverage rate of the 95% PI')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
-
-
-subplot(2,2,4)
-
-line1=plot(WISFS_model1(:,1),WISFS_model1(:,2),'k')
-set(line1,'LineWidth',4)
-hold on
-
-xlabel('Forecasting horizon (days)')
-ylabel('WIS')
-hold on
-set(gca,'FontSize', 24);
-set(gcf,'color','white')
-

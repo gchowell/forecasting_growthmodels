@@ -1,11 +1,11 @@
+function Run_Fit_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass)
+
 % <============================================================================>
 % < Author: Gerardo Chowell  ==================================================>
 % <============================================================================>
 
 % Fitting and forecasting model to epidemic data with quantified uncertainty
 
-clear
-clear global
 close all
 
 % <============================================================================>
@@ -37,7 +37,7 @@ datatype=datatype_INP;
 % <=========================== Parameter estimation ============================>
 % <=============================================================================>
 
-method1=0; % Type of estimation method: 0 = LSQ
+%method1=0; % Type of estimation method: 0 = LSQ
 
 d=1;
 
@@ -99,16 +99,38 @@ printscreen1=printscreen1_INP;  % print plots with the results
 % <========================== Parameters of the rolling window analysis =========================>
 % <==================================================================================>
 
-windowsize1=windowsize1_INP;  %moving window size
-tstart1=tstart1_INP; % time of start of rolling window analysis
-tend1=tend1_INP;  %time end of the rolling window analysis
-%tend1=length(data(:,1));
+if exist('tstart1_pass','var')==1 & isempty(tstart1_pass)==0
+
+   tstart1=tstart1_pass;
+
+else
+    tstart1=tstart1_INP;
+
+end
+
+if exist('tend1_pass','var')==1 & isempty(tend1_pass)==0
+
+    tend1=tend1_pass;
+else
+    tend1=tend1_INP;
+
+end
+
+if exist('windowsize1_pass','var')==1 & isempty(windowsize1_pass)==0
+
+    windowsize1=windowsize1_pass;
+else
+    windowsize1=windowsize1_INP;
+end
+
+
 
 % <==================================================================================>
 % ============================ Rolling window analysis=====================================>
 % <==================================================================================>
 
 param_rs=[];
+param_as=[];
 param_ps=[];
 param_Ks=[];
 param_I0s=[];
@@ -132,10 +154,16 @@ WISFSS=[];
 quantilescs=[];
 quantilesfs=[];
 
+if length(data(:,1)) < tend1+windowsize1
 
-for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
+    tend1= length(data(:,1))-windowsize1;
+    'adjusting tend1'
 
-    close all
+end
+
+for i=tstart1:1:tend1  %rolling window analysis
+
+    figure(100+i)
 
     t_window=i:1:i+windowsize1-1;
 
@@ -161,13 +189,16 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
 
     [P_model1d,residual_model1, fitcurve_model1d, forecastcurve_model1, timevect2, initialguess,fval]=fit_model(data1,params0,1,numstartpoints,DT,flag1,0);
 
-
-    %plot(timevect1,data1(:,2),'ko')
-    %hold on
-    %plot(timevect1, fitcurve_model1d,'r--')
-
-    %xlabel('Time')
-    %ylabel('Cases')
+%     plot(timevect1,data1(:,2),'ko')
+%     hold on
+%     plot(timevect1, fitcurve_model1d,'r--')
+% 
+%     fitcurve_model1d
+% 
+%     xlabel('Time')
+%     ylabel('Cases')
+% 
+%     pause
 
     [AICc,part1,part2,numparams]=getAICc(method1,flag1,fixI0,fval,length(data1(:,1)))
 
@@ -242,6 +273,7 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
 
         f_model1_sim=AddErrorStructure(cumsum(fitcurve_model1d),1,dist1,factor1,d);
 
+        
         f_model1_sims=[f_model1_sims f_model1_sim];
 
 
@@ -252,9 +284,10 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
         params0=P_model1d;
 
         [P_model1,residual_model1 fitcurve_model1 forecastcurve_model1 timevect2]=fit_model(data1,params0,fixI0,2,DT,flag1,forecastingperiod);
-
+  
         fit_model1=[fit_model1 fitcurve_model1];
 
+      
         forecast_model1=[forecast_model1 forecastcurve_model1];
 
         if method1==0 & dist1==0
@@ -340,6 +373,7 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
 
 
     param_rs=[param_rs; param_r];
+    param_as=[param_as; param_a];
     param_ps=[param_ps; param_p];
     param_Ks=[param_Ks; param_K];
     param_I0s=[param_I0s; param_I0];
@@ -360,15 +394,20 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
 
     % Plot results
 
+
+    UB1=quantile(forecast_model12',0.025)';
+    LB1=quantile(forecast_model12',0.975)';
+    median1=median(forecast_model12,2);
+
     if printscreen1
 
 
-    % <========================================================================================>
-    % <======================= Plot empirical distributions of the parameters ========================>
-    % <========================================================================================>
+        % <========================================================================================>
+        % <======================= Plot empirical distributions of the parameters ========================>
+        % <========================================================================================>
     
-        figure(101)
-        subplot(2,3,1)
+        figure(100+i)
+        subplot(2,4,1)
         hist(Phatss_model1(:,1))
         hold on
 
@@ -384,7 +423,7 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
         set(gca,'FontSize', 24);
         set(gcf,'color','white')
 
-        subplot(2,3,2)
+        subplot(2,4,2)
         hist(Phatss_model1(:,2))
         hold on
 
@@ -400,7 +439,23 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
         set(gca,'FontSize', 24);
         set(gcf,'color','white')
 
-        subplot(2,3,3)
+        subplot(2,4,3)
+
+        hist(Phatss_model1(:,3))
+        hold on
+
+        line2=[param_a(1,2) 10;param_a(1,3) 10];
+        line1=plot(line2(:,1),line2(:,2),'r--')
+        set(line1,'LineWidth',2)
+
+        xlabel('a')
+        ylabel('Frequency')
+        title(cad3)
+
+        set(gca,'FontSize', 24);
+        set(gcf,'color','white')
+
+        subplot(2,4,4)
         hist(Phatss_model1(:,4))
         hold on
 
@@ -421,16 +476,12 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
         % <================================ Plot model fit and forecast ======================================>
         % <========================================================================================>
 
-        subplot(2,3,[4 5 6])
+        subplot(2,4,[5 6 7 8])
 
         plot(timevect2,forecast_model12,'c')
         hold on
 
         % plot 95% PI
-
-        UB1=quantile(forecast_model12',0.025)';
-        LB1=quantile(forecast_model12',0.975)';
-        median1=median(forecast_model12,2);
 
         line1=plot(timevect2,median1,'r-')
         set(line1,'LineWidth',2)
@@ -476,128 +527,9 @@ for i=tstart1:1:tend1-windowsize1+1  %rolling window analysis
     % <================================ Save results ===========================================>
     % <=========================================================================================>
 
-    save(strcat('./output/Forecast-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(i),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-',num2str(forecastingperiod),'.mat'),'-mat')
+    save(strcat('./output/Forecast-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(i),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-',num2str(forecastingperiod),'.mat'),'-mat')
 
 
 end % rolling window analysis
 
-
-%%
-
-close all
-
-% <==========================================================================================>
-% <======================= Plot parameter distributions and model fit ========================>
-% <===========================================================================================>
-
-
-if 1
-
-    % <========================================================================================>
-    % <======================= Plot empirical distributions of the parameters ========================>
-    % <========================================================================================>
-
-    figure(101)
-    subplot(2,3,1)
-    hist(Phatss_model1(:,1))
-    hold on
-
-    line2=[param_r(1,2) 10;param_r(1,3) 10];
-    line1=plot(line2(:,1),line2(:,2),'r--')
-    set(line1,'LineWidth',2)
-
-    xlabel('r')
-    ylabel('Frequency')
-
-    title(cad1)
-
-    set(gca,'FontSize', 24);
-    set(gcf,'color','white')
-
-    subplot(2,3,2)
-    hist(Phatss_model1(:,2))
-    hold on
-
-    line2=[param_p(1,2) 10;param_p(1,3) 10];
-    line1=plot(line2(:,1),line2(:,2),'r--')
-    set(line1,'LineWidth',2)
-
-    xlabel('p')
-    ylabel('Frequency')
-
-    title(cad2)
-
-    set(gca,'FontSize', 24);
-    set(gcf,'color','white')
-
-    subplot(2,3,3)
-    hist(Phatss_model1(:,4))
-    hold on
-
-    line2=[param_K(1,2) 10;param_K(1,3) 10];
-    line1=plot(line2(:,1),line2(:,2),'r--')
-    set(line1,'LineWidth',2)
-
-    xlabel('K')
-    ylabel('Frequency')
-
-    title(cad4)
-
-    set(gca,'FontSize', 24);
-    set(gcf,'color','white')
-
-
-    % <========================================================================================>
-    % <================================ Plot model fit ========================================>
-    % <========================================================================================>
-
-    subplot(2,3,[4 5 6])
-
-    plot(timevect2,forecast_model12,'c')
-    hold on
-
-    % plot 95% PI
-
-    UB1=quantile(forecast_model12',0.025)';
-    LB1=quantile(forecast_model12',0.975)';
-    median1=median(forecast_model12,2);
-
-    line1=plot(timevect2,median1,'r-')
-    set(line1,'LineWidth',2)
-
-    hold on
-    line1=plot(timevect2,LB1,'r--')
-    set(line1,'LineWidth',2)
-
-    line1=plot(timevect2,UB1,'r--')
-    set(line1,'LineWidth',2)
-
-    % plot mean model fit
-
-    color1=gray(8);
-    line1=plot(timevect1,fit_model1,'color',color1(6,:))
-    set(line1,'LineWidth',1)
-
-    % plot the data
-
-    line1=plot(timevect_all,data_all,'bo')
-    set(line1,'LineWidth',2)
-
-    line2=[timevect1(end) 0;timevect1(end) max(quantile(forecast_model12',0.975))*1.5];
-
-    if forecastingperiod>0
-        line1=plot(line2(:,1),line2(:,2),'k--')
-        set(line1,'LineWidth',2)
-    end
-
-    axis([timevect1(1) timevect2(end) 0 max(quantile(forecast_model12',0.975))*1.5])
-
-    xlabel('Time (days)')
-    ylabel(strcat(caddisease,{' '},datatype))
-
-    set(gca,'FontSize',24)
-    set(gcf,'color','white')
-
-    title(model_name1)
-end
 

@@ -46,7 +46,7 @@ dist1=0; % Define dist1 which is the type of error structure:
 %dist1=4; % VAR=mean+alpha*mean^2;
 %dist1=5; % VAR=mean+alpha*mean^d;
 
-numstartpoints=6; % Number of initial guesses for optimization procedure using MultiStart
+numstartpoints=10; % Number of initial guesses for optimization procedure using MultiStart
 
 M=100; % number of bootstrap realizations to characterize parameter uncertainty
 
@@ -80,4 +80,4 @@ windowsize1=8;  % moving window size
 
 tstart1=1; % time point for the start of rolling window analysis
 
-tend1=10;  %time point for the end of the rolling window analysis
+tend1=1;  %time point for the end of the rolling window analysis
