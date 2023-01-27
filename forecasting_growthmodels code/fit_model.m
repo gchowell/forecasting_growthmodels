@@ -30,6 +30,7 @@ z(5)=I0;
 z(6)=alpha;
 z(7)=d;
 
+
 switch method1
     case 0
         LBe=[0 0];
@@ -59,8 +60,8 @@ if fixI0==1
     switch flag1
 
         case 0   %GGM
-            LB=[0  0 1 20 I0 LBe];
-            UB=[1000  1 1 20 I0 UBe];
+            LB=[0.001  0.001 1 20 I0 LBe];
+            UB=[500  1 1 20 I0 UBe];
 
         case 1 % GLM
             LB=[0  0 1 20 I0 LBe];
@@ -88,7 +89,7 @@ else
     switch flag1
 
         case 0
-            LB=[0  0 1 20 1 LBe];
+            LB=[0.001 0.001 1 20 1 LBe];
             UB=[500  1 1 20 max(data1(:,2)) UBe];
 
         case 1
@@ -153,7 +154,6 @@ end
 
 %[P, fval, exitflag]=fmincon(@plotModifiedLogisticGrowthMethods1,z,A,b,Aeq,beq,LB,UB,nonlcon,options);
 
-
 %method1=1; %LSQ=0, MLE (Poisson)=1, Pearson chi-squared=2. MLE(neg binomial)=3
 
 ydata=data1(:,2);
@@ -174,7 +174,6 @@ ms = MultiStart('Display','off');
 tpoints = CustomStartPointSet(z);
 
 flagg=-1;
-
 
 while flagg<0
 
@@ -200,9 +199,12 @@ while flagg<0
 
     [P,fval,flagg,outpt,allmins] = run(ms,problem,allpts);
 
-
 end
 
+% ydata
+% initialguess
+% P
+% pause
 
 % P is the vector with the estimated parameters
 r_hat=P(1);

@@ -166,6 +166,8 @@ if length(data(:,1)) < tend1+windowsize1
 
 end
 
+AICcs=[];
+
 for i=tstart1:1:tend1  %rolling window analysis
 
     figure(100+i)
@@ -213,6 +215,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     [AICc,part1,part2,numparams]=getAICc(method1,flag1,fixI0,fval,length(data1(:,1)))
 
+   AICcs=[AICcs;[i AICc]];
 
     if (method1==0 & dist1==1) 
 
@@ -328,24 +331,24 @@ for i=tstart1:1:tend1  %rolling window analysis
         [WISC_model1,WISFS_model1]=computeWIS(data1,datalatest,forecast_model12,forecastingperiod)
 
         % store metrics for calibration
-        RMSECSS=[RMSECSS;[i RMSECS_model1(end,end)]];
-        MSECSS=[MSECSS;[i MSECS_model1(end,end)]];
-        MAECSS=[MAECSS;[i MAECS_model1(end,end)]];
-        PICSS=[PICSS;[i PICS_model1(end,end)]];
-        MISCSS=[MISCSS;[i MISCS_model1(end,end)]];
+        RMSECSS=[RMSECSS;[RMSECS_model1(end,end)]];
+        MSECSS=[MSECSS;[MSECS_model1(end,end)]];
+        MAECSS=[MAECSS;[MAECS_model1(end,end)]];
+        PICSS=[PICSS;[PICS_model1(end,end)]];
+        MISCSS=[MISCSS;[MISCS_model1(end,end)]];
 
-        WISCSS=[WISCSS;[i WISC_model1(end,end)]];
+        WISCSS=[WISCSS;[WISC_model1(end,end)]];
 
         % store metrics for short-term forecasts
         if forecastingperiod>0
 
-            RMSEFSS=[RMSEFSS;[i RMSEFS_model1(end,end)]];
-            MSEFSS=[MSEFSS;[i MSEFS_model1(end,end)]];
-            MAEFSS=[MAEFSS;[i MAEFS_model1(end,end)]];
-            PIFSS=[PIFSS;[i PIFS_model1(end,end)]];
-            MISFSS=[MISFSS;[i MISFS_model1(end,end)]];
+            RMSEFSS=[RMSEFSS;[RMSEFS_model1(end,end)]];
+            MSEFSS=[MSEFSS;[MSEFS_model1(end,end)]];
+            MAEFSS=[MAEFSS;[MAEFS_model1(end,end)]];
+            PIFSS=[PIFSS;[PIFS_model1(end,end)]];
+            MISFSS=[MISFSS;[MISFS_model1(end,end)]];
 
-            WISFSS=[WISFSS;[i WISFS_model1(end,end)]];
+            WISFSS=[WISFSS;[WISFS_model1(end,end)]];
 
         end
 
@@ -538,5 +541,25 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     save(strcat('./output/Forecast-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(i),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-',num2str(forecastingperiod),'.mat'),'-mat')
 
-
 end % rolling window analysis
+
+%save model parameters from tstart1 to tend1
+save(strcat('./output/parameters-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-',num2str(forecastingperiod),'.mat'), 'param_rs', 'param_as', 'param_ps', 'param_Ks', 'param_I0s', 'param_alphas', 'param_ds','-mat')
+
+%save calibration performance metrics from tstart1 to tend1 (AICc, MSE,
+%MAE, coverage 95% PI, MIS, WIS)
+save(strcat('./output/performanceCalibration-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-',num2str(forecastingperiod),'.mat'),'AICcs','RMSECSS', 'MSECSS', 'MAECSS', 'PICSS','MISCSS','WISCSS','-mat')
+
+%save quantiles of the model fits from tstart1 to tend1
+save(strcat('./output/QuantilesCalibration-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-',num2str(forecastingperiod),'.mat'),'quantilescs','-mat')
+
+if forecastingperiod>0
+
+    %save forecasting performance metrics from tstart1 to tend1 (AICc, MSE,
+    %MAE, coverage 95% PI, MIS, WIS)
+    save(strcat('./output/performanceForecasting-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-',num2str(forecastingperiod),'.mat'),'RMSEFSS', 'MSEFSS', 'MAEFSS', 'PIFSS','MISFSS','WISFSS','-mat')
+
+    %save quantiles of the model forecasts from tstart1 to tend1
+    save(strcat('./output/QuantilesForecastingPerformance-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-',num2str(forecastingperiod),'.mat'),'quantilesfs','-mat')
+
+end

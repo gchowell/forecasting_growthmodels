@@ -1,8 +1,6 @@
 
 function params0=initialParams(f_ensembledata,flag1,fixI0)
 
-
-
 switch flag1
 
     case 0

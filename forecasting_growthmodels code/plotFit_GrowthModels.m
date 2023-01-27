@@ -1,4 +1,3 @@
-
 function plotFit_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass)
 
 % <============================================================================>
@@ -303,7 +302,6 @@ for i=tstart1:1:tend1 %rolling window analysis
     T.Properties.VariableNames(1:5) = {'time','data','median','LB','UB'};
     writetable(T,strcat('./output/Fit-flag1-',num2str(flag1),'-i-',num2str(i),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 
-
     if printscreen1
 
         figure(400)
@@ -454,13 +452,26 @@ set(gca,'FontSize',24)
 set(gcf,'color','white')
 xlabel('Time')
 
+% <========================================================================================>
+% <========================================================================================>
+% <========================== Save file with calibration performance metrics ============================>
+% <========================================================================================>
+% <========================================================================================>
+
+performanceC=[(tstart1:1:tend1)' zeros(length(MAECSS(:,1)),1)+windowsize1 MAECSS(:,end)  MSECSS(:,end) PICSS(:,end) WISCSS(:,end)];
+
+T = array2table(performanceC);
+T.Properties.VariableNames(1:6) = {'time','calibration_period','MAE','MSE','Coverage 95%PI','WIS'};
+writetable(T,strcat('./output/performance-calibration-flag1-',num2str(flag1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+
+
 % <=============================================================================================>
 % <================= Save file with parameters from rolling window analysis ====================================>
 % <=============================================================================================>
 
-performance=[(tstart1:1:tend1)' param_rs(:,1:end) param_ps(:,1:end) param_Ks(:,1:end)];
+rollparams=[(tstart1:1:tend1)' param_rs(:,1:end) param_ps(:,1:end) param_Ks(:,1:end)];
 
-T = array2table(performance);
+T = array2table(rollparams);
 T.Properties.VariableNames(1:10) = {'time','r mean','r LB','r UB','p mean','p LB','p UB','K0 mean','K0 LB','K0 UB'};
-writetable(T,strcat('./output/parameters-rollingwindow-flag1-',num2str(flag1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+writetable(T,strcat('./output/parameters-rollingwindow-flag1-',num2str(flag1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 

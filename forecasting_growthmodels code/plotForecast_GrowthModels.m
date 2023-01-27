@@ -349,7 +349,7 @@ for i=tstart1:1:tend1  %rolling window analysis
  
     figure(400)
 
-    subplot(rows,cols,i)
+    subplot(rows,cols,cc1)
 
     plot(timevect2,forecast_model12,'c')
     hold on
@@ -400,6 +400,7 @@ for i=tstart1:1:tend1  %rolling window analysis
     set(gca,'FontSize',16)
     set(gcf,'color','white')
 
+   cc1=cc1+1;
    
     %
 
@@ -491,41 +492,30 @@ for i=tstart1:1:tend1  %rolling window analysis
         set(gca,'FontSize', 24);
         set(gcf,'color','white')
 
-        % <========================================================================================>
-        % <========================================================================================>
-        % <========================== Save file with forecasting performance metrics ============================>
-        % <========================================================================================>
-        % <========================================================================================>
-
-        performance=[MAEFS_model1(:,1:2)  MSEFS_model1(:,2) PIFS_model1(:,2) WISFS_model1(:,2)];
-
-        T = array2table(performance);
-        T.Properties.VariableNames(1:5) = {'Horizon','MAE','MSE','Coverage 95%PI','WIS'};
-        writetable(T,strcat('./output/performance-forecasting-flag1-',num2str(flag1),'-tstart-',num2str(i),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
-
+      
         % <==================================================================================================>
         % <================================ Store performance metrics ==============================================>
         % <==================================================================================================>
 
         % store metrics for calibration
-        RMSECSS2=[RMSECSS2;[i RMSECS_model1(end,end)]];
-        MSECSS2=[MSECSS2;[i MSECS_model1(end,end)]];
-        MAECSS2=[MAECSS2;[i MAECS_model1(end,end)]];
-        PICSS2=[PICSS2;[i PICS_model1(end,end)]];
-        MISCSS2=[MISCSS2;[i MISCS_model1(end,end)]];
+        RMSECSS2=[RMSECSS2;[RMSECS_model1(end,end)]];
+        MSECSS2=[MSECSS2;[MSECS_model1(end,end)]];
+        MAECSS2=[MAECSS2;[MAECS_model1(end,end)]];
+        PICSS2=[PICSS2;[PICS_model1(end,end)]];
+        MISCSS2=[MISCSS2;[MISCS_model1(end,end)]];
 
-        WISCSS2=[WISCSS2;[i WISC_model1(end,end)]];
+        WISCSS2=[WISCSS2;[WISC_model1(end,end)]];
 
         % store metrics for short-term forecasts
         if forecastingperiod>0
 
-            RMSEFSS2=[RMSEFSS2;[i RMSEFS_model1(end,end)]];
-            MSEFSS2=[MSEFSS2;[i MSEFS_model1(end,end)]];
-            MAEFSS2=[MAEFSS2;[i MAEFS_model1(end,end)]];
-            PIFSS2=[PIFSS2;[i PIFS_model1(end,end)]];
-            MISFSS2=[MISFSS2;[i MISFS_model1(end,end)]];
+            RMSEFSS2=[RMSEFSS2;[RMSEFS_model1(end,end)]];
+            MSEFSS2=[MSEFSS2;[MSEFS_model1(end,end)]];
+            MAEFSS2=[MAEFSS2;[MAEFS_model1(end,end)]];
+            PIFSS2=[PIFSS2;[PIFS_model1(end,end)]];
+            MISFSS2=[MISFSS2;[MISFS_model1(end,end)]];
 
-            WISFSS2=[WISFSS2;[i WISFS_model1(end,end)]];
+            WISFSS2=[WISFSS2;[WISFS_model1(end,end)]];
 
         end
 
@@ -569,12 +559,12 @@ set(gcf,'color','white')
 
 subplot(2,4,5)
 
-plot(tstart1:1:tend1,param_rs(:,1),'ro-')
+plot(tstart1:1:tend1,param_rs2(:,1),'ro-')
 hold on
-plot(tstart1:1:tend1,param_rs(:,2),'b--')
-plot(tstart1:1:tend1,param_rs(:,3),'b--')
+plot(tstart1:1:tend1,param_rs2(:,2),'b--')
+plot(tstart1:1:tend1,param_rs2(:,3),'b--')
 
-line1=plot(tstart1:1:tend1,smooth(param_rs(:,1),5),'k--')
+line1=plot(tstart1:1:tend1,smooth(param_rs2(:,1),5),'k--')
 set(line1,'LineWidth',3)
 
 
@@ -584,12 +574,12 @@ set(gcf,'color','white')
 xlabel('Time')
 
 subplot(2,4,6)
-plot(tstart1:1:tend1,param_as(:,1),'ro-')
+plot(tstart1:1:tend1,param_as2(:,1),'ro-')
 hold on
-plot(tstart1:1:tend1,param_as(:,2),'b--')
+plot(tstart1:1:tend1,param_as2(:,2),'b--')
 plot(tstart1:1:tend1,param_as(:,3),'b--')
 
-line1=plot(tstart1:1:tend1,smooth(param_as(:,1),5),'k--')
+line1=plot(tstart1:1:tend1,smooth(param_as2(:,1),5),'k--')
 set(line1,'LineWidth',3)
 
 ylabel('a')
@@ -598,12 +588,14 @@ set(gcf,'color','white')
 xlabel('Time')
 
 subplot(2,4,7)
-plot(tstart1:1:tend1,param_ps(:,1),'ro-')
+plot(tstart1:1:tend1,param_ps2(:,1),'ro-')
 hold on
-plot(tstart1:1:tend1,param_ps(:,2),'b--')
-plot(tstart1:1:tend1,param_ps(:,3),'b--')
+plot(tstart1:1:tend1,param_ps2(:,2),'b--')
+plot(tstart1:1:tend1,param_ps2(:,3),'b--')
 
-line1=plot(tstart1:1:tend1,smooth(param_ps(:,1),5),'k--')
+param_ps2
+
+line1=plot(tstart1:1:tend1,smooth(param_ps2(:,1),5),'k--')
 set(line1,'LineWidth',3)
 
 
@@ -613,17 +605,53 @@ set(gcf,'color','white')
 xlabel('Time')
 
 subplot(2,4,8)
-plot(tstart1:1:tend1,param_Ks(:,1),'ro-')
+plot(tstart1:1:tend1,param_Ks2(:,1),'ro-')
 hold on
-plot(tstart1:1:tend1,param_Ks(:,2),'b--')
-plot(tstart1:1:tend1,param_Ks(:,3),'b--')
+plot(tstart1:1:tend1,param_Ks2(:,2),'b--')
+plot(tstart1:1:tend1,param_Ks2(:,3),'b--')
 
-line1=plot(tstart1:1:tend1,smooth(param_Ks(:,1),5),'k--')
+line1=plot(tstart1:1:tend1,smooth(param_Ks2(:,1),5),'k--')
 set(line1,'LineWidth',3)
-
 
 ylabel('K')
 set(gca,'FontSize',24)
 set(gcf,'color','white')
 xlabel('Time')
 
+% <=============================================================================================>
+% <================= Save file with parameters from rolling window analysis ====================================>
+% <=============================================================================================>
+
+rollparams=[(tstart1:1:tend1)' param_rs2(:,1:end) param_ps2(:,1:end) param_Ks2(:,1:end)];
+
+T = array2table(rollparams);
+T.Properties.VariableNames(1:10) = {'time','r mean','r LB','r UB','p mean','p LB','p UB','K0 mean','K0 LB','K0 UB'};
+writetable(T,strcat('./output/parameters-rollingwindow-flag1-',num2str(flag1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+
+% <========================================================================================>
+% <========================================================================================>
+% <========================== Save file with calibration performance metrics ============================>
+% <========================================================================================>
+% <========================================================================================>
+
+performanceC=[(tstart1:1:tend1)' zeros(length(MAECSS2(:,1)),1)+windowsize1 MAECSS2(:,1)  MSECSS2(:,1) PICSS2(:,1) WISCSS2(:,1)];
+
+T = array2table(performanceC);
+T.Properties.VariableNames(1:6) = {'time','calibration_period','MAE','MSE','Coverage 95%PI','WIS'};
+writetable(T,strcat('./output/performance-calibration-flag1-',num2str(flag1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+
+% <========================================================================================>
+% <========================================================================================>
+% <========================== Save file with forecasting performance metrics ============================>
+% <========================================================================================>
+% <========================================================================================>
+
+if forecastingperiod>0
+
+    performanceF=[(tstart1:1:tend1)' zeros(length(MAEFSS2(:,1)),1)+forecastingperiod MAEFSS2(:,1)  MSEFSS2(:,1) PIFSS2(:,1) WISFSS2(:,1)];
+
+    T = array2table(performanceF);
+    T.Properties.VariableNames(1:6) = {'time','Horizon','MAE','MSE','Coverage 95%PI','WIS'};
+    writetable(T,strcat('./output/performance-forecasting-flag1-',num2str(flag1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+
+end
