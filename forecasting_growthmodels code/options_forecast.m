@@ -2,7 +2,7 @@
 % < Author: Gerardo Chowell  ==================================================>
 % <============================================================================>
 
-function [cadfilename1,caddisease,datatype,DT, dist1, numstartpoints,M,flag1,model_name1,fixI0,getperformance,forecastingperiod, printscreen1,windowsize1,tstart1,tend1]=options_forecast
+function [cadfilename1,caddisease,datatype, dist1, numstartpoints,M,flag1,model_name1,fixI0,getperformance,forecastingperiod, printscreen1,windowsize1,tstart1,tend1]=options_forecast
 
 % <============================================================================>
 % <=================== Declare global variables =======================================>
@@ -19,8 +19,6 @@ global method1 % Parameter estimation method
 % column corresponds to the temporal incicence data.
 
 cadfilename1='Most_Recent_Timeseries_US-CDC';  % Name of the data file containing the incidence curve
-
-DT=1;  %temporal resolution of the data (DT=1 for daily data).
 
 caddisease='monkeypox'; % string indicating the name of the disease related to the time series data
 

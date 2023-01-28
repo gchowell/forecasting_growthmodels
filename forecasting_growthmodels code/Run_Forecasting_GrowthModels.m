@@ -18,16 +18,15 @@ global method1 % Parameter estimation method
 % <=================== Load parameter values supplied by user =================>
 % <============================================================================>
 
-[cadfilename1_INP,caddisease_INP,datatype_INP, DT_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP,getperformance_INP,forecastingperiod_INP, printscreen1_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_forecast;
+[cadfilename1_INP,caddisease_INP,datatype_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP,getperformance_INP,forecastingperiod_INP, printscreen1_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_forecast;
    
 % <============================================================================>
 % <================================ Datasets properties ==============================>
 % <============================================================================>
 
-
 cadfilename1=cadfilename1_INP;
 
-DT=DT_INP;
+DT=1;
 
 caddisease=caddisease_INP;
 

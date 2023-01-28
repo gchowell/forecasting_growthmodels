@@ -19,7 +19,7 @@ global method1 % Parameter estimation method
 % <=================== Load parameter values supplied by user =================>
 % <============================================================================>
 
-[cadfilename1_INP,caddisease_INP,datatype_INP,DT_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP,printscreen1_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_fit;
+[cadfilename1_INP,caddisease_INP,datatype_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP,printscreen1_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_fit;
 
 
 % <============================================================================>
@@ -27,8 +27,6 @@ global method1 % Parameter estimation method
 % <============================================================================>
 
 cadfilename1=cadfilename1_INP;
-
-DT=DT_INP;
 
 caddisease=caddisease_INP;
 
