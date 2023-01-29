@@ -191,6 +191,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     [P_model1d,residual_model1, fitcurve_model1d, forecastcurve_model1, timevect2, initialguess,fval]=fit_model(data1,params0,1,numstartpoints,DT,flag1,0);
 
+    dist1
 %     plot(timevect1,data1(:,2),'ko')
 %     hold on
 %     plot(timevect1, fitcurve_model1d,'r--')
@@ -513,7 +514,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
         axis([timevect1(1) timevect2(end) 0 max(quantile(forecast_model12',0.975))*1.5])
 
-        xlabel('Time (days)')
+        xlabel('Time')
         ylabel(strcat(caddisease,{' '},datatype))
 
         set(gca,'FontSize',24)

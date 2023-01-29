@@ -334,7 +334,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     axis([timevect1(1) timevect2(end) 0 max(quantile(forecast_model12',0.975))*1.5])
 
-    xlabel('Time (days)')
+    xlabel('Time')
     ylabel(strcat(caddisease,{' '},datatype))
 
     set(gca,'FontSize',24)
@@ -344,62 +344,65 @@ for i=tstart1:1:tend1  %rolling window analysis
 
 
     %
- 
-    figure(400)
 
-    subplot(rows,cols,cc1)
+    if length(tstart1:1:tend1)>1
 
-    plot(timevect2,forecast_model12,'c')
-    hold on
+        figure(400)
 
-    % plot 95% PI
+        subplot(rows,cols,cc1)
 
-    LB1=quantile(forecast_model12',0.025)';
-    LB1=(LB1>=0).*LB1;
+        plot(timevect2,forecast_model12,'c')
+        hold on
 
-    UB1=quantile(forecast_model12',0.975)';
-    UB1=(UB1>=0).*UB1;
+        % plot 95% PI
 
-    mean1=mean(forecast_model12,2);
+        LB1=quantile(forecast_model12',0.025)';
+        LB1=(LB1>=0).*LB1;
 
-    line1=plot(timevect2,mean1,'r-')
-    set(line1,'LineWidth',2)
+        UB1=quantile(forecast_model12',0.975)';
+        UB1=(UB1>=0).*UB1;
 
-    hold on
-    line1=plot(timevect2,LB1,'r--')
-    set(line1,'LineWidth',2)
+        mean1=mean(forecast_model12,2);
 
-    line1=plot(timevect2,UB1,'r--')
-    set(line1,'LineWidth',2)
-
-    % plot mean model fit
-
-    color1=gray(8);
-    line1=plot(timevect1,fit_model1,'color',color1(6,:))
-    set(line1,'LineWidth',1)
-
-    % plot the data
-
-    line1=plot(timevect_all,data_all,'bo')
-    set(line1,'LineWidth',2)
-
-    line2=[timevect1(end) 0;timevect1(end) max(quantile(forecast_model12',0.975))*1.5];
-
-    if forecastingperiod>0
-        line1=plot(line2(:,1),line2(:,2),'k--')
+        line1=plot(timevect2,mean1,'r-')
         set(line1,'LineWidth',2)
+
+        hold on
+        line1=plot(timevect2,LB1,'r--')
+        set(line1,'LineWidth',2)
+
+        line1=plot(timevect2,UB1,'r--')
+        set(line1,'LineWidth',2)
+
+        % plot mean model fit
+
+        color1=gray(8);
+        line1=plot(timevect1,fit_model1,'color',color1(6,:))
+        set(line1,'LineWidth',1)
+
+        % plot the data
+
+        line1=plot(timevect_all,data_all,'bo')
+        set(line1,'LineWidth',2)
+
+        line2=[timevect1(end) 0;timevect1(end) max(quantile(forecast_model12',0.975))*1.5];
+
+        if forecastingperiod>0
+            line1=plot(line2(:,1),line2(:,2),'k--')
+            set(line1,'LineWidth',2)
+        end
+
+        axis([timevect1(1) timevect2(end) 0 max(quantile(forecast_model12',0.975))*1.5])
+
+        %xlabel('Time (days)')
+        %ylabel(strcat(caddisease,{' '},datatype))
+
+        set(gca,'FontSize',16)
+        set(gcf,'color','white')
+
+        cc1=cc1+1;
     end
 
-    axis([timevect1(1) timevect2(end) 0 max(quantile(forecast_model12',0.975))*1.5])
-
-    %xlabel('Time (days)')
-    %ylabel(strcat(caddisease,{' '},datatype))
-
-    set(gca,'FontSize',16)
-    set(gcf,'color','white')
-
-   cc1=cc1+1;
-   
     %
 
 
@@ -413,7 +416,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
         T = array2table(forecastdata);
         T.Properties.VariableNames(1:5) = {'time','data','median','LB','UB'};
-        writetable(T,strcat('./output/Forecast-flag1-',num2str(flag1),'-tstart-',num2str(i),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+        writetable(T,strcat('./output/Forecast-flag1-',num2str(flag1),'-tstart-',num2str(i),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 
     else
 
@@ -425,7 +428,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
         T = array2table(forecastdata);
         T.Properties.VariableNames(1:5) = {'time','data','median','LB','UB'};
-        writetable(T,strcat('./output/Forecast-flag1-',num2str(flag1),'-tstart-',num2str(i),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+        writetable(T,strcat('./output/Forecast-flag1-',num2str(flag1),'-tstart-',num2str(i),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 
     end
 
@@ -530,14 +533,18 @@ for i=tstart1:1:tend1  %rolling window analysis
 
 end  % Rolling window analysis
 
-figure(400)
-for c=1:cols
-    subplot(rows,cols,(rows-1)*cols+c)
-    xlabel('Time (days)')
-end
+if length(tstart1:1:tend1)>1
 
- subplot(rows,cols,1)
- ylabel(strcat(caddisease,{' '},datatype))
+    figure(400)
+    for c=1:cols
+        subplot(rows,cols,(rows-1)*cols+c)
+        xlabel('Time (days)')
+    end
+
+    subplot(rows,cols,1)
+    ylabel(strcat(caddisease,{' '},datatype))
+    
+end
 
 
 % <==================================================================================================>
@@ -591,8 +598,6 @@ hold on
 plot(tstart1:1:tend1,param_ps2(:,2),'b--')
 plot(tstart1:1:tend1,param_ps2(:,3),'b--')
 
-param_ps2
-
 line1=plot(tstart1:1:tend1,smooth(param_ps2(:,1),5),'k--')
 set(line1,'LineWidth',3)
 
@@ -624,7 +629,7 @@ rollparams=[(tstart1:1:tend1)' param_rs2(:,1:end) param_ps2(:,1:end) param_Ks2(:
 
 T = array2table(rollparams);
 T.Properties.VariableNames(1:10) = {'time','r mean','r LB','r UB','p mean','p LB','p UB','K0 mean','K0 LB','K0 UB'};
-writetable(T,strcat('./output/parameters-rollingwindow-flag1-',num2str(flag1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+writetable(T,strcat('./output/parameters-rollingwindow-flag1-',num2str(flag1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 
 % <========================================================================================>
 % <========================================================================================>
@@ -636,7 +641,7 @@ performanceC=[(tstart1:1:tend1)' zeros(length(MAECSS2(:,1)),1)+windowsize1 MAECS
 
 T = array2table(performanceC);
 T.Properties.VariableNames(1:6) = {'time','calibration_period','MAE','MSE','Coverage 95%PI','WIS'};
-writetable(T,strcat('./output/performance-calibration-flag1-',num2str(flag1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+writetable(T,strcat('./output/performance-calibration-flag1-',num2str(flag1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 
 % <========================================================================================>
 % <========================================================================================>
@@ -650,6 +655,6 @@ if forecastingperiod>0
 
     T = array2table(performanceF);
     T.Properties.VariableNames(1:6) = {'time','Horizon','MAE','MSE','Coverage 95%PI','WIS'};
-    writetable(T,strcat('./output/performance-forecasting-flag1-',num2str(flag1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+    writetable(T,strcat('./output/performance-forecasting-flag1-',num2str(flag1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 
 end

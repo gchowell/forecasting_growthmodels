@@ -28,20 +28,35 @@ datatype='cases'; % string indicating the nature of the data (cases, deaths, hos
 
 method1=0; % Type of estimation method
 
-% LSQ=0,
+% Nonlinear least squares (LSQ)=0,
 % MLE Poisson=1,
-% Pearson chi-squared=2,
 % MLE (Neg Binomial)=3, with VAR=mean+alpha*mean;
 % MLE (Neg Binomial)=4, with VAR=mean+alpha*mean^2;
 % MLE (Neg Binomial)=5, with VAR=mean+alpha*mean^d;
 
-dist1=0; % Define dist1 which is the type of error structure:
+dist1=1; % Define dist1 which is the type of error structure. See below:
 
-%dist1=0; % Normnal distribution to model error structure
-%dist1=1; % error structure type (Poisson=1; NB=2)
-%dist1=3; % VAR=mean+alpha*mean;
-%dist1=4; % VAR=mean+alpha*mean^2;
-%dist1=5; % VAR=mean+alpha*mean^d;
+%dist1=0; % Normal distribution to model error structure (method1=0)
+%dist1=1; % Poisson error structure (method1=0 OR method1=1)
+%dist1=2; % Neg. binomial error structure where var = factor1*mean where
+                  % factor1 is empirically estimated from the time series
+                  % data (method1=0)
+%dist1=3; % MLE (Neg Binomial) with VAR=mean+alpha*mean  (method1=3)
+%dist1=4; % MLE (Neg Binomial) with VAR=mean+alpha*mean^2 (method1=4)
+%dist1=5; % MLE (Neg Binomial)with VAR=mean+alpha*mean^d (method1=5)
+
+
+switch method1
+    case 1
+        dist1=1;
+    case 3
+        dist1=3;
+    case 4
+        dist1=4;
+    case 5
+        dist1=5;
+end
+
 
 numstartpoints=10; % Number of initial guesses for optimization procedure using MultiStart
 
