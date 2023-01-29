@@ -73,9 +73,9 @@ GRM=2;  % 2 = GRM
 LM=3;   % 3 = LM
 RICH=4; % 4 = Richards
 
-flag1=GLM;  % Growth model considered in the epidemic trajectory
+flag1=RICH;  % Growth model considered in the epidemic trajectory
 
-model_name1='GLM';  % String with the name of the model
+model_name1='Richards';  % String with the name of the model
 
 % <==================================================================================>
 % <=============================== other parameters=======================================>

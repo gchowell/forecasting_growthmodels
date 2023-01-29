@@ -203,6 +203,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     load(strcat('./output/Forecast-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(i),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-',num2str(forecastingperiod),'.mat'))
 
+
     % <======================================================================================>
     % <======================= Plot parameter distributions and model fit and forecast ========================>
     % <======================================================================================>
@@ -406,7 +407,7 @@ for i=tstart1:1:tend1  %rolling window analysis
     %
 
 
-    if getperformance & length(data_all)<windowsize1+forecastingperiod
+    if getperformance & forecastingperiod>0 & length(data_all)<windowsize1+forecastingperiod
 
         [length(data_all) windowsize1+forecastingperiod]
         'entro'
@@ -416,7 +417,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
         T = array2table(forecastdata);
         T.Properties.VariableNames(1:5) = {'time','data','median','LB','UB'};
-        writetable(T,strcat('./output/Forecast-flag1-',num2str(flag1),'-tstart-',num2str(i),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+        writetable(T,strcat('./output/Forecast-flag1-',num2str(flag1),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(i),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 
     else
 
@@ -428,7 +429,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
         T = array2table(forecastdata);
         T.Properties.VariableNames(1:5) = {'time','data','median','LB','UB'};
-        writetable(T,strcat('./output/Forecast-flag1-',num2str(flag1),'-tstart-',num2str(i),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+        writetable(T,strcat('./output/Forecast-flag1-',num2str(flag1),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(i),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 
     end
 
@@ -442,58 +443,59 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     if getperformance
 
-        figure(200+i)
+        if forecastingperiod>0
+            figure(200+i)
 
-        subplot(2,2,1)
+            subplot(2,2,1)
 
-        line1=plot(MAEFS_model1(:,1),MAEFS_model1(:,2),'k')
-        set(line1,'LineWidth',4)
-        hold on
+            line1=plot(MAEFS_model1(:,1),MAEFS_model1(:,2),'k')
+            set(line1,'LineWidth',4)
+            hold on
 
-        xlabel('Forecasting horizon (days)')
-        ylabel('MAE')
-        hold on
-        set(gca,'FontSize', 24);
-        set(gcf,'color','white')
+            xlabel('Forecasting horizon (days)')
+            ylabel('MAE')
+            hold on
+            set(gca,'FontSize', 24);
+            set(gcf,'color','white')
 
-        subplot(2,2,2)
+            subplot(2,2,2)
 
-        line1=plot(MSEFS_model1(:,1),MSEFS_model1(:,2),'k')
-        set(line1,'LineWidth',4)
-        hold on
+            line1=plot(MSEFS_model1(:,1),MSEFS_model1(:,2),'k')
+            set(line1,'LineWidth',4)
+            hold on
 
-        xlabel('Forecasting horizon (days)')
-        ylabel('MSE')
-        hold on
-        set(gca,'FontSize', 24);
-        set(gcf,'color','white')
+            xlabel('Forecasting horizon (days)')
+            ylabel('MSE')
+            hold on
+            set(gca,'FontSize', 24);
+            set(gcf,'color','white')
 
-        subplot(2,2,3)
+            subplot(2,2,3)
 
-        line1=plot(PIFS_model1(:,1),PIFS_model1(:,2),'k')
-        set(line1,'LineWidth',4)
-        hold on
+            line1=plot(PIFS_model1(:,1),PIFS_model1(:,2),'k')
+            set(line1,'LineWidth',4)
+            hold on
 
-        xlabel('Forecasting horizon (days)')
-        ylabel('Coverage rate of the 95% PI')
-        hold on
-        set(gca,'FontSize', 24);
-        set(gcf,'color','white')
+            xlabel('Forecasting horizon (days)')
+            ylabel('Coverage rate of the 95% PI')
+            hold on
+            set(gca,'FontSize', 24);
+            set(gcf,'color','white')
 
 
-        subplot(2,2,4)
+            subplot(2,2,4)
 
-        line1=plot(WISFS_model1(:,1),WISFS_model1(:,2),'k')
-        set(line1,'LineWidth',4)
-        hold on
+            line1=plot(WISFS_model1(:,1),WISFS_model1(:,2),'k')
+            set(line1,'LineWidth',4)
+            hold on
 
-        xlabel('Forecasting horizon (days)')
-        ylabel('WIS')
-        hold on
-        set(gca,'FontSize', 24);
-        set(gcf,'color','white')
+            xlabel('Forecasting horizon (days)')
+            ylabel('WIS')
+            hold on
+            set(gca,'FontSize', 24);
+            set(gcf,'color','white')
+        end
 
-      
         % <==================================================================================================>
         % <================================ Store performance metrics ==============================================>
         % <==================================================================================================>
@@ -625,11 +627,11 @@ xlabel('Time')
 % <================= Save file with parameters from rolling window analysis ====================================>
 % <=============================================================================================>
 
-rollparams=[(tstart1:1:tend1)' param_rs2(:,1:end) param_ps2(:,1:end) param_Ks2(:,1:end)];
+rollparams=[(tstart1:1:tend1)' param_rs2(:,1:end) param_ps2(:,1:end) param_as2(:,1:end) param_Ks2(:,1:end)];
 
 T = array2table(rollparams);
-T.Properties.VariableNames(1:10) = {'time','r mean','r LB','r UB','p mean','p LB','p UB','K0 mean','K0 LB','K0 UB'};
-writetable(T,strcat('./output/parameters-rollingwindow-flag1-',num2str(flag1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+T.Properties.VariableNames(1:13) = {'time','r mean','r LB','r UB','p mean','p LB','p UB','a mean','a LB','a UB','K0 mean','K0 LB','K0 UB'};
+writetable(T,strcat('./output/parameters-rollingwindow-flag1-',num2str(flag1),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 
 % <========================================================================================>
 % <========================================================================================>
@@ -641,7 +643,7 @@ performanceC=[(tstart1:1:tend1)' zeros(length(MAECSS2(:,1)),1)+windowsize1 MAECS
 
 T = array2table(performanceC);
 T.Properties.VariableNames(1:6) = {'time','calibration_period','MAE','MSE','Coverage 95%PI','WIS'};
-writetable(T,strcat('./output/performance-calibration-flag1-',num2str(flag1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+writetable(T,strcat('./output/performance-calibration-flag1-',num2str(flag1),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 
 % <========================================================================================>
 % <========================================================================================>
@@ -655,6 +657,6 @@ if forecastingperiod>0
 
     T = array2table(performanceF);
     T.Properties.VariableNames(1:6) = {'time','Horizon','MAE','MSE','Coverage 95%PI','WIS'};
-    writetable(T,strcat('./output/performance-forecasting-flag1-',num2str(flag1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+    writetable(T,strcat('./output/performance-forecasting-flag1-',num2str(flag1),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 
 end

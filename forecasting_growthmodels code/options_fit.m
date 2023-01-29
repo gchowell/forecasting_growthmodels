@@ -34,7 +34,7 @@ method1=0; % Type of estimation method
 % MLE (Neg Binomial)=4, with VAR=mean+alpha*mean^2;
 % MLE (Neg Binomial)=5, with VAR=mean+alpha*mean^d;
 
-dist1=1; % Define dist1 which is the type of error structure. See below:
+dist1=0; % Define dist1 which is the type of error structure. See below:
 
 %dist1=0; % Normal distribution to model error structure (method1=0)
 %dist1=1; % Poisson error structure (method1=0 OR method1=1)
@@ -72,9 +72,9 @@ GRM=2;  % 2 = GRM
 LM=3;   % 3 = LM
 RICH=4; % 4 = Richards
 
-flag1=GLM; % Growth model considered in the epidemic trajectory
+flag1=RICH; % Growth model considered in the epidemic trajectory
 
-model_name1='GLM';  % A string provided by the user for the name of the model
+model_name1='Richards';  % A string provided by the user for the name of the model
 
 % <==================================================================================>
 % <=============================== other parameters=======================================>
