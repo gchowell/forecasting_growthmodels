@@ -448,7 +448,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
             subplot(2,2,1)
 
-            line1=plot(MAEFS_model1(:,1),MAEFS_model1(:,2),'k')
+            line1=plot(MAEFS_model1(:,1),MAEFS_model1(:,2),'k-o')
             set(line1,'LineWidth',4)
             hold on
 
@@ -460,7 +460,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
             subplot(2,2,2)
 
-            line1=plot(MSEFS_model1(:,1),MSEFS_model1(:,2),'k')
+            line1=plot(MSEFS_model1(:,1),MSEFS_model1(:,2),'k-o')
             set(line1,'LineWidth',4)
             hold on
 
@@ -472,7 +472,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
             subplot(2,2,3)
 
-            line1=plot(PIFS_model1(:,1),PIFS_model1(:,2),'k')
+            line1=plot(PIFS_model1(:,1),PIFS_model1(:,2),'k-o')
             set(line1,'LineWidth',4)
             hold on
 
@@ -485,7 +485,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
             subplot(2,2,4)
 
-            line1=plot(WISFS_model1(:,1),WISFS_model1(:,2),'k')
+            line1=plot(WISFS_model1(:,1),WISFS_model1(:,2),'k-o')
             set(line1,'LineWidth',4)
             hold on
 
