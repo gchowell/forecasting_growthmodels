@@ -49,6 +49,8 @@ After fitting the model to your data using the function <code>Run_Fit_GrowthMode
     <li>run the function <code>plotFit_GrowthModels.m</code> </li>
 </ul>
 
+The function also outputs files with parameter estimates, the best fit of the model, and the performance metrics for the calibration period.
+
 # Generating forecasts
 
 To use the toolbox to fit a model to your data and generate a forecast, you just need to:
@@ -65,7 +67,9 @@ After running <code>Run_Forecasting_GrowthModels.m</code>, you can use the toolb
 <ul>
     <li>run the function <code>plotForecast_GrowthModels.m</code></li>
 </ul>
-    
+
+The function also outputs files with parameter estimates, the fit and forecast of the model, and the performance metrics for the calibration period and forecasting periods.
+
 # Publications
 
 <ul>
