@@ -14,7 +14,8 @@ global method1 % Parameter estimation method
 % <============================================================================>
 % The time series data file contains the incidence curve of the epidemic of interest. 
 % The first column corresponds to time index: 0,1,2, ... and the second
-% column corresponds to the temporal incicence data.
+% column corresponds to the temporal incidence data. If the time series file contains cumulative incidence count data, 
+% the name of the time series data file must start with "cumulative".
 
 cadfilename1='Most_Recent_Timeseries_US-CDC'; % Name of the data file containing the incidence curve
 
@@ -60,7 +61,7 @@ end
 
 numstartpoints=10; % Number of initial guesses for optimization procedure using MultiStart
 
-M=100; % number of bootstrap realizations to characterize parameter uncertainty
+M=200; % number of bootstrap realizations to characterize parameter uncertainty
 
 % <==============================================================================>
 % <============================== Growth model =====================================>
@@ -72,9 +73,9 @@ GRM=2;  % 2 = GRM
 LM=3;   % 3 = LM
 RICH=4; % 4 = Richards
 
-flag1=RICH; % Growth model considered in the epidemic trajectory
+flag1=GLM; % Growth model considered in the epidemic trajectory
 
-model_name1='Richards';  % A string provided by the user for the name of the model
+model_name1='GLM';  % A string provided by the user for the name of the model
 
 % <==================================================================================>
 % <=============================== other parameters=======================================>

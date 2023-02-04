@@ -82,6 +82,11 @@ fixI0=fixI0_INP; % 0=Estimate the initial number of cases; 1 = Fix the initial n
 
 data=load(strcat('./input/',cadfilename1,'.txt'));
 
+if strcmp('CUMULATIVE',upper(cadfilename1(1:10)))==1
+
+    data(:,2)=[data(1,2);diff(data(:,2))]; % Incidence curve
+
+end
 
 % <==============================================================================>
 % <========================== Forecasting parameters ===================================>

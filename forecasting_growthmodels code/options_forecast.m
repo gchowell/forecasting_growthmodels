@@ -16,7 +16,8 @@ global method1 % Parameter estimation method
 % <============================================================================>
 % The time series data file contains the incidence curve of the epidemic of interest. 
 % The first column corresponds to time index: 0,1,2, ... and the second
-% column corresponds to the temporal incicence data.
+% column corresponds to the temporal incicence data. If the time series file contains cumulative incidence count data, 
+% the name of the time series data file must start with "cumulative".
 
 cadfilename1='Most_Recent_Timeseries_US-CDC';  % Name of the data file containing the incidence curve
 
@@ -73,9 +74,9 @@ GRM=2;  % 2 = GRM
 LM=3;   % 3 = LM
 RICH=4; % 4 = Richards
 
-flag1=RICH;  % Growth model considered in the epidemic trajectory
+flag1=GRM;  % Growth model considered in the epidemic trajectory
 
-model_name1='Richards';  % String with the name of the model
+model_name1='GRM';  % String with the name of the model
 
 % <==================================================================================>
 % <=============================== other parameters=======================================>
