@@ -390,76 +390,79 @@ end
 % <====================== Plot temporal variation of parameters from rolling window analysis ============================>
 % <==================================================================================================>
 
-figure
+if tend1>tstart1
+    figure
 
-subplot(2,4,[1 2 3 4])
+    subplot(2,4,[1 2 3 4])
 
-plot(data(:,1),data(:,2),'ro-')
-xlabel('Time')
-ylabel('Cases')
-set(gca,'FontSize',24)
-set(gcf,'color','white')
-
-
-subplot(2,4,5)
-
-plot(tstart1:1:tend1,param_rs(:,1),'ro-')
-hold on
-plot(tstart1:1:tend1,param_rs(:,2),'b--')
-plot(tstart1:1:tend1,param_rs(:,3),'b--')
-
-line1=plot(tstart1:1:tend1,smooth(param_rs(:,1),5),'k--')
-set(line1,'LineWidth',3)
+    plot(data(:,1),data(:,2),'ro-')
+    xlabel('Time')
+    ylabel('Cases')
+    set(gca,'FontSize',24)
+    set(gcf,'color','white')
 
 
-ylabel('r')
-set(gca,'FontSize',24)
-set(gcf,'color','white')
-xlabel('Time')
+    subplot(2,4,5)
 
-subplot(2,4,6)
-plot(tstart1:1:tend1,param_as(:,1),'ro-')
-hold on
-plot(tstart1:1:tend1,param_as(:,2),'b--')
-plot(tstart1:1:tend1,param_as(:,3),'b--')
+    plot(tstart1:1:tend1,param_rs(:,1),'ro-')
+    hold on
+    plot(tstart1:1:tend1,param_rs(:,2),'b--')
+    plot(tstart1:1:tend1,param_rs(:,3),'b--')
 
-line1=plot(tstart1:1:tend1,smooth(param_as(:,1),5),'k--')
-set(line1,'LineWidth',3)
-
-ylabel('a')
-set(gca,'FontSize',24)
-set(gcf,'color','white')
-xlabel('Time')
-
-subplot(2,4,7)
-plot(tstart1:1:tend1,param_ps(:,1),'ro-')
-hold on
-plot(tstart1:1:tend1,param_ps(:,2),'b--')
-plot(tstart1:1:tend1,param_ps(:,3),'b--')
-
-line1=plot(tstart1:1:tend1,smooth(param_ps(:,1),5),'k--')
-set(line1,'LineWidth',3)
+    line1=plot(tstart1:1:tend1,smooth(param_rs(:,1),5),'k--')
+    set(line1,'LineWidth',3)
 
 
-ylabel('p')
-set(gca,'FontSize',24)
-set(gcf,'color','white')
-xlabel('Time')
+    ylabel('r')
+    set(gca,'FontSize',24)
+    set(gcf,'color','white')
+    xlabel('Time')
 
-subplot(2,4,8)
-plot(tstart1:1:tend1,param_Ks(:,1),'ro-')
-hold on
-plot(tstart1:1:tend1,param_Ks(:,2),'b--')
-plot(tstart1:1:tend1,param_Ks(:,3),'b--')
+    subplot(2,4,6)
+    plot(tstart1:1:tend1,param_as(:,1),'ro-')
+    hold on
+    plot(tstart1:1:tend1,param_as(:,2),'b--')
+    plot(tstart1:1:tend1,param_as(:,3),'b--')
+
+    line1=plot(tstart1:1:tend1,smooth(param_as(:,1),5),'k--')
+    set(line1,'LineWidth',3)
+
+    ylabel('a')
+    set(gca,'FontSize',24)
+    set(gcf,'color','white')
+    xlabel('Time')
+
+    subplot(2,4,7)
+    plot(tstart1:1:tend1,param_ps(:,1),'ro-')
+    hold on
+    plot(tstart1:1:tend1,param_ps(:,2),'b--')
+    plot(tstart1:1:tend1,param_ps(:,3),'b--')
+
+    line1=plot(tstart1:1:tend1,smooth(param_ps(:,1),5),'k--')
+    set(line1,'LineWidth',3)
 
 
-line1=plot(tstart1:1:tend1,smooth(param_Ks(:,1),5),'k--')
-set(line1,'LineWidth',3)
+    ylabel('p')
+    set(gca,'FontSize',24)
+    set(gcf,'color','white')
+    xlabel('Time')
 
-ylabel('K')
-set(gca,'FontSize',24)
-set(gcf,'color','white')
-xlabel('Time')
+    subplot(2,4,8)
+    plot(tstart1:1:tend1,param_Ks(:,1),'ro-')
+    hold on
+    plot(tstart1:1:tend1,param_Ks(:,2),'b--')
+    plot(tstart1:1:tend1,param_Ks(:,3),'b--')
+
+
+    line1=plot(tstart1:1:tend1,smooth(param_Ks(:,1),5),'k--')
+    set(line1,'LineWidth',3)
+
+    ylabel('K')
+    set(gca,'FontSize',24)
+    set(gcf,'color','white')
+    xlabel('Time')
+
+end
 
 % <========================================================================================>
 % <========================================================================================>

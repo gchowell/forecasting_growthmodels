@@ -163,9 +163,9 @@ WISFSS=[];
 quantilescs=[];
 quantilesfs=[];
 
-if length(data(:,1)) < tend1+windowsize1
+if (tend1+windowsize1-1) > length(data(:,1))
 
-    tend1= length(data(:,1))-windowsize1;
+    tend1= length(data(:,1))-windowsize1+1;
     'adjusting tend1'
 
 end

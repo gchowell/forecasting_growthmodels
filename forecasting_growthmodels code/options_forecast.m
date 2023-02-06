@@ -74,13 +74,9 @@ GRM=2;  % 2 = GRM
 LM=3;   % 3 = LM
 RICH=4; % 4 = Richards
 
-flag1=GRM;  % Growth model considered in the epidemic trajectory
+flag1=GLM;  % Growth model considered in the epidemic trajectory
 
-model_name1='GRM';  % String with the name of the model
-
-% <==================================================================================>
-% <=============================== other parameters=======================================>
-% <==================================================================================>
+model_name1='GLM';  % String with the name of the model
 
 fixI0=1; % 0=Estimate the initial number of cases; 1 = Fix the initial number of cases according to the first data point in the time series
 
@@ -98,7 +94,7 @@ printscreen1=1;  % flag (1/0) variable to indicate whether we want to print plot
 % <========================== Parameters of the rolling window analysis =========================>
 % <==================================================================================>
 
-windowsize1=8;  % moving window size
+windowsize1=10;  % moving window size
 tstart1=1; % time point for the start of rolling window analysis
 tend1=1;  %time point for the end of the rolling window analysis
 

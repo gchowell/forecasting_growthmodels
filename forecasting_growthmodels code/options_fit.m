@@ -12,6 +12,7 @@ global method1 % Parameter estimation method
 % <============================================================================>
 % <================================ Datasets properties =======================>
 % <============================================================================>
+% Located in the input folder, the time series data file is a text file with extension *.txt. 
 % The time series data file contains the incidence curve of the epidemic of interest. 
 % The first column corresponds to time index: 0,1,2, ... and the second
 % column corresponds to the temporal incidence data. If the time series file contains cumulative incidence count data, 
@@ -61,7 +62,7 @@ end
 
 numstartpoints=10; % Number of initial guesses for optimization procedure using MultiStart
 
-M=200; % number of bootstrap realizations to characterize parameter uncertainty
+M=300; % number of bootstrap realizations to characterize parameter uncertainty
 
 % <==============================================================================>
 % <============================== Growth model =====================================>
@@ -76,10 +77,6 @@ RICH=4; % 4 = Richards
 flag1=GLM; % Growth model considered in the epidemic trajectory
 
 model_name1='GLM';  % A string provided by the user for the name of the model
-
-% <==================================================================================>
-% <=============================== other parameters=======================================>
-% <==================================================================================>
 
 fixI0=1; % 0=Estimate the initial number of cases; 1 = Fix the initial number of cases according to the first data point in the time series
 
