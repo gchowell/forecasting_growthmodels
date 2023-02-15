@@ -308,9 +308,9 @@ for i=tstart1:1:tend1  %rolling window analysis
     UB1=quantile(forecast_model12',0.975)';
     UB1=(UB1>=0).*UB1;
 
-    mean1=mean(forecast_model12,2);
+    median1=median(forecast_model12,2);
 
-    line1=plot(timevect2,mean1,'r-')
+    line1=plot(timevect2,median1,'r-')
     set(line1,'LineWidth',2)
 
     hold on
@@ -325,6 +325,9 @@ for i=tstart1:1:tend1  %rolling window analysis
     color1=gray(8);
     line1=plot(timevect1,fit_model1,'color',color1(6,:))
     set(line1,'LineWidth',1)
+
+    line1=plot(timevect2,median1,'r-')
+    set(line1,'LineWidth',2)
 
     % plot the data
 
@@ -368,9 +371,9 @@ for i=tstart1:1:tend1  %rolling window analysis
         UB1=quantile(forecast_model12',0.975)';
         UB1=(UB1>=0).*UB1;
 
-        mean1=mean(forecast_model12,2);
+        median1=median(forecast_model12,2);
 
-        line1=plot(timevect2,mean1,'r-')
+        line1=plot(timevect2,median1,'r-')
         set(line1,'LineWidth',2)
 
         hold on
@@ -380,11 +383,15 @@ for i=tstart1:1:tend1  %rolling window analysis
         line1=plot(timevect2,UB1,'r--')
         set(line1,'LineWidth',2)
 
-        % plot mean model fit
+        % plot median model fit
 
         color1=gray(8);
         line1=plot(timevect1,fit_model1,'color',color1(6,:))
         set(line1,'LineWidth',1)
+
+        line1=plot(timevect2,median1,'r-')
+        set(line1,'LineWidth',2)
+
 
         % plot the data
 

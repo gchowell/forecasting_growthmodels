@@ -257,14 +257,13 @@ for i=tstart1:1:tend1 %rolling window analysis
 
         % plot 95% PI
 
-
-
         line1=plot(timevect2,median1,'r-')
         set(line1,'LineWidth',2)
-
         hold on
+
         line1=plot(timevect2,LB1,'r--')
         set(line1,'LineWidth',2)
+        hold on
 
         line1=plot(timevect2,UB1,'r--')
         set(line1,'LineWidth',2)
@@ -274,6 +273,11 @@ for i=tstart1:1:tend1 %rolling window analysis
         color1=gray(8);
         line1=plot(timevect1,fit_model1,'color',color1(6,:))
         set(line1,'LineWidth',1)
+
+        line1=plot(timevect2,median1,'r-')
+        set(line1,'LineWidth',2)
+        hold on
+
 
         % plot the data
 
@@ -304,7 +308,7 @@ for i=tstart1:1:tend1 %rolling window analysis
 
     T = array2table(fitdata);
     T.Properties.VariableNames(1:5) = {'time','data','median','LB','UB'};
-    writetable(T,strcat('./output/Fit-flag1-',num2str(flag1),'-i-',num2str(i),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+    writetable(T,strcat('./output/Fit-flag1-',num2str(flag1),'-tstart-',num2str(i),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 
     if printscreen1
 
