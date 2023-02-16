@@ -1,4 +1,4 @@
-function Run_Fit_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass,forecastingperiod_pass)
+function   AICcs=Run_Fit_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass,forecastingperiod_pass)
 
 % <============================================================================>
 % < Author: Gerardo Chowell  ==================================================>
@@ -514,6 +514,9 @@ for i=tstart1:1:tend1  %rolling window analysis
         color1=gray(8);
         line1=plot(timevect1,fit_model1,'color',color1(6,:))
         set(line1,'LineWidth',1)
+
+        line1=plot(timevect2,median1,'r-')
+        set(line1,'LineWidth',2)
 
         % plot the data
 

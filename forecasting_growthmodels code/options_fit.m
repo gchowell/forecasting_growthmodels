@@ -86,7 +86,7 @@ printscreen1=1;  % flag (1/0) to indicate whether we want to print plots with th
 % <========================== Parameters of the rolling window analysis =========================>
 % <==================================================================================>
 
-windowsize1=8;  % moving window size
+windowsize1=32;  % moving window size
 
 tstart1=1; % time point for the start of rolling window analysis
 
