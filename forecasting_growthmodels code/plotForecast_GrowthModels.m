@@ -1,4 +1,4 @@
-function plotForecast_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass,forecastingperiod_pass)
+function [quantilescs,quantilesfs]=plotForecast_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass,forecastingperiod_pass)
 
 % <============================================================================>
 % < Author: Gerardo Chowell  ==================================================>
@@ -565,78 +565,80 @@ end
 % <====================== Plot temporal variation of parameters from rolling window analysis ============================>
 % <==================================================================================================>
 
-figure
+if tend1>tstart1
+    figure
 
-subplot(2,4,[1 2 3 4])
+    subplot(2,4,[1 2 3 4])
 
-plot(data(:,1),data(:,2),'ro-')
-xlabel('Time')
-ylabel('Cases')
-set(gca,'FontSize',24)
-set(gcf,'color','white')
-
-
-subplot(2,4,5)
-
-plot(tstart1:1:tend1,param_rs2(:,1),'ro-')
-hold on
-plot(tstart1:1:tend1,param_rs2(:,2),'b--')
-plot(tstart1:1:tend1,param_rs2(:,3),'b--')
-
-line1=plot(tstart1:1:tend1,smooth(param_rs2(:,1),5),'k--')
-set(line1,'LineWidth',3)
+    plot(data(:,1),data(:,2),'ro-')
+    xlabel('Time')
+    ylabel('Cases')
+    set(gca,'FontSize',24)
+    set(gcf,'color','white')
 
 
-ylabel('r')
-set(gca,'FontSize',24)
-set(gcf,'color','white')
-xlabel('Time')
+    subplot(2,4,5)
 
-subplot(2,4,6)
-plot(tstart1:1:tend1,param_as2(:,1),'ro-')
-hold on
-plot(tstart1:1:tend1,param_as2(:,2),'b--')
-plot(tstart1:1:tend1,param_as(:,3),'b--')
+    plot(tstart1:1:tend1,param_rs2(:,1),'ro-')
+    hold on
+    plot(tstart1:1:tend1,param_rs2(:,2),'b--')
+    plot(tstart1:1:tend1,param_rs2(:,3),'b--')
 
-line1=plot(tstart1:1:tend1,smooth(param_as2(:,1),5),'k--')
-set(line1,'LineWidth',3)
-
-ylabel('a')
-set(gca,'FontSize',24)
-set(gcf,'color','white')
-xlabel('Time')
-
-subplot(2,4,7)
-plot(tstart1:1:tend1,param_ps2(:,1),'ro-')
-hold on
-plot(tstart1:1:tend1,param_ps2(:,2),'b--')
-plot(tstart1:1:tend1,param_ps2(:,3),'b--')
-
-line1=plot(tstart1:1:tend1,smooth(param_ps2(:,1),5),'k--')
-set(line1,'LineWidth',3)
+    line1=plot(tstart1:1:tend1,smooth(param_rs2(:,1),5),'k--')
+    set(line1,'LineWidth',3)
 
 
-ylabel('p')
-set(gca,'FontSize',24)
-set(gcf,'color','white')
-xlabel('Time')
+    ylabel('r')
+    set(gca,'FontSize',24)
+    set(gcf,'color','white')
+    xlabel('Time')
 
-subplot(2,4,8)
-plot(tstart1:1:tend1,param_Ks2(:,1),'ro-')
-hold on
-plot(tstart1:1:tend1,param_Ks2(:,2),'b--')
-plot(tstart1:1:tend1,param_Ks2(:,3),'b--')
+    subplot(2,4,6)
+    plot(tstart1:1:tend1,param_as2(:,1),'ro-')
+    hold on
+    plot(tstart1:1:tend1,param_as2(:,2),'b--')
+    plot(tstart1:1:tend1,param_as(:,3),'b--')
 
-line1=plot(tstart1:1:tend1,smooth(param_Ks2(:,1),5),'k--')
-set(line1,'LineWidth',3)
+    line1=plot(tstart1:1:tend1,smooth(param_as2(:,1),5),'k--')
+    set(line1,'LineWidth',3)
 
-ylabel('K')
-set(gca,'FontSize',24)
-set(gcf,'color','white')
-xlabel('Time')
+    ylabel('a')
+    set(gca,'FontSize',24)
+    set(gcf,'color','white')
+    xlabel('Time')
+
+    subplot(2,4,7)
+    plot(tstart1:1:tend1,param_ps2(:,1),'ro-')
+    hold on
+    plot(tstart1:1:tend1,param_ps2(:,2),'b--')
+    plot(tstart1:1:tend1,param_ps2(:,3),'b--')
+
+    line1=plot(tstart1:1:tend1,smooth(param_ps2(:,1),5),'k--')
+    set(line1,'LineWidth',3)
+
+
+    ylabel('p')
+    set(gca,'FontSize',24)
+    set(gcf,'color','white')
+    xlabel('Time')
+
+    subplot(2,4,8)
+    plot(tstart1:1:tend1,param_Ks2(:,1),'ro-')
+    hold on
+    plot(tstart1:1:tend1,param_Ks2(:,2),'b--')
+    plot(tstart1:1:tend1,param_Ks2(:,3),'b--')
+
+    line1=plot(tstart1:1:tend1,smooth(param_Ks2(:,1),5),'k--')
+    set(line1,'LineWidth',3)
+
+    ylabel('K')
+    set(gca,'FontSize',24)
+    set(gcf,'color','white')
+    xlabel('Time')
+end
 
 % <=============================================================================================>
-% <================= Save file with parameters from rolling window analysis ====================================>
+% <================= Save csv file with parameters from rolling window analysis ====================================>
 % <=============================================================================================>
 
 rollparams=[(tstart1:1:tend1)' param_rs2(:,1:end) param_ps2(:,1:end) param_as2(:,1:end) param_Ks2(:,1:end)];
@@ -647,7 +649,7 @@ writetable(T,strcat('./output/parameters-rollingwindow-flag1-',num2str(flag1),'-
 
 % <========================================================================================>
 % <========================================================================================>
-% <========================== Save file with calibration performance metrics ============================>
+% <========================== Save csv file with calibration performance metrics ============================>
 % <========================================================================================>
 % <========================================================================================>
 
@@ -659,7 +661,7 @@ writetable(T,strcat('./output/performance-calibration-flag1-',num2str(flag1),'-f
 
 % <========================================================================================>
 % <========================================================================================>
-% <========================== Save file with forecasting performance metrics ============================>
+% <========================== Save csv file with forecasting performance metrics ============================>
 % <========================================================================================>
 % <========================================================================================>
 
