@@ -19,7 +19,7 @@
 <ul>
     <li>fitting models using different parameter estimation approaches (least-squares, maximum likelihood estimation),</li>
     <li>fitting models using assuming different error structures (normal, Poisson, negagive binomial),</li>
-    <li>user can select among different growth models including the generalized-growth model (GGM), generalized-logistic model (GLM), Richards model, generalized Richards model (GRM), and the Gompertz model),</li>
+    <li>user can select among different growth models including the generalized-growth model (GGM), generalized-logistic growth model (GLM), Richards model, and the generalized Richards model (GRM),</li>
     <li> User can conduct multiple fits of the model to the data through a rolling-window analysis </li>
     
 </ul>
