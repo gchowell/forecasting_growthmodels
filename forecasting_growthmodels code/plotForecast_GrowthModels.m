@@ -407,7 +407,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
         axis([timevect1(1) timevect2(end) 0 max(quantile(forecast_model12',0.975))*1.5])
 
-        %xlabel('Time (days)')
+        %xlabel('Time')
         %ylabel(strcat(caddisease,{' '},datatype))
 
         set(gca,'FontSize',16)
@@ -464,7 +464,7 @@ for i=tstart1:1:tend1  %rolling window analysis
             set(line1,'LineWidth',4)
             hold on
 
-            xlabel('Forecasting horizon (days)')
+            xlabel('Forecasting horizon')
             ylabel('MAE')
             hold on
             set(gca,'FontSize', 24);
@@ -476,7 +476,7 @@ for i=tstart1:1:tend1  %rolling window analysis
             set(line1,'LineWidth',4)
             hold on
 
-            xlabel('Forecasting horizon (days)')
+            xlabel('Forecasting horizon')
             ylabel('MSE')
             hold on
             set(gca,'FontSize', 24);
@@ -488,7 +488,7 @@ for i=tstart1:1:tend1  %rolling window analysis
             set(line1,'LineWidth',4)
             hold on
 
-            xlabel('Forecasting horizon (days)')
+            xlabel('Forecasting horizon')
             ylabel('Coverage rate of the 95% PI')
             hold on
             set(gca,'FontSize', 24);
@@ -501,7 +501,7 @@ for i=tstart1:1:tend1  %rolling window analysis
             set(line1,'LineWidth',4)
             hold on
 
-            xlabel('Forecasting horizon (days)')
+            xlabel('Forecasting horizon')
             ylabel('WIS')
             hold on
             set(gca,'FontSize', 24);
@@ -552,7 +552,7 @@ if length(tstart1:1:tend1)>1
     figure(400)
     for c=1:cols
         subplot(rows,cols,(rows-1)*cols+c)
-        xlabel('Time (days)')
+        xlabel('Time')
     end
 
     subplot(rows,cols,1)

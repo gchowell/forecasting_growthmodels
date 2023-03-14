@@ -1,4 +1,4 @@
-function plotFit_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass)
+function quantilescs=plotFit_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass)
 
 % <============================================================================>
 % < Author: Gerardo Chowell  ==================================================>
@@ -380,7 +380,7 @@ if printscreen1
         figure(400)
         for c=1:cols
             subplot(rows,cols,(rows-1)*cols+c)
-            xlabel('Time (days)')
+            xlabel('Time')
         end
 
         subplot(rows,cols,1)
@@ -413,8 +413,8 @@ if tend1>tstart1
     plot(tstart1:1:tend1,param_rs(:,2),'b--')
     plot(tstart1:1:tend1,param_rs(:,3),'b--')
 
-    line1=plot(tstart1:1:tend1,smooth(param_rs(:,1),5),'k--')
-    set(line1,'LineWidth',3)
+    %line1=plot(tstart1:1:tend1,smooth(param_rs(:,1),5),'k--')
+    %set(line1,'LineWidth',3)
 
 
     ylabel('r')
@@ -428,8 +428,8 @@ if tend1>tstart1
     plot(tstart1:1:tend1,param_as(:,2),'b--')
     plot(tstart1:1:tend1,param_as(:,3),'b--')
 
-    line1=plot(tstart1:1:tend1,smooth(param_as(:,1),5),'k--')
-    set(line1,'LineWidth',3)
+    %line1=plot(tstart1:1:tend1,smooth(param_as(:,1),5),'k--')
+    %set(line1,'LineWidth',3)
 
     ylabel('a')
     set(gca,'FontSize',24)
@@ -442,8 +442,8 @@ if tend1>tstart1
     plot(tstart1:1:tend1,param_ps(:,2),'b--')
     plot(tstart1:1:tend1,param_ps(:,3),'b--')
 
-    line1=plot(tstart1:1:tend1,smooth(param_ps(:,1),5),'k--')
-    set(line1,'LineWidth',3)
+    %line1=plot(tstart1:1:tend1,smooth(param_ps(:,1),5),'k--')
+    %set(line1,'LineWidth',3)
 
 
     ylabel('p')
@@ -458,8 +458,8 @@ if tend1>tstart1
     plot(tstart1:1:tend1,param_Ks(:,3),'b--')
 
 
-    line1=plot(tstart1:1:tend1,smooth(param_Ks(:,1),5),'k--')
-    set(line1,'LineWidth',3)
+    %line1=plot(tstart1:1:tend1,smooth(param_Ks(:,1),5),'k--')
+    %set(line1,'LineWidth',3)
 
     ylabel('K')
     set(gca,'FontSize',24)

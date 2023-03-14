@@ -2,7 +2,7 @@
 % < Author: Gerardo Chowell  ==================================================>
 % <============================================================================>
 
-function [cadfilename1,caddisease,datatype, dist1, numstartpoints,M,flag1,model_name1,fixI0,getperformance,forecastingperiod, printscreen1,windowsize1,tstart1,tend1]=options_forecast
+function [cadfilename1,caddisease,datatype, dist1, numstartpoints,B,flag1,model_name1,fixI0,getperformance,forecastingperiod, printscreen1,windowsize1,tstart1,tend1]=options_forecast
 
 % <============================================================================>
 % <=================== Declare global variables =======================================>
@@ -62,7 +62,7 @@ end
 
 numstartpoints=8; % Number of initial guesses for optimization procedure using MultiStart
 
-M=200; % number of bootstrap realizations to characterize parameter uncertainty
+B=300; % number of bootstrap realizations to characterize parameter uncertainty
 
 % <==============================================================================>
 % <============================== Growth model =====================================>
@@ -74,9 +74,9 @@ GRM=2;  % 2 = GRM
 LM=3;   % 3 = LM
 RICH=4; % 4 = Richards
 
-flag1=GLM;  % Growth model considered in the epidemic trajectory
+flag1=RICH;  % Growth model considered in the epidemic trajectory
 
-model_name1='GLM';  % String with the name of the model
+model_name1='Richards model';  % String with the name of the model
 
 fixI0=1; % 0=Estimate the initial number of cases; 1 = Fix the initial number of cases according to the first data point in the time series
 

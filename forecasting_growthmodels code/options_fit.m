@@ -1,7 +1,7 @@
 % <============================================================================>
 % < Author: Gerardo Chowell  ==================================================>
 % <============================================================================>
-function [cadfilename1,caddisease,datatype, dist1, numstartpoints,M,flag1,model_name1,fixI0,printscreen1,windowsize1,tstart1,tend1]=options_fit
+function [cadfilename1,caddisease,datatype, dist1, numstartpoints,B,flag1,model_name1,fixI0,printscreen1,windowsize1,tstart1,tend1]=options_fit
 
 % <============================================================================>
 % <=================== Declare global variables =======================================>
@@ -62,7 +62,7 @@ end
 
 numstartpoints=10; % Number of initial guesses for optimization procedure using MultiStart
 
-M=300; % number of bootstrap realizations to characterize parameter uncertainty
+B=300; % number of bootstrap realizations to characterize parameter uncertainty
 
 % <==============================================================================>
 % <============================== Growth model =====================================>
