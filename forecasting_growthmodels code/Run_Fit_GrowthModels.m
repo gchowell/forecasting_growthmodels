@@ -206,7 +206,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     %pause
 
-    [AICc,part1,part2,numparams]=getAICc(method1,flag1,fixI0,fval,length(data1(:,1)))
+    [AICc,part1,part2,numparams]=getAICc(method1,dist1,flag1,fixI0,fval,length(data1(:,1)))
 
    AICcs=[AICcs;[i AICc]];
    
@@ -401,8 +401,12 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     % Plot results
 
-    UB1=quantile(forecast_model12',0.025)';
-    LB1=quantile(forecast_model12',0.975)';
+    LB1=quantile(forecast_model12',0.025)';
+    LB1=(LB1>=0).*LB1;
+
+    UB1=quantile(forecast_model12',0.975)';
+    UB1=(UB1>=0).*UB1;
+    
     median1=median(forecast_model12,2);
 
     if printscreen1
