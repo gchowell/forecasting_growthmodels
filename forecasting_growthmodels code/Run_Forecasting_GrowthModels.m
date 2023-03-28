@@ -36,7 +36,7 @@ datatype=datatype_INP;
 % <=========================== Parameter estimation ============================>
 % <=============================================================================>
 
-method1=0; % Type of estimation method: 0 = LSQ
+%method1=0; % Type of estimation method: 0 = LSQ
 
 d=1;
 
