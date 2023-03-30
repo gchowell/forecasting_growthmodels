@@ -60,7 +60,6 @@ M=M_INP; % number of bootstrap realizations to characterize parameter uncertaint
 % <============================== Growth model =====================================>
 % <==============================================================================>
 
-
 GGM=0;  % 0 = GGM
 GLM=1;  % 1 = GLM
 GRM=2;  % 2 = GRM
@@ -106,7 +105,7 @@ printscreen1=printscreen1_INP;  % print plots with the results
 
 if exist('tstart1_pass','var')==1 & isempty(tstart1_pass)==0
 
-   tstart1=tstart1_pass;
+    tstart1=tstart1_pass;
 
 else
     tstart1=tstart1_INP;
@@ -194,22 +193,24 @@ for i=tstart1:1:tend1  %rolling window analysis
     params0=initialParams(datac,flag1);
 
 
-    [P_model1d,residual_model1, fitcurve_model1d, forecastcurve_model1, timevect2, initialguess,fval]=fit_model(data1,params0,1,numstartpoints,DT,flag1,0);
+    [P_model1d,residual_model1, fitcurve_model1d, forecastcurve_model1, timevect2, initialguess,fval]=fit_model(data1,params0,fixI0,numstartpoints,DT,flag1,0);
 
-    dist1
-%     plot(timevect1,data1(:,2),'ko')
-%     hold on
-%     plot(timevect1, fitcurve_model1d,'r--')
-% 
-%     xlabel('Time')
-%     ylabel('Cases')
-
+    %     P_model1d
+    %     dist1
+    %     plot(timevect1,data1(:,2),'ko')
+    %     hold on
+    %     plot(timevect1, fitcurve_model1d,'r--')
+    %     P_model1d
+    %     fitcurve_model1d
+    %
+    %     xlabel('Time')
+    %     ylabel('Cases')
     %pause
 
     [AICc,part1,part2,numparams]=getAICc(method1,dist1,flag1,fixI0,fval,length(data1(:,1)))
 
-   AICcs=[AICcs;[i AICc]];
-   
+    AICcs=[AICcs;[i AICc]];
+
     if (method1==0 & dist1==1)
 
         factor1=1;
@@ -266,21 +267,15 @@ for i=tstart1:1:tend1  %rolling window analysis
     % <======= Derive parameter uncertainty of the best fitting models and save results ================================>
     % <===========================================================================================>
 
-
     fit_model1=[];
     forecast_model1=[];
     forecast_model12=[];
 
     Phatss_model1=zeros(M,7);
 
-    f_model1_sims=[];
-
     for j=1:M
 
         f_model1_sim=AddErrorStructure(cumsum(fitcurve_model1d),1,dist1,factor1,d);
-
-        f_model1_sims=[f_model1_sims f_model1_sim];
-
 
         % Fit model1 to bootstrap data
         data1=[timevect1 f_model1_sim];
@@ -289,11 +284,20 @@ for i=tstart1:1:tend1  %rolling window analysis
         params0=P_model1d;
 
         [P_model1,residual_model1 fitcurve_model1 forecastcurve_model1 timevect2]=fit_model(data1,params0,fixI0,2,DT,flag1,forecastingperiod);
-  
+
         fit_model1=[fit_model1 fitcurve_model1];
 
-        %P_model1
-        %pause
+        %
+        %         figure(200)
+        %         subplot(6,6,j)
+        %         plot(timevect1,data1(:,2),'ko')
+        %         hold on
+        %         plot(timevect1, forecastcurve_model1,'b-')
+        %         forecastcurve_model1
+        %         xlabel('Time')
+        %         ylabel('Cases')
+        %
+
 
         forecast_model1=[forecast_model1 forecastcurve_model1];
 
@@ -307,9 +311,17 @@ for i=tstart1:1:tend1  %rolling window analysis
 
         end
 
+        %         figure(201)
+        %         subplot(6,6,j)
+        %         plot(forecast_model12)
+        %         P_model1
+        %pause
+
+
         Phatss_model1(j,:)=P_model1;
 
     end %end bootstrapping loop
+
 
     data1=[timevect1 data1(:,2)];
 

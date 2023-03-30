@@ -62,7 +62,7 @@ end
 
 numstartpoints=10; % Number of initial guesses for optimization procedure using MultiStart
 
-B=300; % number of bootstrap realizations to characterize parameter uncertainty
+B=30; % number of bootstrap realizations to characterize parameter uncertainty
 
 % <==============================================================================>
 % <============================== Growth model =====================================>
@@ -74,9 +74,9 @@ GRM=2;  % 2 = GRM
 LM=3;   % 3 = LM
 RICH=4; % 4 = Richards
 
-flag1=GLM; % Growth model considered in the epidemic trajectory
+flag1=GGM; % Growth model considered in the epidemic trajectory
 
-model_name1='GLM';  % A string provided by the user for the name of the model
+model_name1='GGM';  % A string provided by the user for the name of the model
 
 fixI0=1; % 0=Estimate the initial number of cases; 1 = Fix the initial number of cases according to the first data point in the time series
 
@@ -86,7 +86,7 @@ printscreen1=1;  % flag (1/0) to indicate whether we want to print plots with th
 % <========================== Parameters of the rolling window analysis =========================>
 % <==================================================================================>
 
-windowsize1=32;  % moving window size
+windowsize1=8;  % moving window size
 
 tstart1=1; % time point for the start of rolling window analysis
 

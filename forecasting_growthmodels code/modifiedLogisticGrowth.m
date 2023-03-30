@@ -8,7 +8,7 @@ dx=zeros(1,1);
 
 if flag1==0 % GGM
     
-    dx(1,1)=r*x(1,1).^p;
+    dx(1,1)=r*(x(1,1).^p);
     
 elseif flag1==1 % GLM
     

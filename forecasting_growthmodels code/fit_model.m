@@ -60,15 +60,15 @@ if fixI0==1
     switch flag1
 
         case 0   %GGM
-            LB=[0.001  0.001 1 20 I0 LBe];
-            UB=[500  1 1 20 I0 UBe];
+            LB=[0.001  0.01 1 0 I0 LBe];
+            UB=[500  1 1 0 I0 UBe];
 
         case 1 % GLM
-            LB=[0  0 1 20 I0 LBe];
+            LB=[0  0.01 1 20 I0 LBe];
             UB=[1000  1 1 Kmax I0 UBe];
 
         case 2 %GRM
-            LB=[0  0 0 20 I0 LBe];
+            LB=[0  0.01 0 20 I0 LBe];
             UB=[2000  1 10 Kmax I0 UBe];
 
         case 3 %Logistic
@@ -89,16 +89,16 @@ else
     switch flag1
 
         case 0
-            LB=[0.001 0.001 1 20 1 LBe];
-            UB=[500  1 1 20 max(data1(:,2)) UBe];
+            LB=[0.001 0.01 1 0 1 LBe];
+            UB=[500  1 1 0 max(data1(:,2)) UBe];
 
         case 1
-            LB=[0  0 1 20 1 LBe];
+            LB=[0  0.01 1 20 1 LBe];
 
             UB=[500  1 10 Kmax max(data1(:,2)) UBe];
 
         case 2
-            LB=[0  0 0 20 1 LBe];
+            LB=[0  0.01 0 20 1 LBe];
             UB=[500  1 10 Kmax max(data1(:,2)) UBe];
 
         case 3
@@ -119,30 +119,29 @@ else
 end
 
 
-if 0 % USE LSQCURVEFIT (Non-linear least squares)
-
-    options=optimset('tolfun',10^-5,'TolX',10^-5,'MaxFunEvals',3200,'MaxIter',3200, 'algorithm','trust-region-reflective');
-
-    [P,resnorm,residual,exitflag,output,lambda,J]=lsqcurvefit(@plotModifiedLogisticGrowth1,z,timevect,data1(:,2),LB,UB,options);
-
-    f=@plotModifiedLogisticGrowth1;
-
-    problem = createOptimProblem('lsqcurvefit','x0',z,'objective',f,'lb',LB,'ub',UB,'xdata',timevect,'ydata',data1(:,2),'options',options);
-
-    %ms = MultiStart('PlotFcns',@gsplotbestf,'Display','final');
-
-    ms = MultiStart('Display','final');
-
-    ms = MultiStart(ms,'StartPointsToRun','bounds')
-
-    [P,errormulti] = run(ms,problem,20)
-
-    z=P;
-
-    [P,resnorm,residual,exitflag,output,lambda,J]=lsqcurvefit(@plotModifiedLogisticGrowth1,z,timevect,data1(:,2),LB,UB,options);
-
-
-end
+% if 0 % USE LSQCURVEFIT (Non-linear least squares)
+% 
+%     options=optimset('tolfun',10^-5,'TolX',10^-5,'MaxFunEvals',3200,'MaxIter',3200, 'algorithm','trust-region-reflective');
+% 
+%     [P,resnorm,residual,exitflag,output,lambda,J]=lsqcurvefit(@plotModifiedLogisticGrowth1,z,timevect,data1(:,2),LB,UB,options);
+% 
+%     f=@plotModifiedLogisticGrowth1;
+% 
+%     problem = createOptimProblem('lsqcurvefit','x0',z,'objective',f,'lb',LB,'ub',UB,'xdata',timevect,'ydata',data1(:,2),'options',options);
+% 
+%     %ms = MultiStart('PlotFcns',@gsplotbestf,'Display','final');
+% 
+%     ms = MultiStart('Display','final');
+% 
+%     ms = MultiStart(ms,'StartPointsToRun','bounds')
+% 
+%     [P,errormulti] = run(ms,problem,20)
+% 
+%     z=P;
+% 
+%     [P,resnorm,residual,exitflag,output,lambda,J]=lsqcurvefit(@plotModifiedLogisticGrowth1,z,timevect,data1(:,2),LB,UB,options);
+% 
+% end
 
 %A=[];      % We are using fmincon, but using none of the constraint options
 %b=[];
@@ -191,6 +190,7 @@ while flagg<0
     end
 
     initialguess=[initialguess;z];
+
     %z
     %list(tpoints)
 
@@ -224,7 +224,6 @@ fitcurve=abs([F(1,1);diff(F(:,1))]);
 residual=fitcurve-ydata;
 
 %fitcurve=residual+data1(:,2);
-
 
 if forecastingperiod<1
 
