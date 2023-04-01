@@ -29,7 +29,5 @@ elseif flag1==4 %Richards
 elseif flag1==5 % Gompertz
     
     dx(1,1)=r*x*exp(-a*t);
-    
-    %dx(1,1)=r*x*(log(K/x)).^0.6;
-        
+            
 end

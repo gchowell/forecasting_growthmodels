@@ -48,9 +48,6 @@ switch method1
         LBe=[10^-8 0.6]; %d>=1
         UBe=[10^5 10^3];
 
-        %LBe=[10^-8 0.5];
-        %UBe=[10^5 0.5];
-
 end
 
 Kmax=100000000000;
@@ -80,8 +77,8 @@ if fixI0==1
             UB=[2000  1 10 Kmax I0 UBe];
 
         case 5 % Gompertz
-            LB=[0  1 0 20 I0 LBe];
-            UB=[params0(1)+5  1 params0(3)+5 Kmax I0 UBe];
+            LB=[0  1 0 1 I0 LBe];
+            UB=[params0(1)+5  1 params0(3)+5 1 I0 UBe];
 
     end
 
@@ -110,9 +107,8 @@ else
             UB=[500  1 10 Kmax max(data1(:,2)) UBe];
 
         case 5
-            LB=[0  1 0 20 1 LBe];
-            UB=[params0(1)+5  1 params0(3)+5 Kmax max(data1(:,2)) UBe]
-
+            LB=[0  1 0 1 1 LBe];
+            UB=[params0(1)+5  1 params0(3)+5 1 max(data1(:,2)) UBe]
 
     end
 
@@ -234,9 +230,7 @@ else
 
     timevect2=(data1(1,1):data1(end,1)+forecastingperiod)*DT;
 
-    IC=I0_hat;
-
-    [~,F]=ode15s(@modifiedLogisticGrowth,timevect2,IC,[],r_hat,p_hat,a_hat,K_hat,flag1);
+    [~,F]=ode15s(@modifiedLogisticGrowth,timevect2,I0_hat,[],r_hat,p_hat,a_hat,K_hat,flag1);
 
     forecastcurve=abs([F(1,1);diff(F(:,1))]);
 

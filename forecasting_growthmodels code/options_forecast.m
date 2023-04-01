@@ -60,9 +60,9 @@ switch method1
         dist1=5;
 end
 
-numstartpoints=8; % Number of initial guesses for optimization procedure using MultiStart
+numstartpoints=10; % Number of initial guesses for optimization procedure using MultiStart
 
-B=300; % number of bootstrap realizations to characterize parameter uncertainty
+B=30; % number of bootstrap realizations to characterize parameter uncertainty
 
 % <==============================================================================>
 % <============================== Growth model =====================================>
@@ -73,10 +73,11 @@ GLM=1;  % 1 = GLM
 GRM=2;  % 2 = GRM
 LM=3;   % 3 = LM
 RICH=4; % 4 = Richards
+GOM=5; % 5 = Gompertz
 
-flag1=RICH;  % Growth model considered in the epidemic trajectory
+flag1=GOM;  % Growth model considered in the epidemic trajectory
 
-model_name1='Richards model';  % String with the name of the model
+model_name1='GOM';  % String with the name of the model
 
 fixI0=1; % 0=Estimate the initial number of cases; 1 = Fix the initial number of cases according to the first data point in the time series
 
@@ -94,7 +95,7 @@ printscreen1=1;  % flag (1/0) variable to indicate whether we want to print plot
 % <========================== Parameters of the rolling window analysis =========================>
 % <==================================================================================>
 
-windowsize1=10;  % moving window size
+windowsize1=20;  % moving window size
 tstart1=1; % time point for the start of rolling window analysis
-tend1=1;  %time point for the end of the rolling window analysis
+tend1=2;  %time point for the end of the rolling window analysis
 
