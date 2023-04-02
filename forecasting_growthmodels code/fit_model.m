@@ -108,7 +108,7 @@ else
 
         case 5
             LB=[0  1 0 1 1 LBe];
-            UB=[params0(1)+5  1 params0(3)+5 1 max(data1(:,2)) UBe]
+            UB=[params0(1)+5  1 params0(3)+5 1 max(data1(:,2)) UBe];
 
     end
 
