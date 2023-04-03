@@ -62,15 +62,21 @@ MSECS=[MSECS;[  MSEc]];
 MAECS=[MAECS;[  MAEc]];
 
 % forecasting period %%%%%
+
 RMSEFS=[]; MSEFS=[]; MAEFS=[]; PIFS=[]; MISFS=[];
 
 if forecastingperiod>0
-    
+
+    dataFperiod=tf2+1:tf2+forecastingperiod;
+    if length(datalatest)<dataFperiod(end)
+        warning("forecasting period is too long to evaluate with available data")
+        return
+    end
+
     for forecastingperiod1=1:1:forecastingperiod
         
         dataFperiod=tf2+1:tf2+forecastingperiod1;
-        
-        
+
         %yfmean=plims(curvesforecasts1(tf2+1:end,:)',0.5)';
         %yfmean=mean(curvesforecasts1(tf2+1:end,:),2);
         yfmean=median(curvesforecasts1(dataFperiod,:),2);

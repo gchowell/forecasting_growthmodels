@@ -18,7 +18,7 @@ global method1 % Parameter estimation method
 % <=================== Load parameter values supplied by user =================>
 % <============================================================================>
 
-[cadfilename1_INP,caddisease_INP,datatype_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP, printscreen1_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_fit;
+[cadfilename1_INP,caddisease_INP,datatype_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_fit;
 
 % <============================================================================>
 % <================================ Datasets properties ==============================>
@@ -96,8 +96,6 @@ end
 getperformance=1; % flag or indicator variable (1/0) to calculate forecasting performance or not
 
 forecastingperiod=0; %forecast horizon (number of data points ahead)
-
-printscreen1=printscreen1_INP;  % print plots with the results
 
 % <==================================================================================>
 % <========================== Parameters of the rolling window analysis =========================>
@@ -421,7 +419,7 @@ for i=tstart1:1:tend1  %rolling window analysis
     
     median1=median(forecast_model12,2);
 
-    if printscreen1
+    if 1
 
 
         % <========================================================================================>
@@ -588,6 +586,4 @@ rollparams=[(tstart1:1:tend1)' param_rs(:,1:end) param_ps(:,1:end) param_as(:,1:
 T = array2table(rollparams);
 T.Properties.VariableNames(1:16) = {'time','r mean','r LB','r UB','p mean','p LB','p UB','a mean','a LB','a UB','K0 mean','K0 LB','K0 UB','I0 mean','I0 LB','I0 UB'};
 writetable(T,strcat('./output/parameters-rollingwindow-flag1-',num2str(flag1),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
-
-
 

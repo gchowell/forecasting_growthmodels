@@ -74,15 +74,19 @@ end %y
 
 WISC=mean(WISC);
 
-
-%Forecasting period
-
 WISFS=[];
 
 quantilesf1=zeros(forecastingperiod,length(alphaquantiles));
 
 if forecastingperiod>0
-    
+
+    %Forecasting period
+    dataFperiod=tf2+1:tf2+forecastingperiod;
+    if length(datalatest)<dataFperiod(end)
+        warning("forecasting period is too long to evaluate with available data")
+        return
+    end
+
     for forecastingperiod1=1:1:forecastingperiod
         
         dataFperiod=tf2+1:tf2+forecastingperiod1;

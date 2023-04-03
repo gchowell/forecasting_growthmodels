@@ -19,7 +19,7 @@ global method1 % Parameter estimation method
 % <=================== Load parameter values supplied by user =================>
 % <============================================================================>
 
-[cadfilename1_INP,caddisease_INP,datatype_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP,printscreen1_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_fit;
+[cadfilename1_INP,caddisease_INP,datatype_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_fit;
 
 
 % <============================================================================>
@@ -109,8 +109,6 @@ if strcmp('CUMULATIVE',upper(cadfilename1(1:10)))==1
 
 end
 
-printscreen1=printscreen1_INP;  % print plots with the results
-
 % <==================================================================================>
 % <========================== Parameters of the rolling window analysis =========================>
 % <==================================================================================>
@@ -177,7 +175,7 @@ for i=tstart1:1:tend1 %rolling window analysis
 
     median1=median(forecast_model12,2);
 
-    if printscreen1
+    if 1
 
         figure(101+i)
         subplot(2,4,1)
@@ -310,7 +308,7 @@ for i=tstart1:1:tend1 %rolling window analysis
     T.Properties.VariableNames(1:5) = {'time','data','median','LB','UB'};
     writetable(T,strcat('./output/Fit-flag1-',num2str(flag1),'-tstart-',num2str(i),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 
-    if printscreen1
+    if 1
 
        if length(tstart1:1:tend1)>1
         figure(400)
@@ -366,7 +364,6 @@ for i=tstart1:1:tend1 %rolling window analysis
         set(gca,'FontSize',16)
         set(gcf,'color','white')
 
-
         cc1=cc1+1;
        end
 
@@ -374,7 +371,7 @@ for i=tstart1:1:tend1 %rolling window analysis
 
 end
 
-if printscreen1
+if 1
 
     if length(tstart1:1:tend1)>1
         figure(400)
@@ -482,12 +479,13 @@ writetable(T,strcat('./output/performance-calibration-flag1-',num2str(flag1),'-f
 
 
 % <=============================================================================================>
-% <================= Save file with parameters from rolling window analysis ====================================>
+% <================= Save csv file with parameters from rolling window analysis ====================================>
 % <=============================================================================================>
 
-rollparams=[(tstart1:1:tend1)' param_rs(:,1:end) param_ps(:,1:end) param_as(:,1:end) param_Ks(:,1:end)];
+rollparams=[(tstart1:1:tend1)' param_rs(:,1:end) param_ps(:,1:end) param_as(:,1:end) param_Ks(:,1:end) param_I0s(:,1:end)];
 
 T = array2table(rollparams);
-T.Properties.VariableNames(1:13) = {'time','r mean','r LB','r UB','p mean','p LB','p UB','a mean','a LB','a UB','K0 mean','K0 LB','K0 UB'};
+T.Properties.VariableNames(1:16) = {'time','r mean','r LB','r UB','p mean','p LB','p UB','a mean','a LB','a UB','K0 mean','K0 LB','K0 UB','I0 mean','I0 LB','I0 UB'};
 writetable(T,strcat('./output/parameters-rollingwindow-flag1-',num2str(flag1),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+
 

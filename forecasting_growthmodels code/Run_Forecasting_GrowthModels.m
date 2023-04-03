@@ -18,7 +18,7 @@ global method1 % Parameter estimation method
 % <=================== Load parameter values supplied by user =================>
 % <============================================================================>
 
-[cadfilename1_INP,caddisease_INP,datatype_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP,getperformance_INP,forecastingperiod_INP, printscreen1_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_forecast;
+[cadfilename1_INP,caddisease_INP,datatype_INP, dist1_INP, numstartpoints_INP,M_INP,flag1_INP,model_name1_INP,fixI0_INP,getperformance_INP,forecastingperiod_INP,windowsize1_INP,tstart1_INP,tend1_INP]=options_forecast;
    
 % <============================================================================>
 % <================================ Datasets properties ==============================>
@@ -48,7 +48,6 @@ dist1=dist1_INP; %Define dist1 which is the type of error structure:
 % MLE (Neg Binomial)=3, with VAR=mean+alpha*mean;
 % MLE (Neg Binomial)=4, with VAR=mean+alpha*mean^2;
 % MLE (Neg Binomial)=5, with VAR=mean+alpha*mean^d;
-
 
 numstartpoints=numstartpoints_INP; % Number of initial guesses for optimization procedure using MultiStart
 
@@ -102,8 +101,6 @@ else
     forecastingperiod=forecastingperiod_INP;
 
 end
-
-printscreen1=printscreen1_INP;  % print plots with the results
 
 % <==================================================================================>
 % <========================== Parameters of the rolling window analysis =========================>
@@ -196,7 +193,7 @@ for i=tstart1:1:tend1  %rolling window analysis
         [length(data_all) windowsize1+forecastingperiod]
         
         error('Length of time series data is too short to evaluate the forecasting period indicated in <forecastingperiod>. Consider setting <getperformance> to 0 in options_forecast.m or extending the length of the time series.')
-    
+        
     end
 
 
@@ -328,7 +325,7 @@ for i=tstart1:1:tend1  %rolling window analysis
     % <========== Get forecast performance metrics for the model (if getperformance=1) =====================================>
     % <==================================================================================================>
 
-    if getperformance
+    if 1
 
         [RMSECS_model1 MSECS_model1 MAECS_model1  PICS_model1 MISCS_model1 RMSEFS_model1 MSEFS_model1 MAEFS_model1 PIFS_model1 MISFS_model1]=computeforecastperformance(data1,datalatest,forecast_model1,forecast_model12,forecastingperiod);
 
@@ -344,7 +341,7 @@ for i=tstart1:1:tend1  %rolling window analysis
         WISCSS=[WISCSS;[WISC_model1(end,end)]];
 
         % store metrics for short-term forecasts
-        if forecastingperiod>0
+        if forecastingperiod>0 && isempty(RMSEFS_model1)==0
 
             RMSEFSS=[RMSEFSS;[RMSEFS_model1(end,end)]];
             MSEFSS=[MSEFSS;[MSEFS_model1(end,end)]];
@@ -372,7 +369,7 @@ for i=tstart1:1:tend1  %rolling window analysis
     % <========================================================================================>
     % <================================ Parameter estimates =========================================>
     % <========================================================================================>
-    
+
 
     % estimate mean and 95% CI from distribution of parameter estimates
     param_r=[median(Phatss_model1(:,1)) quantile(Phatss_model1(:,1),0.025) quantile(Phatss_model1(:,1),0.975)];
@@ -415,16 +412,16 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     UB1=quantile(forecast_model12',0.975)';
     UB1=(UB1>=0).*UB1;
-    
+
     median1=median(forecast_model12,2);
 
-    if printscreen1
+    if 1
 
 
-    % <========================================================================================>
-    % <======================= Plot empirical distributions of the parameters ========================>
-    % <========================================================================================>
-    
+        % <========================================================================================>
+        % <======================= Plot empirical distributions of the parameters ========================>
+        % <========================================================================================>
+
         figure(100+i)
         subplot(2,4,1)
         hist(Phatss_model1(:,1))
@@ -604,7 +601,7 @@ writetable(T,strcat('./output/performance-calibration-flag1-',num2str(flag1),'-f
 % <========================================================================================>
 % <========================================================================================>
 
-if forecastingperiod>0
+if getperformance && forecastingperiod>0 && isempty(length(MAEFSS))==0
 
     performanceF=[(tstart1:1:tend1)' zeros(length(MAEFSS(:,1)),1)+forecastingperiod MAEFSS(:,1)  MSEFSS(:,1) PIFSS(:,1) WISFSS(:,1)];
 

@@ -2,7 +2,7 @@
 % < Author: Gerardo Chowell  ==================================================>
 % <============================================================================>
 
-function [cadfilename1,caddisease,datatype, dist1, numstartpoints,B,flag1,model_name1,fixI0,getperformance,forecastingperiod, printscreen1,windowsize1,tstart1,tend1]=options_forecast
+function [cadfilename1,caddisease,datatype, dist1, numstartpoints,B,flag1,model_name1,fixI0,getperformance,forecastingperiod,windowsize1,tstart1,tend1]=options_forecast
 
 % <============================================================================>
 % <=================== Declare global variables =======================================>
@@ -87,15 +87,13 @@ fixI0=1; % 0=Estimate the initial number of cases; 1 = Fix the initial number of
 
 getperformance=1; % flag or indicator variable (1/0) to calculate forecasting performance or not
 
-forecastingperiod=4; % forecast horizon (number of time units ahead)
-
-printscreen1=1;  % flag (1/0) variable to indicate whether we want to print plots with the results
+forecastingperiod=7; % forecast horizon (number of time units ahead)
 
 % <==================================================================================>
 % <========================== Parameters of the rolling window analysis =========================>
 % <==================================================================================>
 
 windowsize1=20;  % moving window size
-tstart1=1; % time point for the start of rolling window analysis
-tend1=2;  %time point for the end of the rolling window analysis
+tstart1=4; % time point for the start of rolling window analysis
+tend1=5;  %time point for the end of the rolling window analysis
 
