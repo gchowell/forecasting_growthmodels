@@ -43,7 +43,7 @@ switch method1
         UBe=[10^3 1];
     case 4
         LBe=[10^-8 1];
-        UBe=[10^3 1];
+        UBe=[10^5 1];
     case 5
         LBe=[10^-8 0.6]; %d>=1
         UBe=[10^5 10^3];
@@ -56,58 +56,66 @@ if fixI0==1
 
     switch flag1
 
+         case -1  %EXP
+            LB=[0.001  1 1 0 I0 LBe];
+            UB=[100  1 1 0 I0 UBe];
+
         case 0   %GGM
             LB=[0.001  0.01 1 0 I0 LBe];
             UB=[500  1 1 0 I0 UBe];
 
         case 1 % GLM
-            LB=[0  0.01 1 20 I0 LBe];
+            LB=[0.0001  0.01 1 20 I0 LBe];
             UB=[1000  1 1 Kmax I0 UBe];
 
         case 2 %GRM
-            LB=[0  0.01 0 20 I0 LBe];
+            LB=[0.0001  0.01 0 20 I0 LBe];
             UB=[2000  1 10 Kmax I0 UBe];
 
         case 3 %Logistic
-            LB=[0  1 1 20 I0 LBe];
+            LB=[0.0001  1 1 20 I0 LBe];
             UB=[2000  1 1 Kmax I0 UBe];
 
         case 4 % Richards
-            LB=[0  1 0 20 I0 LBe];
+            LB=[0.0001  1 0 20 I0 LBe];
             UB=[2000  1 10 Kmax I0 UBe];
 
         case 5 % Gompertz
-            LB=[0  1 0 1 I0 LBe];
+            LB=[0.0001  1 0 1 I0 LBe];
             UB=[params0(1)+5  1 params0(3)+5 1 I0 UBe];
 
     end
 
 else
+    
     switch flag1
+
+        case -1
+            LB=[0.001 1 1 0 1 LBe];
+            UB=[100  1 1 0 max(data1(:,2)) UBe];
 
         case 0
             LB=[0.001 0.01 1 0 1 LBe];
             UB=[500  1 1 0 max(data1(:,2)) UBe];
 
         case 1
-            LB=[0  0.01 1 20 1 LBe];
-
+            LB=[0.0001  0.01 1 20 1 LBe];
             UB=[500  1 10 Kmax max(data1(:,2)) UBe];
 
         case 2
-            LB=[0  0.01 0 20 1 LBe];
+            LB=[0.0001  0.01 0 20 1 LBe];
             UB=[500  1 10 Kmax max(data1(:,2)) UBe];
 
         case 3
-            LB=[0  1 1 20 1 LBe];
+            LB=[0.0001  1 1 20 1 LBe];
             UB=[500  1 10 Kmax max(data1(:,2)) UBe];
 
         case 4
-            LB=[0  1 0 20 1 LBe];
+            LB=[0.0001  1 0 20 1 LBe];
             UB=[500  1 10 Kmax max(data1(:,2)) UBe];
 
         case 5
-            LB=[0  1 0 1 1 LBe];
+            LB=[0.0001  1 0 1 1 LBe];
             UB=[params0(1)+5  1 params0(3)+5 1 max(data1(:,2)) UBe];
 
     end

@@ -6,7 +6,11 @@ function dx=modifiedLogisticGrowth(t,x,r,p,a,K,flag1)
 
 dx=zeros(1,1);
 
-if flag1==0 % GGM
+if flag1==-1 % EXP
+    
+    dx(1,1)=r*x(1,1);
+
+elseif flag1==0 % GGM
     
     dx(1,1)=r*(x(1,1).^p);
     

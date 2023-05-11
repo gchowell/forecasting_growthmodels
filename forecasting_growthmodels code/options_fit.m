@@ -59,7 +59,6 @@ switch method1
         dist1=5;
 end
 
-
 numstartpoints=10; % Number of initial guesses for optimization procedure using MultiStart
 
 B=30; % number of bootstrap realizations to characterize parameter uncertainty
@@ -68,6 +67,7 @@ B=30; % number of bootstrap realizations to characterize parameter uncertainty
 % <============================== Growth model =====================================>
 % <==============================================================================>
 
+EXP=-1;  % -1 = EXP
 GGM=0;  % 0 = GGM
 GLM=1;  % 1 = GLM
 GRM=2;  % 2 = GRM
@@ -75,9 +75,10 @@ LM=3;   % 3 = LM
 RICH=4; % 4 = Richards
 GOM=5; % 5 = Gompertz
 
-flag1=GOM; % Growth model considered in the epidemic trajectory
 
-model_name1='GOM';  % A string provided by the user for the name of the model
+flag1=GLM; % Growth model considered in the epidemic trajectory
+
+model_name1='GLM';  % A string provided by the user for the name of the model
 
 fixI0=0; % 0=Estimate the initial number of cases; 1 = Fix the initial number of cases according to the first data point in the time series
 

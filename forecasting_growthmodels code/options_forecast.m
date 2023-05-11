@@ -30,7 +30,7 @@ datatype='cases'; % string indicating the nature of the data (cases, deaths, hos
 % <=========================== Parameter estimation ============================>
 % <=============================================================================>
 
-method1=0; % Type of estimation method
+method1=4; % Type of estimation method
 
 % Nonlinear least squares (LSQ)=0,
 % MLE Poisson=1,
@@ -38,7 +38,7 @@ method1=0; % Type of estimation method
 % MLE (Neg Binomial)=4, with VAR=mean+alpha*mean^2;
 % MLE (Neg Binomial)=5, with VAR=mean+alpha*mean^d;
 
-dist1=0; % Define dist1 which is the type of error structure. See below:
+dist1=4; % Define dist1 which is the type of error structure. See below:
 
 %dist1=0; % Normal distribution to model error structure (method1=0)
 %dist1=1; % Poisson error structure (method1=0 OR method1=1)
