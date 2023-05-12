@@ -19,18 +19,19 @@ global method1 % Parameter estimation method
 % column corresponds to the temporal incicence data. If the time series file contains cumulative incidence count data, 
 % the name of the time series data file must start with "cumulative".
 
-cadfilename1='Most_Recent_Timeseries_US-CDC';  % Name of the data file containing the incidence curve
+cadfilename1='Most_Recent_Timeseries_US-CDC'; % String variable indicating the name of the data file containing the time-series data.
 
-caddisease='monkeypox'; % string indicating the name of the disease related to the time series data
+caddisease='monkeypox'; % string variable indicating the name of the disease or subject related to the time series data
 
-datatype='cases'; % string indicating the nature of the data (cases, deaths, hospitalizations, etc)
+datatype='cases'; % string variable indicating the nature of the data (cases, deaths, hospitalizations, etc)
 
 
 % <=============================================================================>
 % <=========================== Parameter estimation ============================>
 % <=============================================================================>
 
-method1=4; % Type of estimation method
+method1=0; % This integer variable indicates the parameter estimation method employed to estimate the parameters from data. 
+% The following estimation methods are available:
 
 % Nonlinear least squares (LSQ)=0,
 % MLE Poisson=1,
@@ -38,7 +39,8 @@ method1=4; % Type of estimation method
 % MLE (Neg Binomial)=4, with VAR=mean+alpha*mean^2;
 % MLE (Neg Binomial)=5, with VAR=mean+alpha*mean^d;
 
-dist1=4; % Define dist1 which is the type of error structure. See below:
+dist1=0; % This integer variable indicates the error structure assumptions. The following error structure assumptions are available:
+
 
 %dist1=0; % Normal distribution to model error structure (method1=0)
 %dist1=1; % Poisson error structure (method1=0 OR method1=1)
@@ -60,14 +62,16 @@ switch method1
         dist1=5;
 end
 
-numstartpoints=10; % Number of initial guesses for optimization procedure using MultiStart
+numstartpoints=10; % This variable defines the number of different initial guesses for the optimization procedure using Multistart 
+% in its search for the globally optimal set of parameters.
 
-B=30; % number of bootstrap realizations to characterize parameter uncertainty
+B=300; % Number of bootstrap realizations utilized to characterize parameter uncertainty.
 
 % <==============================================================================>
 % <============================== Growth model =====================================>
 % <==============================================================================>
 
+EXP=-1;  % -1 = EXP
 GGM=0;  % 0 = GGM
 GLM=1;  % 1 = GLM
 GRM=2;  % 2 = GRM
@@ -75,25 +79,28 @@ LM=3;   % 3 = LM
 RICH=4; % 4 = Richards
 GOM=5; % 5 = Gompertz
 
-flag1=GOM;  % Growth model considered in the epidemic trajectory
 
-model_name1='GOM';  % String with the name of the model
+flag1=GLM; % Integer variable indicating the growth model that will be fit to the time-series data.
 
-fixI0=1; % 0=Estimate the initial number of cases; 1 = Fix the initial number of cases according to the first data point in the time series
+model_name1='GLM';  % A string variable indicating the name of the model.
+
+fixI0=0; % Boolean variable indicating whether initial value in the time-series will be estimated or fix according to the first data point in the time series.
 
 % <==============================================================================>
 % <========================== Forecasting parameters ===================================>
 % <==============================================================================>
 
-getperformance=1; % flag or indicator variable (1/0) to calculate forecasting performance or not
+getperformance=1; % Boolean variable indicating whether the user wishes to calculate forecasting performance metrics or not
 
-forecastingperiod=7; % forecast horizon (number of time units ahead)
+forecastingperiod=7; % Integer variable indicating the forecast horizon (number of time units ahead)
 
 % <==================================================================================>
 % <========================== Parameters of the rolling window analysis =========================>
 % <==================================================================================>
 
-windowsize1=20;  % moving window size
-tstart1=4; % time point for the start of rolling window analysis
-tend1=5;  %time point for the end of the rolling window analysis
+windowsize1=20;  % Integer variable indicating the moving window size
+
+tstart1=4; % Integer variable indicating the time point for the start of rolling window analysis
+
+tend1=5;  %Integer variable indicating the time point for the end of the rolling window analysis
 
