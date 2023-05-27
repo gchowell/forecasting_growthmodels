@@ -414,8 +414,8 @@ for i=tstart1:1:tend1 %rolling window analysis
     line1=plot(line2(:,1),line2(:,2),'k--')
     set(line1,'LineWidth',2)
 
-    axis([timevect1(1) timevect2(end) 0 2])
-    line2=[timevect1(end) 0;timevect1(end) 2];
+    axis([timevect1(1) timevect2(end) 0 quantile(Rss(end,:),0.975)+4])
+    line2=[timevect1(end) 0;timevect1(end) quantile(Rss(end,:),0.975)+4];
     line1=plot(line2(:,1),line2(:,2),'k--')
     set(line1,'LineWidth',2)
 
