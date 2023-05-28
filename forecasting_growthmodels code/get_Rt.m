@@ -10,18 +10,20 @@ incidence1=interp1(timevect,incidence1,timevect2);
 
 timevect=timevect2;
 
+timevect3=timevect-min(timevect);
+
 ts=timevect;
 
 
 if type_GId1==1
-    
     
     b=var1/mean1;
     a=mean1/b;
     
     %a=4.2
     %b=0.68
-    prob1=gamcdf(timevect,a,b);
+    prob1=gamcdf(timevect3,a,b);
+
     prob1=diff(prob1)';
     
     sum(prob1);
@@ -31,8 +33,7 @@ end
 
 if type_GId1==2
     
-    
-    prob1=expcdf(timevect,mean1);
+    prob1=expcdf(timevect3,mean1);
     
     prob1=diff(prob1)';
     sum(prob1);
@@ -49,7 +50,6 @@ if type_GId1==3
     sum(prob1);
     
 end
-
 
 Rs=[];
 
@@ -76,3 +76,4 @@ for i=2:length(incidence1)
     Rs=[Rs;R1];
     
 end
+
