@@ -1,4 +1,4 @@
-function [quantilescs,quantilesfs]=plotForecast_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass,forecastingperiod_pass)
+function [param_Rt, quantilescs,quantilesfs]=plotForecast_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass,forecastingperiod_pass)
 
 % <============================================================================>
 % < Author: Gerardo Chowell  ==================================================>
