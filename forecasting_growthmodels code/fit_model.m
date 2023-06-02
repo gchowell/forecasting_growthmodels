@@ -92,31 +92,31 @@ else
 
         case -1
             LB=[0.001 1 1 0 1 LBe];
-            UB=[100  1 1 0 max(data1(:,2)) UBe];
+            UB=[100  1 1 0 sum(abs(data1(:,2))) UBe];
 
         case 0
             LB=[0.001 0.01 1 0 1 LBe];
-            UB=[500  1 1 0 max(data1(:,2)) UBe];
+            UB=[500  1 1 0 sum(abs(data1(:,2))) UBe];
 
         case 1
             LB=[0.0001  0.01 1 20 1 LBe];
-            UB=[500  1 10 Kmax max(data1(:,2)) UBe];
+            UB=[500  1 10 Kmax sum(abs(data1(:,2))) UBe];
 
         case 2
             LB=[0.0001  0.01 0 20 1 LBe];
-            UB=[500  1 10 Kmax max(data1(:,2)) UBe];
+            UB=[500  1 10 Kmax sum(abs(data1(:,2))) UBe];
 
         case 3
             LB=[0.0001  1 1 20 1 LBe];
-            UB=[500  1 10 Kmax max(data1(:,2)) UBe];
+            UB=[500  1 10 Kmax sum(abs(data1(:,2))) UBe];
 
         case 4
             LB=[0.0001  1 0 20 1 LBe];
-            UB=[500  1 10 Kmax max(data1(:,2)) UBe];
+            UB=[500  1 10 Kmax sum(abs(data1(:,2))) UBe];
 
         case 5
             LB=[0.0001  1 0 1 1 LBe];
-            UB=[params0(1)+5  1 params0(3)+5 1 max(data1(:,2)) UBe];
+            UB=[params0(1)+5  1 params0(3)+5 1 sum(abs(data1(:,2))) UBe];
 
     end
 

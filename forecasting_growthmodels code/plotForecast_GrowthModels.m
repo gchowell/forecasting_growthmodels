@@ -455,7 +455,8 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     if 1
 
-        if forecastingperiod>0
+        if forecastingperiod>0 & getperformance
+
             figure(200+i)
 
             subplot(2,2,1)
@@ -522,7 +523,7 @@ for i=tstart1:1:tend1  %rolling window analysis
         WISCSS2=[WISCSS2;[WISC_model1(end,end)]];
 
         % store metrics for short-term forecasts
-        if forecastingperiod>0
+        if forecastingperiod>0 & getperformance
 
             RMSEFSS2=[RMSEFSS2;[RMSEFS_model1(end,end)]];
             MSEFSS2=[MSEFSS2;[MSEFS_model1(end,end)]];

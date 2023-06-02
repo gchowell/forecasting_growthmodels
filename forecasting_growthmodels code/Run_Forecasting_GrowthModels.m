@@ -185,8 +185,8 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     % first data point cannot be zero
     if datac(1)==0
-        warning('first data point in the time series cannot be zero')
-        continue
+        warning('first data point in the time series is zero')
+        %continue
     end
 
     if getperformance & length(data_all)<windowsize1+forecastingperiod
