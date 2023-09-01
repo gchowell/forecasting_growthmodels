@@ -14,14 +14,14 @@ global method1 % Parameter estimation method
 % <============================================================================>
 % <================================ Datasets properties =======================>
 % <============================================================================>
-% The time series data file contains the incidence curve of the epidemic of interest. 
+% The time series data file contains the incidence curve of interest (new cases per unit of time). 
 % The first column corresponds to time index: 0,1,2, ... and the second
 % column corresponds to the temporal incicence data. If the time series file contains cumulative incidence count data, 
 % the name of the time series data file must start with "cumulative".
 
 cadfilename1='Most_Recent_Timeseries_US-CDC'; % String variable indicating the name of the data file containing the time-series data.
 
-caddisease='monkeypox'; % string variable indicating the name of the disease or subject related to the time series data
+caddisease='Mpox'; % string variable indicating the name of the disease or subject related to the time series data
 
 datatype='cases'; % string variable indicating the nature of the data (cases, deaths, hospitalizations, etc)
 
@@ -65,7 +65,7 @@ end
 numstartpoints=10; % This variable defines the number of different initial guesses for the optimization procedure using Multistart 
 % in its search for the globally optimal set of parameters.
 
-B=300; % Number of bootstrap realizations utilized to characterize parameter uncertainty.
+B=200; % Number of bootstrap realizations utilized to characterize parameter uncertainty.
 
 % <==============================================================================>
 % <============================== Growth model =====================================>
@@ -90,17 +90,35 @@ fixI0=0; % Boolean variable indicating whether initial value in the time-series 
 % <========================== Forecasting parameters ===================================>
 % <==============================================================================>
 
-getperformance=1; % Boolean variable indicating whether the user wishes to calculate forecasting performance metrics or not
+getperformance=0; % Boolean variable indicating whether the user wishes to calculate forecasting performance metrics or not
 
-forecastingperiod=7; % Integer variable indicating the forecast horizon (number of time units ahead)
+forecastingperiod=4; % Integer variable indicating the forecast horizon (number of time units ahead)
 
 % <==================================================================================>
 % <========================== Parameters of the rolling window analysis =========================>
 % <==================================================================================>
 
-windowsize1=20;  % Integer variable indicating the moving window size
+windowsize1=10;  % Integer variable indicating the moving window size
 
-tstart1=4; % Integer variable indicating the time point for the start of rolling window analysis
+tstart1=48; % Integer variable indicating the time point for the start of rolling window analysis
 
-tend1=5;  %Integer variable indicating the time point for the end of the rolling window analysis
+tend1=48;  %Integer variable indicating the time point for the end of the rolling window analysis
+
+
+% <===========================================================================================================>
+% <====== Check that the number of estimated parameters is smaller than the number of data points= ===========>
+% <===========================================================================================================>
+
+numparams=get_nparams(method1,dist1,flag1,fixI0);
+
+numparams
+windowsize1
+
+if numparams>=windowsize1
+
+    error("Number of estimated parameters should be smaller than the calibration period. Consider increasing the length of the calibration period.")
+
+end
+
+
 

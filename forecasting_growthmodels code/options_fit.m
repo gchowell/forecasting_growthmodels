@@ -13,14 +13,14 @@ global method1 % Parameter estimation method
 % <================================ Datasets properties =======================>
 % <============================================================================>
 % Located in the input folder, the time series data file is a text file with extension *.txt. 
-% The time series data file contains the incidence curve of the epidemic of interest. 
+% The time series data file contains the incidence curve of interest (new cases per unit of time). 
 % The first column corresponds to time index: 0,1,2, ... and the second
 % column corresponds to the temporal incidence data. If the time series file contains cumulative incidence count data, 
 % the name of the time series data file must start with "cumulative".
 
-cadfilename1='Most_Recent_Timeseries_US-CDC'; % String variable indicating the name of the data file containing the time-series data.
+cadfilename1='cases-weekly-mpox-Chile'; % String variable indicating the name of the data file containing the time-series data.
 
-caddisease='monkeypox'; % string variable indicating the name of the disease or subject related to the time series data
+caddisease='Mpox'; % string variable indicating the name of the disease or subject related to the time series data
 
 datatype='cases'; % string variable indicating the nature of the data (cases, deaths, hospitalizations, etc)
 
@@ -82,14 +82,31 @@ flag1=GLM; % Integer variable indicating the growth model that will be fit to th
 
 model_name1='GLM';  % A string variable indicating the name of the model.
 
-fixI0=0; % Boolean variable indicating whether initial value in the time-series will be estimated or fix according to the first data point in the time series.
+fixI0=1; % Boolean variable indicating whether initial value in the time-series will be estimated or fix according to the first data point in the time series.
 
 % <==================================================================================>
 % <========================== Parameters of the rolling window analysis =========================>
 % <==================================================================================>
 
-windowsize1=31;  % Integer variable indicating the moving window size
+windowsize1=10;  % Integer variable indicating the moving window size
 
 tstart1=1; % Integer variable indicating the time point for the start of rolling window analysis
 
-tend1=2;  %Integer variable indicating the time point for the end of the rolling window analysis
+tend1=1;  %Integer variable indicating the time point for the end of the rolling window analysis
+
+
+% <===========================================================================================================>
+% <====== Check that the number of estimated parameters is smaller than the number of data points= ===========>
+% <===========================================================================================================>
+
+numparams=get_nparams(method1,dist1,flag1,fixI0);
+
+numparams
+windowsize1
+
+if numparams>=windowsize1
+
+    error("Number of estimated parameters should be smaller than the calibration period. Consider increasing the length of the calibration period.")
+
+end
+
