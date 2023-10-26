@@ -86,8 +86,8 @@ if fixI0==1
             UB=[rub  1 10 Kmax I0 UBe];
 
         case 5 % Gompertz
-            LB=[rlb  1 0 1 I0 LBe];
-            UB=[rub  1 params0(3)+5 1 I0 UBe];
+            LB=[0.0001  1 0 1 I0 LBe];
+            UB=[params0(1)+5  1 params0(3)+5 1 I0 UBe];
 
     end
 
@@ -120,8 +120,8 @@ else
             UB=[rub  1 10 Kmax sum(abs(data1(:,2))) UBe];
 
         case 5
-            LB=[rlb  1 0 1 1 LBe];
-            UB=[rub  1 params0(3)+5 1 sum(abs(data1(:,2))) UBe];
+            LB=[0.001  1 0 1 1 LBe];
+            UB=[params0(1)+5  1 params0(3)+5 1 sum(abs(data1(:,2))) UBe];
 
     end
 
