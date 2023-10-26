@@ -50,6 +50,10 @@ switch method1
 
 end
 
+
+rlb=mean(abs(data1(1:2,2)))/200;
+rub=mean(abs(data1(1:2,2)))*2;
+
 Kmax=100000000000;
 
 if fixI0==1
@@ -57,32 +61,32 @@ if fixI0==1
     switch flag1
 
          case -1  %EXP
-            LB=[0.001  1 1 0 I0 LBe];
-            UB=[100  1 1 0 I0 UBe];
+            LB=[rlb  1 1 0 I0 LBe];
+            UB=[rub  1 1 0 I0 UBe];
 
         case 0   %GGM
-            LB=[0.001  0.01 1 0 I0 LBe];
-            UB=[500  1 1 0 I0 UBe];
+            LB=[rlb  0.01 1 0 I0 LBe];
+            UB=[rub  1 1 0 I0 UBe];
 
         case 1 % GLM
-            LB=[0.0001  0.01 1 20 I0 LBe];
-            UB=[1000  1 1 Kmax I0 UBe];
+            LB=[rlb  0.01 1 20 I0 LBe];
+            UB=[rub  1 1 Kmax I0 UBe];
 
         case 2 %GRM
-            LB=[0.0001  0.01 0 20 I0 LBe];
-            UB=[2000  1 10 Kmax I0 UBe];
+            LB=[rlb  0.01 0 20 I0 LBe];
+            UB=[rub  1 10 Kmax I0 UBe];
 
         case 3 %Logistic
-            LB=[0.0001  1 1 20 I0 LBe];
-            UB=[2000  1 1 Kmax I0 UBe];
+            LB=[rlb  1 1 20 I0 LBe];
+            UB=[rub  1 1 Kmax I0 UBe];
 
         case 4 % Richards
-            LB=[0.0001  1 0 20 I0 LBe];
-            UB=[2000  1 10 Kmax I0 UBe];
+            LB=[rlb  1 0 20 I0 LBe];
+            UB=[rub  1 10 Kmax I0 UBe];
 
         case 5 % Gompertz
-            LB=[0.0001  1 0 1 I0 LBe];
-            UB=[params0(1)+5  1 params0(3)+5 1 I0 UBe];
+            LB=[rlb  1 0 1 I0 LBe];
+            UB=[rub  1 params0(3)+5 1 I0 UBe];
 
     end
 
@@ -91,32 +95,32 @@ else
     switch flag1
 
         case -1
-            LB=[0.001 1 1 0 1 LBe];
-            UB=[100  1 1 0 sum(abs(data1(:,2))) UBe];
+            LB=[rlb 1 1 0 1 LBe];
+            UB=[rub  1 1 0 sum(abs(data1(:,2))) UBe];
 
         case 0
-            LB=[0.001 0.01 1 0 1 LBe];
-            UB=[500  1 1 0 sum(abs(data1(:,2))) UBe];
+            LB=[rlb 0.01 1 0 1 LBe];
+            UB=[rub  1 1 0 sum(abs(data1(:,2))) UBe];
 
         case 1
-            LB=[0.0001  0.01 1 20 1 LBe];
-            UB=[500  1 10 Kmax sum(abs(data1(:,2))) UBe];
+            LB=[rlb  0.01 1 20 1 LBe];
+            UB=[rub 1 1 Kmax sum(abs(data1(:,2))) UBe];
 
         case 2
-            LB=[0.0001  0.01 0 20 1 LBe];
-            UB=[500  1 10 Kmax sum(abs(data1(:,2))) UBe];
+            LB=[rlb  0.01 0 20 1 LBe];
+            UB=[rub  1 10 Kmax sum(abs(data1(:,2))) UBe];
 
         case 3
-            LB=[0.0001  1 1 20 1 LBe];
-            UB=[500  1 10 Kmax sum(abs(data1(:,2))) UBe];
+            LB=[rlb  1 1 20 1 LBe];
+            UB=[rub  1 10 Kmax sum(abs(data1(:,2))) UBe];
 
         case 4
-            LB=[0.0001  1 0 20 1 LBe];
-            UB=[500  1 10 Kmax sum(abs(data1(:,2))) UBe];
+            LB=[rlb  1 0 20 1 LBe];
+            UB=[rub  1 10 Kmax sum(abs(data1(:,2))) UBe];
 
         case 5
-            LB=[0.0001  1 0 1 1 LBe];
-            UB=[params0(1)+5  1 params0(3)+5 1 sum(abs(data1(:,2))) UBe];
+            LB=[rlb  1 0 1 1 LBe];
+            UB=[rub  1 params0(3)+5 1 sum(abs(data1(:,2))) UBe];
 
     end
 

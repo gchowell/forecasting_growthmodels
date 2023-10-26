@@ -1,4 +1,4 @@
-function [quantilescs,quantilesfs]=plotForecast_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass,forecastingperiod_pass)
+function [param_doubling,seq_doublingtimes]=plotForecast_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass,forecastingperiod_pass)
 
 % <============================================================================>
 % < Author: Gerardo Chowell  ==================================================>
@@ -326,6 +326,57 @@ for i=tstart1:1:tend1  %rolling window analysis
     line1=plot(timevect1,fit_model1,'color',color1(6,:))
     set(line1,'LineWidth',1)
 
+    % compute doubling times
+    meandoublingtime=[];
+
+    doublingtimess=zeros(30,M)+NaN;
+
+    maxd=1;
+
+    for j=1:M
+
+        [tds,C0data,curve,doublingtimes]=getDoublingTimeCurve(fit_model1(:,j),DT,0);
+
+        doublingtimess(1:length(doublingtimes),j)=doublingtimes;
+
+        if maxd<length(doublingtimes)
+            maxd=length(doublingtimes);
+        end
+
+        meandoublingtime=[meandoublingtime;mean(doublingtimes)];
+    end
+
+    doublingtimess=doublingtimess(1:maxd,1:M);
+
+    seq_doublingtimes=[];
+
+    for j=1:maxd
+
+        index1=find(~isnan(doublingtimess(j,:)));
+
+        seq_doublingtimes=[seq_doublingtimes;[j mean(doublingtimess(j,index1)) quantile(doublingtimess(j,index1),0.025) quantile(doublingtimess(j,index1),0.975) length(index1)./M]];
+
+    end
+
+    seq_doublingtimes % [ith doubling, mean, 95%CI LB, 95%CI UB, prob. i_th doubling]
+
+    % Mean doubling times
+    dmean=mean(meandoublingtime);
+    dLB=quantile(meandoublingtime,0.025);
+    dUB=quantile(meandoublingtime,0.975);
+
+    param_doubling=[dmean dLB dUB]
+
+    % <=============================================================================================>
+    % <============================== Save file with doubling time estimates =======================>
+    % <=============================================================================================>
+
+    T = array2table(seq_doublingtimes);
+    T.Properties.VariableNames(1:5) = {'i_th doubling','db mean','db 95%CI LB','db 95% CI UB','prob. i_th doubling'};
+    writetable(T,strcat('./output/doublingtimes-flag1-',num2str(flag1),'-tstart-',num2str(i),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+
+
+
     line1=plot(timevect2,median1,'r-')
     set(line1,'LineWidth',2)
 
@@ -638,6 +689,17 @@ if tend1>tstart1
     xlabel('Time')
 end
 
+% <=====================================================================================================>
+% <============================== Save file with AIC metrics ===========================================>
+% <=====================================================================================================>
+
+%[i AICc part1 part2 numparams]];
+
+T = array2table(AICcs);
+T.Properties.VariableNames(1:5) = {'time','AICc','AICc part1','AICc part2','numparams'};
+writetable(T,strcat('./output/AICcs-rollingwindow-flag1-',num2str(flag1),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+
+
 % <=============================================================================================>
 % <================= Save csv file with parameters from rolling window analysis ====================================>
 % <=============================================================================================>
@@ -648,19 +710,35 @@ if method1==3 | method1==4  %save parameter alpha. VAR=mean+alpha*mean; VAR=mean
     T = array2table(rollparams);
     T.Properties.VariableNames(1:19) = {'time','r mean','r LB','r UB','p mean','p LB','p UB','a mean','a LB','a UB','K0 mean','K0 LB','K0 UB','I0 mean','I0 LB','I0 UB','alpha mean','alpha LB','alpha UB'};
 
+    rollparams=[(tstart1:1:tend1)' MCSES(:,1:6)];
+    T2 = array2table(rollparams);
+    T2.Properties.VariableNames(1:7) = {'time','r MCSE','p MCSE','a MCSE','K0 MCSE','I0 MCSE','alpha MCSE'};
+
 elseif method1==5
 
     rollparams=[(tstart1:1:tend1)' param_rs(:,1:end) param_ps(:,1:end) param_as(:,1:end) param_Ks(:,1:end) param_I0s(:,1:end) param_alphas(:,1:end) param_ds(:,1:end)];
     T = array2table(rollparams);
     T.Properties.VariableNames(1:22) = {'time','r mean','r LB','r UB','p mean','p LB','p UB','a mean','a LB','a UB','K0 mean','K0 LB','K0 UB','I0 mean','I0 LB','I0 UB','alpha mean','alpha LB','alpha UB','d mean','d LB','d UB'};
+
+    rollparams=[(tstart1:1:tend1)' MCSES(:,1:7)];
+    T2 = array2table(rollparams);
+    T2.Properties.VariableNames(1:8) = {'time','r MCSE','p MCSE','a MCSE','K0 MCSE','I0 MCSE','alpha MCSE','d MCSE'};
+
 else
 
     rollparams=[(tstart1:1:tend1)' param_rs(:,1:end) param_ps(:,1:end) param_as(:,1:end) param_Ks(:,1:end) param_I0s(:,1:end)];
     T = array2table(rollparams);
     T.Properties.VariableNames(1:16) = {'time','r mean','r LB','r UB','p mean','p LB','p UB','a mean','a LB','a UB','K0 mean','K0 LB','K0 UB','I0 mean','I0 LB','I0 UB'};
+
+    rollparams=[(tstart1:1:tend1)' MCSES(:,1:5)];
+    T2 = array2table(rollparams);
+    T2.Properties.VariableNames(1:6) = {'time','r MCSE','p MCSE','a MCSE','K0 MCSE','I0 MCSE'};
+
 end
 
 writetable(T,strcat('./output/parameters-rollingwindow-flag1-',num2str(flag1),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+
+writetable(T2,strcat('./output/MCSES-rollingwindow-flag1-',num2str(flag1),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 
 % <========================================================================================>
 % <========================================================================================>
