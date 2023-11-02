@@ -52,7 +52,7 @@ end
 
 
 rlb=mean(abs(data1(1:2,2)))/200;
-rub=max(abs(data1(1:2,2)))*2;
+rub=max(abs(data1(1:2,2)))*5;
 
 
 Kmax=10000000000;
