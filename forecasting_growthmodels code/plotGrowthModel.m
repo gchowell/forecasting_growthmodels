@@ -222,7 +222,7 @@ end
 
 timevect=0:1:windowsize1;
 
-options=optimoptions('fmincon','Algorithm','sqp','StepTolerance',1.0000e-6,'MaxFunEvals',20000,'MaxIter',20000);
+options=[];
 
 [~,F]=ode15s(@modifiedLogisticGrowth,timevect,I0,options,r1,p1,a1,K1,flag1);
 
