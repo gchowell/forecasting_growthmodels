@@ -18,7 +18,7 @@ global method1 % Parameter estimation method
 % column corresponds to the temporal incidence data. If the time series file contains cumulative incidence count data, 
 % the name of the time series data file must start with "cumulative".
 
-cadfilename1='cases-weekly-mpox-Chile'; % String variable indicating the name of the data file containing the time-series data.
+cadfilename1='Most_Recent_Timeseries_US-CDC'; % String variable indicating the name of the data file containing the time-series data.
 
 caddisease='Mpox'; % string variable indicating the name of the disease or subject related to the time series data
 
@@ -88,25 +88,8 @@ fixI0=1; % Boolean variable indicating whether initial value in the time-series 
 % <========================== Parameters of the rolling window analysis =========================>
 % <==================================================================================>
 
-windowsize1=10;  % Integer variable indicating the moving window size
+windowsize1=20;  % Integer variable indicating the moving window size
 
-tstart1=1; % Integer variable indicating the time point for the start of rolling window analysis
+tstart1=37; % Integer variable indicating the time point for the start of rolling window analysis
 
-tend1=1;  %Integer variable indicating the time point for the end of the rolling window analysis
-
-
-% <===========================================================================================================>
-% <====== Check that the number of estimated parameters is smaller than the number of data points= ===========>
-% <===========================================================================================================>
-
-numparams=get_nparams(method1,dist1,flag1,fixI0);
-
-numparams
-windowsize1
-
-if numparams>=windowsize1
-
-    error("Number of estimated parameters should be smaller than the calibration period. Consider increasing the length of the calibration period.")
-
-end
-
+tend1=37;  %Integer variable indicating the time point for the end of the rolling window analysis

@@ -1,4 +1,4 @@
-function AICcs=Run_Fit_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass)
+function [AICcs, fit_model1]=Run_Fit_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass)
 
 % <============================================================================>
 % < Author: Gerardo Chowell  ==================================================>
@@ -175,9 +175,15 @@ quantilesfs=[];
 if (tend1+windowsize1-1) > length(data(:,1))
 
     tend1= length(data(:,1))-windowsize1+1;
-    'adjusting tend1'
+    'adjusting tend'
 
 end
+
+if tstart1>tend1
+ 'incompatible tstart and tend values'
+ return
+end
+
 
 AICcs=[];
 

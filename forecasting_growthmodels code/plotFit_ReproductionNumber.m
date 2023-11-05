@@ -298,7 +298,7 @@ for i=tstart1:1:tend1 %rolling window analysis
 
         for j=1:M
 
-            [tds,C0data,curve,doublingtimes]=getDoublingTimeCurve(fit_model1(:,j),DT,0);
+            [tds,C0data,curve,doublingtimes]=getDoublingTimeCurve(max(fit_model1(:,j),0),DT,0);
 
             doublingtimess(1:length(doublingtimes),j)=doublingtimes;
 

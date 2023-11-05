@@ -65,7 +65,7 @@ end
 numstartpoints=10; % This variable defines the number of different initial guesses for the optimization procedure using Multistart 
 % in its search for the globally optimal set of parameters.
 
-B=200; % Number of bootstrap realizations utilized to characterize parameter uncertainty.
+B=300; % Number of bootstrap realizations utilized to characterize parameter uncertainty.
 
 % <==============================================================================>
 % <============================== Growth model =====================================>
@@ -84,7 +84,7 @@ flag1=GLM; % Integer variable indicating the growth model that will be fit to th
 
 model_name1='GLM';  % A string variable indicating the name of the model.
 
-fixI0=0; % Boolean variable indicating whether initial value in the time-series will be estimated or fix according to the first data point in the time series.
+fixI0=1; % Boolean variable indicating whether initial value in the time-series will be estimated or fix according to the first data point in the time series.
 
 % <==============================================================================>
 % <========================== Forecasting parameters ===================================>
@@ -100,25 +100,7 @@ forecastingperiod=4; % Integer variable indicating the forecast horizon (number 
 
 windowsize1=10;  % Integer variable indicating the moving window size
 
-tstart1=48; % Integer variable indicating the time point for the start of rolling window analysis
+tstart1=1; % Integer variable indicating the time point for the start of rolling window analysis
 
-tend1=48;  %Integer variable indicating the time point for the end of the rolling window analysis
-
-
-% <===========================================================================================================>
-% <====== Check that the number of estimated parameters is smaller than the number of data points= ===========>
-% <===========================================================================================================>
-
-numparams=get_nparams(method1,dist1,flag1,fixI0);
-
-numparams
-windowsize1
-
-if numparams>=windowsize1
-
-    error("Number of estimated parameters should be smaller than the calibration period. Consider increasing the length of the calibration period.")
-
-end
-
-
+tend1=1;  %Integer variable indicating the time point for the end of the rolling window analysis
 

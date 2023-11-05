@@ -1,4 +1,4 @@
-function   AICcs=Run_Fit_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass,forecastingperiod_pass)
+function   [AICcs,forecast_model1]=Run_Fit_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass,forecastingperiod_pass)
 
 % <============================================================================>
 % < Author: Gerardo Chowell  ==================================================>
@@ -183,6 +183,11 @@ if (tend1+windowsize1-1) > length(data(:,1))
     tend1= length(data(:,1))-windowsize1+1;
     'adjusting tend1'
 
+end
+
+if tstart1>tend1
+ 'incompatible tstart and tend values'
+ return
 end
 
 AICcs=[];
