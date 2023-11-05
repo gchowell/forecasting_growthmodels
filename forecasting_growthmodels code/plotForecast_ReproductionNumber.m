@@ -1,4 +1,4 @@
-function [param_Rt, quantilescs,quantilesfs]=plotForecast_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass,forecastingperiod_pass)
+function [param_R,param_doubling,seq_doublingtimes]=plotForecast_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass,forecastingperiod_pass)
 
 % <============================================================================>
 % < Author: Gerardo Chowell  ==================================================>
@@ -213,7 +213,7 @@ end
 
 cc1=1;
 
-param_Rt=[];
+param_R=[];
 
 for i=tstart1:1:tend1  %rolling window analysis
 
@@ -339,6 +339,58 @@ for i=tstart1:1:tend1  %rolling window analysis
     line1=plot(timevect1,fit_model1,'color',color1(6,:))
     set(line1,'LineWidth',1)
 
+
+    % compute doubling times
+    meandoublingtime=[];
+
+    doublingtimess=zeros(30,M)+NaN;
+
+    maxd=1;
+
+    for j=1:M
+
+        [tds,C0data,curve,doublingtimes]=getDoublingTimeCurve(max(fit_model1(:,j),0),DT,0);
+
+        doublingtimess(1:length(doublingtimes),j)=doublingtimes;
+
+        if maxd<length(doublingtimes)
+            maxd=length(doublingtimes);
+        end
+
+        meandoublingtime=[meandoublingtime;mean(doublingtimes)];
+    end
+
+    doublingtimess=doublingtimess(1:maxd,1:M);
+
+    seq_doublingtimes=[];
+
+    for j=1:maxd
+
+        index1=find(~isnan(doublingtimess(j,:)));
+
+        seq_doublingtimes=[seq_doublingtimes;[j mean(doublingtimess(j,index1)) quantile(doublingtimess(j,index1),0.025) quantile(doublingtimess(j,index1),0.975) length(index1)./M]];
+
+    end
+
+    seq_doublingtimes % [ith doubling, mean, 95%CI LB, 95%CI UB, prob. i_th doubling]
+
+    % Mean doubling times
+    dmean=mean(meandoublingtime);
+    dLB=quantile(meandoublingtime,0.025);
+    dUB=quantile(meandoublingtime,0.975);
+
+    param_doubling=[dmean dLB dUB]
+
+    % <=============================================================================================>
+    % <============================== Save file with doubling time estimates =======================>
+    % <=============================================================================================>
+
+    T = array2table(seq_doublingtimes);
+    T.Properties.VariableNames(1:5) = {'i_th doubling','db mean','db 95%CI LB','db 95% CI UB','prob. i_th doubling'};
+    writetable(T,strcat('./output/doublingtimes-flag1-',num2str(flag1),'-tstart-',num2str(i),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+
+
+
     line1=plot(timevect2,median1,'r-')
     set(line1,'LineWidth',2)
 
@@ -441,8 +493,8 @@ for i=tstart1:1:tend1  %rolling window analysis
     ylabel(strcat(caddisease,{' '},datatype))
 
     subplot(2,1,2)
-    plot(ts(2:end),Rss,'c-')
-    hold on
+    %plot(ts(2:end),Rss,'c-')
+    %hold on
 
     line1=plot(ts(2:end),Rtmedian,'r-')
     set(line1,'LineWidth',2)
@@ -457,8 +509,9 @@ for i=tstart1:1:tend1  %rolling window analysis
     line1=plot(line2(:,1),line2(:,2),'k--')
     set(line1,'LineWidth',2)
 
-    axis([timevect1(1) timevect2(end) 0 quantile(Rss(end,:),0.975)+4])
-    line2=[timevect1(end) 0;timevect1(end) quantile(Rss(end,:),0.975)+4];
+    axis([timevect1(1) timevect2(end) 0 quantile(Rss(end/2,:),0.975)+5])
+    line2=[timevect1(end) 0;timevect1(end) quantile(Rss(end/2,:),0.975)+5];
+
     line1=plot(line2(:,1),line2(:,2),'k--')
     set(line1,'LineWidth',2)
 
@@ -476,6 +529,7 @@ for i=tstart1:1:tend1  %rolling window analysis
     % <=============================================================================================>
 
     Rtdata=[ts(2:100:end)' Rtmedian(2:100:end)' RtLB(2:100:end)' RtUB(2:100:end)'];
+    Rtdata=[Rtdata;[ts(end)' Rtmedian(end)' RtLB(end)' RtUB(end)']];
 
     T = array2table(Rtdata);
     T.Properties.VariableNames(1:4) = {'time','Rt median','Rt 95%CI LB','Rt 95% CI UB'};
@@ -483,12 +537,10 @@ for i=tstart1:1:tend1  %rolling window analysis
 
 
     % <=========================================================================================>
-    % <================================ Most recent R estimate =======================>
+    % <================================ Save most recent R estimate =======================>
     % <=========================================================================================>
 
-    param_Rt=[param_Rt;[ts(end) median(Rss(end,:)) quantile(Rss(end,:),0.025) quantile(Rss(end,:),0.975) std(Rss(end,:))]];
-
-
+    param_R=[param_R;[ts(end) median(Rss(end,:)) quantile(Rss(end,:),0.025) quantile(Rss(end,:),0.975) std(Rss(end,:))]];
 
     %
 
@@ -720,6 +772,7 @@ else
 end
 
 writetable(T,strcat('./output/parameters-rollingwindow-flag1-',num2str(flag1),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+
 
 % <========================================================================================>
 % <========================================================================================>
