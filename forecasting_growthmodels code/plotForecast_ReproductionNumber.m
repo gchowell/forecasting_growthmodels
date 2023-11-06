@@ -455,8 +455,8 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     line1=plot(timevect2,median1,'r-')
     set(line1,'LineWidth',2)
-
     hold on
+
     line1=plot(timevect2,LB1,'r--')
     set(line1,'LineWidth',2)
 
