@@ -5,7 +5,7 @@
 <p> It carries out the following tasks: </p> 
 <ul>
     <li>fitting models to time series data,</li>
-    <li>estimation of model parameters, doubling times, and reproduction numbers with quantified uncertainty,</li>
+    <li>estimation of model parameters, Monte Carlo standard errors (MCSES) of the parameter estimates, doubling times, and reproduction numbers with quantified uncertainty,</li>
     <li>plotting the best fit of the model and parameter estimates,</li>
     <li>plotting forecasts from the best-fit model,</li>
     <li>generates and plots performance metrics of the forecasts,</li>
@@ -18,7 +18,7 @@
 
 <ul>
     <li>fitting models using different parameter estimation approaches (least-squares, maximum likelihood estimation),</li>
-    <li>fitting models using assuming different error structures (normal, Poisson, negagive binomial),</li>
+    <li>fitting models using assuming different error structures (normal, Poisson, negative binomial),</li>
     <li>user can select among different growth models including the generalized-growth model (GGM), generalized-logistic growth model (GLM), Gompertz model, Richards model, and the generalized Richards model (GRM),</li>
     <li> User can conduct multiple fits of the model to the data through a rolling-window analysis </li>
     
