@@ -73,12 +73,10 @@ The function also outputs files with parameter estimates, the fit and forecast o
 # Publications
 
 <ul>
+
+<li>Chowell, G., Bleichrodt, A., Dahal, S. et al. GrowthPredict: A toolbox and tutorial-based primer for fitting and forecasting growth trajectories using phenomenological growth models. Sci Rep 14, 1630 (2024). https://doi.org/10.1038/s41598-024-51852-8 </li>
     
 <li> Chowell, G. (2017). Fitting dynamic models to epidemic outbreaks with quantified uncertainty: A primer for parameter uncertainty, identifiability, and forecasts. Infectious Disease Modelling, 2(3), 379-398. </li>
-
-<li> Roosa, K., Lee, Y., Luo, R., Kirpich, A., Rothenberg, R., Hyman, J. M., ... & Chowell, G. (2020). Real-time forecasts of the COVID-19 epidemic in China from February 5th to February 24th, 2020. Infectious Disease Modelling, 5, 256-263.</li>
-
-<li> Pell, B., Kuang, Y., Viboud, C., & Chowell, G. (2018). Using phenomenological models for forecasting the 2015 Ebola challenge. Epidemics, 22, 62-70. </li>
 
 <li> Bürger, R., Chowell, G., & Lara-Díıaz, L. Y. (2019). Comparative analysis of phenomenological growth models applied to epidemic outbreaks. Mathematical Biosciences and Engineering, 16(5), 4250-4273. </li>
 
