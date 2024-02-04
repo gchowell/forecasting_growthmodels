@@ -26,7 +26,7 @@
     
 # Installation requirements
 
-The forecasting_growthmodels toolbox requires a MATLAB installation.
+The GrowthPredict toolbox requires a MATLAB installation.
 
 # Fitting the model to your data
 
