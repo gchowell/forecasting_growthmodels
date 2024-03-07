@@ -1,5 +1,6 @@
 # GrowthPredict
  GrowthPredict: A Matlab toolbox for fitting and forecasting epidemic trajectories using phenomenological growth models
+ <p> GrowthPredict Tutorial: https://www.nature.com/articles/s41598-024-51852-8 </p>
  <p>Video tutorial: https://www.youtube.com/watch?v=op93_wUeXXA&list=PLiMOXVNNZfvYLdwNKrIdBmH5NTvGk6IG2&index=4&t=18s </p>
 
 <p> It carries out the following tasks: </p> 
