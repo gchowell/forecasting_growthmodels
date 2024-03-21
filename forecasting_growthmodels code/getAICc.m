@@ -5,13 +5,16 @@ function [AICc,part1,part2,numparams]=getAICc(method1,dist1,flag1,fixI0,fval,n)
 %flag 0=GGM 1=GLM 2=GRM 3=Logistic 4=RIC 5=Gompertz
 
 switch flag1 % model indicator
-    
+
+    case -1
+        numparams=1;
+
     case 0
         numparams=2;
-        
+
     case 1
         numparams=3;
-        
+
     case 2
         numparams=4;
         

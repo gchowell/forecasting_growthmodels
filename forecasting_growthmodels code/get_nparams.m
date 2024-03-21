@@ -6,6 +6,9 @@ function numparams=get_nparams(method1,dist1,flag1,fixI0)
 
 switch flag1 % model indicator
 
+    case -1
+        numparams=1;
+
     case 0
         numparams=2;
 
