@@ -1,4 +1,4 @@
-function [param_doubling,seq_doublingtimes]=plotForecast_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass,forecastingperiod_pass)
+function [param_doubling,seq_doublingtimes,forecast_model1]=plotForecast_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass,forecastingperiod_pass)
 
 % <============================================================================>
 % < Author: Gerardo Chowell  ==================================================>
@@ -101,6 +101,10 @@ fixI0=fixI0_INP; % 0=Estimate the initial number of cases; 1 = Fix the initial n
 % <==============================================================================>
 
 data=load(strcat('./input/',cadfilename1,'.txt'));
+
+if isempty(data)
+    error('The dataset is empty')
+end
 
 if strcmp('CUMULATIVE',upper(cadfilename1(1:10)))==1
 
@@ -227,7 +231,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     title(cad1)
 
-    set(gca,'FontSize', 24);
+    set(gca,'FontSize',GetAdjustedFontSize);
     set(gcf,'color','white')
 
     subplot(2,4,2)
@@ -243,7 +247,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     title(cad2)
 
-    set(gca,'FontSize', 24);
+    set(gca,'FontSize',GetAdjustedFontSize);
     set(gcf,'color','white')
 
     subplot(2,4,3)
@@ -259,7 +263,7 @@ for i=tstart1:1:tend1  %rolling window analysis
     ylabel('Frequency')
     title(cad3)
 
-    set(gca,'FontSize', 24);
+    set(gca,'FontSize',GetAdjustedFontSize);
     set(gcf,'color','white')
 
 
@@ -276,7 +280,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     title(cad4)
 
-    set(gca,'FontSize', 24);
+    set(gca,'FontSize',GetAdjustedFontSize);
     set(gcf,'color','white')
 
     % <========================================================================================>
@@ -335,8 +339,8 @@ for i=tstart1:1:tend1  %rolling window analysis
 
     for j=1:M
 
-        [tds,C0data,curve,doublingtimes]=getDoublingTimeCurve(fit_model1(:,j),DT,0);
-
+        [tds,C0data,curve,doublingtimes]=getDoublingTimeCurve(max(fit_model1(:,j),0),DT,0);
+        
         doublingtimess(1:length(doublingtimes),j)=doublingtimes;
 
         if maxd<length(doublingtimes)
@@ -397,7 +401,7 @@ for i=tstart1:1:tend1  %rolling window analysis
     xlabel('Time')
     ylabel(strcat(caddisease,{' '},datatype))
 
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
 
     title(model_name1)
@@ -519,7 +523,7 @@ for i=tstart1:1:tend1  %rolling window analysis
             xlabel('Forecasting horizon')
             ylabel('MAE')
             hold on
-            set(gca,'FontSize', 24);
+            set(gca,'FontSize',GetAdjustedFontSize);
             set(gcf,'color','white')
 
             subplot(2,2,2)
@@ -531,7 +535,7 @@ for i=tstart1:1:tend1  %rolling window analysis
             xlabel('Forecasting horizon')
             ylabel('MSE')
             hold on
-            set(gca,'FontSize', 24);
+            set(gca,'FontSize',GetAdjustedFontSize);
             set(gcf,'color','white')
 
             subplot(2,2,3)
@@ -543,7 +547,7 @@ for i=tstart1:1:tend1  %rolling window analysis
             xlabel('Forecasting horizon')
             ylabel('Coverage rate of the 95% PI')
             hold on
-            set(gca,'FontSize', 24);
+            set(gca,'FontSize',GetAdjustedFontSize);
             set(gcf,'color','white')
 
 
@@ -556,7 +560,7 @@ for i=tstart1:1:tend1  %rolling window analysis
             xlabel('Forecasting horizon')
             ylabel('WIS')
             hold on
-            set(gca,'FontSize', 24);
+            set(gca,'FontSize',GetAdjustedFontSize);
             set(gcf,'color','white')
         end
 
@@ -625,7 +629,7 @@ if tend1>tstart1
     plot(data(:,1),data(:,2),'ro-')
     xlabel('Time')
     ylabel('Cases')
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
 
 
@@ -641,7 +645,7 @@ if tend1>tstart1
 
 
     ylabel('r')
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
     xlabel('Time')
 
@@ -655,7 +659,7 @@ if tend1>tstart1
     set(line1,'LineWidth',3)
 
     ylabel('a')
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
     xlabel('Time')
 
@@ -670,7 +674,7 @@ if tend1>tstart1
 
 
     ylabel('p')
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
     xlabel('Time')
 
@@ -684,7 +688,7 @@ if tend1>tstart1
     set(line1,'LineWidth',3)
 
     ylabel('K')
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
     xlabel('Time')
 end

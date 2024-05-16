@@ -1,4 +1,4 @@
-function [param_doubling,seq_doublingtimes]=plotFit_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass)
+function [param_doubling,seq_doublingtimes,fit_model1]=plotFit_GrowthModels(tstart1_pass,tend1_pass,windowsize1_pass)
 
 % <============================================================================>
 % < Author: Gerardo Chowell  ==================================================>
@@ -102,6 +102,10 @@ fixI0=fixI0_INP; % 0=Estimate the initial number of cases; 1 = Fix the initial n
 
 data=load(strcat('./input/',cadfilename1,'.txt'));
 
+if isempty(data)
+    error('The dataset is empty')
+end
+
 if strcmp('CUMULATIVE',upper(cadfilename1(1:10)))==1
 
     data(:,2)=[data(1,2);diff(data(:,2))]; % Incidence curve
@@ -190,7 +194,7 @@ for i=tstart1:1:tend1 %rolling window analysis
 
         title(cad1)
 
-        set(gca,'FontSize', 24);
+        set(gca,'FontSize',GetAdjustedFontSize)
         set(gcf,'color','white')
 
         subplot(2,4,2)
@@ -206,7 +210,7 @@ for i=tstart1:1:tend1 %rolling window analysis
 
         title(cad2)
 
-        set(gca,'FontSize', 24);
+        set(gca,'FontSize',GetAdjustedFontSize)
         set(gcf,'color','white')
 
         subplot(2,4,3)
@@ -222,7 +226,7 @@ for i=tstart1:1:tend1 %rolling window analysis
         %ylabel('Frequency')
         title(cad3)
 
-        set(gca,'FontSize', 24);
+        set(gca,'FontSize',GetAdjustedFontSize)
         set(gcf,'color','white')
 
 
@@ -239,7 +243,7 @@ for i=tstart1:1:tend1 %rolling window analysis
 
         title(cad4)
 
-        set(gca,'FontSize', 24);
+        set(gca,'FontSize',GetAdjustedFontSize)
         set(gcf,'color','white')
 
 
@@ -281,7 +285,7 @@ for i=tstart1:1:tend1 %rolling window analysis
 
         for j=1:M
 
-            [tds,C0data,curve,doublingtimes]=getDoublingTimeCurve(fit_model1(:,j),DT,0);
+            [tds,C0data,curve,doublingtimes]=getDoublingTimeCurve(max(fit_model1(:,j),0),DT,0);
 
             doublingtimess(1:length(doublingtimes),j)=doublingtimes;
 
@@ -344,7 +348,7 @@ for i=tstart1:1:tend1 %rolling window analysis
         xlabel('Time')
         ylabel(strcat(caddisease,{' '},datatype))
 
-        set(gca,'FontSize',24)
+        set(gca,'FontSize',GetAdjustedFontSize)
         set(gcf,'color','white')
 
         title(model_name1)
@@ -374,7 +378,7 @@ if tend1>tstart1
     plot(data(:,1),data(:,2),'ro-')
     xlabel('Time')
     ylabel('Cases')
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
 
 
@@ -390,7 +394,7 @@ if tend1>tstart1
 
 
     ylabel('r')
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
     xlabel('Time')
 
@@ -404,7 +408,7 @@ if tend1>tstart1
     %set(line1,'LineWidth',3)
 
     ylabel('a')
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
     xlabel('Time')
 
@@ -419,7 +423,7 @@ if tend1>tstart1
 
 
     ylabel('p')
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
     xlabel('Time')
 
@@ -434,7 +438,7 @@ if tend1>tstart1
     %set(line1,'LineWidth',3)
 
     ylabel('K')
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
     xlabel('Time')
 
@@ -449,7 +453,6 @@ end
 T = array2table(AICcs);
 T.Properties.VariableNames(1:5) = {'time','AICc','AICc part1','AICc part2','numparams'};
 writetable(T,strcat('./output/AICcs-rollingwindow-flag1-',num2str(flag1),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
-
 
 % <========================================================================================>
 % <========================================================================================>

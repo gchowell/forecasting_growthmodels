@@ -116,6 +116,10 @@ fixI0=fixI0_INP; % 0=Estimate the initial number of cases; 1 = Fix the initial n
 
 data=load(strcat('./input/',cadfilename1,'.txt'));
 
+if isempty(data)
+    error('The dataset is empty')
+end
+
 if strcmp('CUMULATIVE',upper(cadfilename1(1:10)))==1
 
     data(:,2)=[data(1,2);diff(data(:,2))]; % Incidence curve
@@ -206,7 +210,7 @@ for i=tstart1:1:tend1 %rolling window analysis
 
         title(cad1)
 
-        set(gca,'FontSize', 24);
+        set(gca,'FontSize',GetAdjustedFontSize)
         set(gcf,'color','white')
 
         subplot(2,4,2)
@@ -222,7 +226,7 @@ for i=tstart1:1:tend1 %rolling window analysis
 
         title(cad2)
 
-        set(gca,'FontSize', 24);
+        set(gca,'FontSize',GetAdjustedFontSize)
         set(gcf,'color','white')
 
         subplot(2,4,3)
@@ -238,7 +242,7 @@ for i=tstart1:1:tend1 %rolling window analysis
         ylabel('Frequency')
         title(cad3)
 
-        set(gca,'FontSize', 24);
+        set(gca,'FontSize',GetAdjustedFontSize)
         set(gcf,'color','white')
 
 
@@ -255,7 +259,7 @@ for i=tstart1:1:tend1 %rolling window analysis
 
         title(cad4)
 
-        set(gca,'FontSize', 24);
+        set(gca,'FontSize',GetAdjustedFontSize)
         set(gcf,'color','white')
 
 
@@ -361,7 +365,7 @@ for i=tstart1:1:tend1 %rolling window analysis
         xlabel('Time')
         ylabel(strcat(caddisease,{' '},datatype))
 
-        set(gca,'FontSize',24)
+        set(gca,'FontSize',GetAdjustedFontSize)
         set(gcf,'color','white')
 
         title(model_name1)
@@ -446,7 +450,7 @@ for i=tstart1:1:tend1 %rolling window analysis
     %xlabel('Time (days)')
     %ylabel(strcat(caddisease,{' '},datatype))
 
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
 
     xlabel('Time')
@@ -482,7 +486,7 @@ for i=tstart1:1:tend1 %rolling window analysis
 
     ylabel('R_t')
 
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
 
     cc1=cc1+1;
@@ -522,7 +526,7 @@ if tend1>tstart1
     plot(data(:,1),data(:,2),'ro-')
     xlabel('Time')
     ylabel('Cases')
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
 
 
@@ -538,7 +542,7 @@ if tend1>tstart1
 
 
     ylabel('r')
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
     xlabel('Time')
 
@@ -552,7 +556,7 @@ if tend1>tstart1
     %set(line1,'LineWidth',3)
 
     ylabel('a')
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
     xlabel('Time')
 
@@ -567,7 +571,7 @@ if tend1>tstart1
 
 
     ylabel('p')
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
     xlabel('Time')
 
@@ -582,7 +586,7 @@ if tend1>tstart1
     %set(line1,'LineWidth',3)
 
     ylabel('K')
-    set(gca,'FontSize',24)
+    set(gca,'FontSize',GetAdjustedFontSize)
     set(gcf,'color','white')
     xlabel('Time')
 

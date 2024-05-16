@@ -83,6 +83,11 @@ fixI0=fixI0_INP; % 0=Estimate the initial number of cases; 1 = Fix the initial n
 
 data=load(strcat('./input/',cadfilename1,'.txt'));
 
+if isempty(data)
+    error('The dataset is empty')
+end
+
+
 if strcmp('CUMULATIVE',upper(cadfilename1(1:10)))==1
 
     data(:,2)=[data(1,2);diff(data(:,2))]; % Incidence curve
@@ -216,7 +221,7 @@ for i=tstart1:1:tend1  %rolling window analysis
     [P_model1d,residual_model1, fitcurve_model1d, forecastcurve_model1, timevect2, initialguess,fval]=fit_model(data1,params0,fixI0,numstartpoints,DT,flag1,0);
 
     P_model1d
-
+    
 
     %     P_model1d
     %     dist1
@@ -469,7 +474,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
         title(cad1)
 
-        set(gca,'FontSize', 24);
+        set(gca,'FontSize', GetAdjustedFontSize);
         set(gcf,'color','white')
 
         subplot(2,4,2)
@@ -485,7 +490,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
         title(cad2)
 
-        set(gca,'FontSize', 24);
+        set(gca,'FontSize',GetAdjustedFontSize)
         set(gcf,'color','white')
 
         subplot(2,4,3)
@@ -501,7 +506,7 @@ for i=tstart1:1:tend1  %rolling window analysis
         ylabel('Frequency')
         title(cad3)
 
-        set(gca,'FontSize', 24);
+        set(gca,'FontSize',GetAdjustedFontSize)
         set(gcf,'color','white')
 
         subplot(2,4,4)
@@ -517,7 +522,7 @@ for i=tstart1:1:tend1  %rolling window analysis
 
         title(cad4)
 
-        set(gca,'FontSize', 24);
+        set(gca,'FontSize',GetAdjustedFontSize)
         set(gcf,'color','white')
 
 
