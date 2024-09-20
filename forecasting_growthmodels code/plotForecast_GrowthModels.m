@@ -208,6 +208,9 @@ cc1=1;
 
 for i=tstart1:1:tend1  %rolling window analysis
 
+    % Resetting the array for quantiles 
+    combinedQuantiles = [];
+
     load(strcat('./output/Forecast-growthModel-',cadfilename1,'-flag1-',num2str(flag1(1)),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(i),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-forecastingperiod-',num2str(forecastingperiod),'.mat'))
 
     getperformance=getperformance_INP2; % flag or indicator variable (1/0) to calculate forecasting performance or not
@@ -597,6 +600,15 @@ for i=tstart1:1:tend1  %rolling window analysis
         quantilescs2=[quantilescs2;quantilesc];
 
         quantilesfs2=[quantilesfs2;quantilesf];
+
+        % Exporting the quantile forecasts
+        quantNamesRanked = {'Q_0.010', 'Q_0.025', 'Q_0.050', 'Q_0.100', 'Q_0.150', 'Q_0.200', 'Q_0.250', 'Q_0.300', 'Q_0.350', 'Q_0.400', 'Q_0.450', 'Q_0.500', 'Q_0.550', 'Q_0.600', 'Q_0.650', 'Q_0.700', 'Q_0.750', 'Q_0.800', 'Q_0.850', 'Q_0.900', 'Q_0.950', 'Q_0.975', 'Q_0.990'};
+    
+        combinedQuantiles = [quantilesc; quantilesf];
+        combinedQuantilesTable = array2table(combinedQuantiles, 'VariableNames', quantNamesRanked);
+        
+        writetable(combinedQuantilesTable,strcat('./output/quantile-flag1-',num2str(flag1),'-tstart-',num2str(i),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
+    
 
 
     end
