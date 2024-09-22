@@ -24,7 +24,6 @@ global method1 % Parameter estimation method
 % <================================ Datasets properties ==============================>
 % <============================================================================>
 
-
 cadfilename1=cadfilename1_INP;
 
 DT=1;
@@ -81,18 +80,35 @@ fixI0=fixI0_INP; % 0=Estimate the initial number of cases; 1 = Fix the initial n
 % <======================== Load epidemic data ========================================>
 % <==============================================================================>
 
-data=load(strcat('./input/',cadfilename1,'.txt'));
+% Check if fileName ends with '.txt'
+if ~endsWith(cadfilename1, '.txt', 'IgnoreCase', true)
+    % Append '.txt' extension if not present
+    cadfilename1 = strcat(cadfilename1, '.txt');
+end
+
+% Create full file path
+fullFilePath = fullfile('./input', cadfilename1);
+
+% Check if the file exists before attempting to load
+if exist(fullFilePath, 'file') == 2
+    % Load the file
+    data = load(fullFilePath);
+else
+    % Display an error message if the file is not found
+    error('File "%s" not found in the specified directory.', fullFilePath);
+end
 
 if isempty(data)
     error('The dataset is empty')
 end
 
 
-if strcmp('CUMULATIVE',upper(cadfilename1(1:10)))==1
+if length(cadfilename1)>=10 & strcmp('CUMULATIVE',upper(cadfilename1(1:10)))==1
 
     data(:,2)=[data(1,2);diff(data(:,2))]; % Incidence curve
 
 end
+
 
 % <==============================================================================>
 % <========================== Forecasting parameters ===================================>
@@ -602,10 +618,15 @@ save(strcat('./output/QuantilesCalibration-growthModel-',cadfilename1,'-flag1-',
 % <============================== Save file with AIC metrics ===========================================>
 % <=====================================================================================================>
 
-%[i AICc part1 part2 numparams]];
+%[i AICc part1 part2 numparams];
 
 T = array2table(AICcs);
+T
+
 T.Properties.VariableNames(1:5) = {'time','AICc','AICc part1','AICc part2','numparams'};
+
+T.Properties.VariableNames
+
 writetable(T,strcat('./output/AICcs-rollingwindow-flag1-',num2str(flag1),'-fixI0-',num2str(fixI0),'-method-',num2str(method1),'-dist-',num2str(dist1),'-tstart-',num2str(tstart1),'-tend-',num2str(tend1),'-calibrationperiod-',num2str(windowsize1),'-horizon-',num2str(forecastingperiod),'-',caddisease,'-',datatype,'.csv'))
 
 

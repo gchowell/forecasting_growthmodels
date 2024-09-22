@@ -100,13 +100,29 @@ fixI0=fixI0_INP; % 0=Estimate the initial number of cases; 1 = Fix the initial n
 % <======================== Load epiemic data ========================================>
 % <==============================================================================>
 
-data=load(strcat('./input/',cadfilename1,'.txt'));
+% Check if fileName ends with '.txt'
+if ~endsWith(cadfilename1, '.txt', 'IgnoreCase', true)
+    % Append '.txt' extension if not present
+    cadfilename1 = strcat(cadfilename1, '.txt');
+end
+
+% Create full file path
+fullFilePath = fullfile('./input', cadfilename1);
+
+% Check if the file exists before attempting to load
+if exist(fullFilePath, 'file') == 2
+    % Load the file
+    data = load(fullFilePath);
+else
+    % Display an error message if the file is not found
+    error('File "%s" not found in the specified directory.', fullFilePath);
+end
 
 if isempty(data)
     error('The dataset is empty')
 end
 
-if strcmp('CUMULATIVE',upper(cadfilename1(1:10)))==1
+if length(cadfilename1)>=10 & strcmp('CUMULATIVE',upper(cadfilename1(1:10)))==1
 
     data(:,2)=[data(1,2);diff(data(:,2))]; % Incidence curve
 
