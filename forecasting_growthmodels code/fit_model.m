@@ -50,10 +50,33 @@ switch method1
 
 end
 
-rlb=median(abs(data1(1:2,2)))/200;
-rub=5*max(abs(data1(1:2,2)));
+w  = min(7, size(data1,1));                    % early window
 
-Kmax=1000000000;
+if w < 2                                       % degenerate: too few points
+    r0  = params0(1);
+    rlb = 1e-3;  rub = 10;
+else
+    y  = max(data1(1:w,2), 0.5);               % guard zeros
+    b  = polyfit(data1(1:w,1)*DT, log(y), 1);
+
+    if b(1) <= 0
+        r0  = params0(1);      % no growth signal: keep supplied guess
+        rlb = 1e-3;  rub = 10; % wide default
+    else
+        r0  = b(1);
+        rlb = r0/20; rub = r0*20;
+    end
+end
+
+%rlb=median(abs(data1(1:2,2)))/200;
+%rub=5*max(abs(data1(1:2,2)));
+
+Cobs = sum(abs(data1(:,2)));
+Klb  = max(20, Cobs);            % can't undershoot observed cumulative
+Kub  = min(1e3*Cobs, 1e9);       % capped
+
+
+%Kmax=1000000000;
 
 if fixI0==1
 
@@ -68,62 +91,74 @@ if fixI0==1
             UB=[rub  1 1 0 I0 UBe];
 
         case 1 % GLM
-            LB=[0.001  0.01 1 1 I0 LBe];
-            UB=[rub  1 1 Kmax I0 UBe];
+            LB=[rlb  0.01 1 Klb I0 LBe];
+            UB=[rub  1 1 Kub I0 UBe];
 
         case 2 %GRM
-            LB=[rlb  0.01 0 1 I0 LBe];
-            UB=[rub  1 10 Kmax I0 UBe];
+            LB=[rlb  0.01 0 Klb I0 LBe];
+            UB=[rub  1 10 Kub I0 UBe];
 
         case 3 %Logistic
-            LB=[rlb  1 1 20 I0 LBe];
-            UB=[rub  1 1 Kmax I0 UBe];
+            LB=[rlb  1 1 Klb I0 LBe];
+            UB=[rub  1 1 Kub I0 UBe];
 
         case 4 % Richards
-            LB=[rlb  1 0 1 I0 LBe];
-            UB=[rub  1 10 Kmax I0 UBe];
+            LB=[rlb  1 0 Klb I0 LBe];
+            UB=[rub  1 10 Kub I0 UBe];
 
         case 5 % Gompertz
-            LB=[0.0001  1 0 1 I0 LBe];
-            UB=[params0(1)+5  1 params0(3)+5 1 I0 UBe];
+            LB=[max(1e-4, params0(1)/10)  1 max(1e-6, params0(3)/10) 1 I0 LBe];
+            UB=[params0(1)*10             1 params0(3)*10            1 I0 UBe];
 
     end
 
 else
-    
+
+    y1 = data1(1,2);
+
+    I0lb=max(1, 0.2*y1);
+    I0ub=5*max(1,y1);
+    I0ub=min(I0ub, Klb);         % keep I0 <= K for saturating models
+    I0lb=min(I0lb, I0ub);        % preserve I0lb <= I0ub
+
     switch flag1
 
         case -1
-            LB=[rlb 1 1 0 1 LBe];
-            UB=[rub  1 1 0 sum(abs(data1(:,2))) UBe];
+            LB=[rlb 1 1 0 I0lb LBe];
+            UB=[rub  1 1 0 I0ub UBe];
 
         case 0
-            LB=[rlb 0.01 1 0 1 LBe];
-            UB=[rub  1 1 0 sum(abs(data1(:,2))) UBe];
+            LB=[rlb 0.01 1 0 I0lb LBe];
+            UB=[rub  1 1 0 I0ub UBe];
 
         case 1
-            LB=[rlb  0.01 1 20 1 LBe];
-            UB=[rub 1 1 Kmax sum(abs(data1(:,2))) UBe];
+            LB=[rlb  0.01 1 Klb I0lb LBe];
+            UB=[rub 1 1 Kub I0ub UBe];
 
         case 2
-            LB=[rlb  0.01 0 20 1 LBe];
-            UB=[rub  1 10 Kmax sum(abs(data1(:,2))) UBe];
+            LB=[rlb  0.01 0 Klb I0lb LBe];
+            UB=[rub  1 10 Kub I0ub UBe];
 
         case 3
-            LB=[rlb  1 1 20 1 LBe];
-            UB=[rub  1 10 Kmax sum(abs(data1(:,2))) UBe];
+            LB=[rlb  1 1 Klb I0lb LBe];
+            UB=[rub  1 10 Kub I0ub UBe];
 
         case 4
-            LB=[rlb  1 0 20 1 LBe];
-            UB=[rub  1 10 Kmax sum(abs(data1(:,2))) UBe];
+            LB=[rlb  1 0 Klb I0lb LBe];
+            UB=[rub  1 10 Kub I0ub UBe];
 
-        case 5
-            LB=[0.001  1 0 1 1 LBe];
-            UB=[params0(1)+5  1 params0(3)+5 1 sum(abs(data1(:,2))) UBe];
+        case 5 % Gompertz
+            LB=[max(1e-4, params0(1)/10)  1 max(1e-6, params0(3)/10) 1 I0lb LBe];
+            UB=[params0(1)*10             1 params0(3)*10            1 I0ub UBe];
 
     end
 
 end
+
+if flag1 ~= 5
+    z(1) = min(max(r0, LB(1)), UB(1));   % informed r guess
+end
+z = min(max(z, LB), UB);                 % clamp everything into bounds
 
 
 % if 0 % USE LSQCURVEFIT (Non-linear least squares)
