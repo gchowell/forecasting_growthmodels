@@ -23,16 +23,21 @@ function [cadfilename1, caddisease, datatype, dist1, numstartpoints, B, flag1, m
 %   B               int      Bootstrap replicates for parameter uncertainty
 %   flag1           int      Growth-model code (see “Growth model choices”)
 %   model_name1     char     Human-readable model name matching flag1 (e.g., 'GLM')
-%   fixI0           logical  1=fix initial observed value to first datum; 0=estimate it
+%   fixI0           double   1 = fix initial observed value to first datum; 0 = estimate it
 %   windowsize1     int      Rolling-window length (time steps)
 %   tstart1         int      Start index of the first rolling window
-%   tend1           int      End index of the first rolling window
+%   tend1           int      Start index of the last rolling window
 %
 % Input data (./input)
 %   Text file '<cadfilename1>.txt' with two columns, NO header:
 %     Col 1: time index  (0,1,2,...)
 %     Col 2: observed incidence (nonnegative)
-%   If the series is cumulative, the filename MUST start with 'cumulative-'.
+
+%   If the series is cumulative, the filename must BEGIN with the word
+%   'cumulative' (case-insensitive; e.g., 'cumulative-mpox.txt' or
+%   'CumulativeCases.txt'). Such files are converted to incidence via
+%   [C(1); diff(C)] on load. Any other name is treated as incidence as-is,
+%   so a cumulative series without this prefix will be silently misread.
 %
 % Estimation & error models
 %   The global 'method1' selects the estimator; 'dist1' sets/weights the observation model.
@@ -47,8 +52,9 @@ function [cadfilename1, caddisease, datatype, dist1, numstartpoints, B, flag1, m
 %     method1 = 5  MLE NegBin: var = mean + α·mean^d    → dist1 := 5 (automatic)
 %
 % Growth model choices (flag1)
-%   EXP = -1 (Exponential), GGM = 0 (Generalized Growth), GLM = 1 (Logistic),
-%   GRM = 2 (Generalized Richards), LM = 3 (Linear), RICH = 4 (Richards), GOM = 5 (Gompertz).
+%   EXP = -1 (Exponential Growth), GGM = 0 (Generalized Growth),
+%   GLM = 1 (Generalized Logistic Growth), GRM = 2 (Generalized Richards),
+%   LM = 3 (Logistic Growth), RICH = 4 (Richards), GOM = 5 (Gompertz).
 %
 % Notes
 %   • MultiStart (numstartpoints) helps avoid local minima for nonlinear models.
@@ -69,8 +75,10 @@ global method1; % Parameter estimation method
 % This file contains the incidence curve of interest (e.g., new cases per unit of time).
 % - The first column corresponds to the time index: 0, 1, 2, ...
 % - The second column contains the temporal incidence data.
-% Note: If the time series file contains cumulative incidence count data, 
-%       its name must start with "cumulative".
+% Note: If the time series file contains cumulative count data, its name must
+%       begin with the word "cumulative" (case-insensitive; a hyphen after it
+%       is conventional but not required). Files matching this prefix are
+%       differenced into incidence on load; all other files are used as-is.
 
 cadfilename1 = 'Most_Recent_Timeseries_US-CDC'; % Name of the data file containing the time-series data.
 caddisease = 'Mpox';                            % Name of the disease or subject related to the time series.
@@ -115,18 +123,27 @@ B = 100;             % Number of bootstrap realizations for parameter uncertaint
 % <============================================================================>
 % <========================== Growth Model ===================================>
 % <============================================================================>
-% Growth model options:
-% -1: Exponential growth (EXP)
+% Growth-model definitions for the cumulative trajectory C(t):
+% -1: Exponential Growth Model (EXP)
+%     dC/dt = r*C
 %  0: Generalized Growth Model (GGM)
-%  1: Logistic Model (GLM)
+%     dC/dt = r*C^p
+%  1: Generalized Logistic Growth Model (GLM)
+%     dC/dt = r*C^p*(1 - C/K)
 %  2: Generalized Richards Model (GRM)
-%  3: Linear Model (LM)
+%     dC/dt = r*C^p*(1 - (C/K)^a)
+%  3: Logistic Growth Model (LM)
+%     dC/dt = r*C*(1 - C/K)
 %  4: Richards Model (RICH)
-%  5: Gompertz Model (GOM)
+%     dC/dt = r*C*(1 - (C/K)^a)
+%  5: Gompertz Model (GOM), time-dependent growth-rate form
+%     dC/dt = r*C*exp(-a*t); K is not used in the current implementation
+%
+% The fitted/forecast incidence vector is constructed as [C(t_1); diff(C(t))].
 
 EXP = -1;  GGM = 0;  GLM = 1;  GRM = 2;  LM = 3;  RICH = 4;  GOM = 5;
 
-flag1 = GLM;         % Selected growth model: Logistic Model (GLM).
+flag1 = GLM;         % Selected growth model: Generalized Logistic Growth Model (GLM).
 model_name1 = 'GLM'; % Name of the selected model.
 fixI0 = 1;           % Boolean: Fix initial value to the first data point (true) or estimate it (false).
 
